@@ -1,5 +1,5 @@
-
-import java.util.*;
+package projekat;
+import java.time.LocalDate;
 
 /**
  * 
@@ -50,6 +50,6 @@ public class Iznajmljivanje {
     /**
      * 
      */
-    protected Set<Primerak knjige> iznajmljeno;
+   
 
 }

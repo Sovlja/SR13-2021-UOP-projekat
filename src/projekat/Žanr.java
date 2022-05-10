@@ -1,20 +1,10 @@
-
-import java.util.*;
+package projekat;
 
 /**
  * 
  */
 public class Žanr {
 
-    /**
-     * Default constructor
-     */
-    public Žanr() {
-    }
-
-    /**
-     * 
-     */
     protected String oznaka;
 
     /**
@@ -25,7 +15,7 @@ public class Žanr {
     /**
      * 
      */
-    public enum Žanrovi knjiga {
+    public enum Žanroviknjiga {
         EPIKA,
         LIRIKA,
         DRAMA

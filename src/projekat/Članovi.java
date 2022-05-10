@@ -1,5 +1,6 @@
+package projekat;
 
-import java.util.*;
+import java.time.LocalDate;
 
 /**
  * 
@@ -20,7 +21,7 @@ public class Članovi extends Osoba {
     /**
      * 
      */
-    protected localDate datumPoslednjeUplate;
+    protected LocalDate datumPoslednjeUplate;
 
     /**
      * 
@@ -36,10 +37,10 @@ public class Članovi extends Osoba {
     /**
      * 
      */
-    public enum Tip članarine {
-        PENZIONERSKA - 100,
-        DECA DO 14 GODINA - 150,
-        OSTALI ČLANOVI - 250
+    public enum Tipčlanarine {
+        PENZIONERSKA_100, 
+        DECA_150,
+        OSTALIČLANOVI
     }
 
 }

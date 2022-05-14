@@ -26,17 +26,13 @@ public abstract class Osoba {
     /**
      * 
      */
-    protected int id;
+    protected String id;
 
     /**
      * 
      */
-    public enum Pol {
-        MUŠKI,
-        ŽENSKI
-    }
-
-	public Osoba(String ime, String prezime, String jMBG, String adresa, int id) {
+   
+	public Osoba(String ime, String prezime, String jMBG, String adresa, String id) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
@@ -50,7 +46,7 @@ public abstract class Osoba {
     	this.prezime = "";
     	this.JMBG = "";
     	this.adresa = "";
-    	this.id = 0;
+    	this.id = "";
     }
 
 	public String getIme() {
@@ -85,11 +81,11 @@ public abstract class Osoba {
 		this.adresa = adresa;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

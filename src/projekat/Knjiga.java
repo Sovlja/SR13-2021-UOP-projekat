@@ -4,7 +4,7 @@ package projekat;
 /**
  * 
  */
-public class Knjige {
+public class Knjiga {
 
   
     protected int id;
@@ -37,15 +37,15 @@ public class Knjige {
     /**
      * 
      */
-    protected Pisac autor;
+    protected String autor;
 
     /**
      * 
      */
     protected Žanr žanr;
 
-	public Knjige(int id, String naslov, String originalniNaslov, int godinaObjavljivanja, String opis,
-			String jezikOriginala, Pisac autor, Žanr žanr) {
+	public Knjiga(int id, String naslov, String originalniNaslov, int godinaObjavljivanja, String opis,
+			String jezikOriginala, String autor, Žanr žanr) {
 		this.id = id;
 		this.naslov = naslov;
 		this.originalniNaslov = originalniNaslov;
@@ -56,14 +56,14 @@ public class Knjige {
 		this.žanr = žanr;
 	}
 
-    public Knjige() {
+    public Knjiga() {
     	this.id = 0;
 		this.naslov = "";
 		this.originalniNaslov = "";
 		this.godinaObjavljivanja = 0;
 		this.opis = "";
 		this.jezikOriginala = "";
-		this.autor = new Pisac();
+		this.autor = "";
 		this.žanr = null;
     }
 
@@ -115,11 +115,11 @@ public class Knjige {
 		this.jezikOriginala = jezikOriginala;
 	}
 
-	public Pisac getAutor() {
+	public String getAutor() {
 		return autor;
 	}
 
-	public void setAutor(Pisac autor) {
+	public void setAutor(String autor) {
 		this.autor = autor;
 	}
 
@@ -137,7 +137,8 @@ public class Knjige {
 				+ ", godinaObjavljivanja=" + godinaObjavljivanja + ", opis=" + opis + ", jezikOriginala="
 				+ jezikOriginala + ", autor=" + autor + ", žanr=" + žanr + "]";
 	}
-    
+
+	
 }
 
     

@@ -35,17 +35,17 @@ public class Iznajmljivanje {
     /**
      * 
      */
-    protected Administratori admini;
+    protected Administrator admini;
 
     /**
      * 
      */
-    protected Bibliotekari bibliotekari;
+    protected Bibliotekar bibliotekari;
 
     /**
      * 
      */
-    protected Članovi članovi;
+    protected Član članovi;
 
     /**
      * 

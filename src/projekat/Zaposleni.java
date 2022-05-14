@@ -21,7 +21,7 @@ public class Zaposleni extends Osoba {
         // TODO implement here
     }
 
-    public Zaposleni(String ime, String prezime, String jMBG, String adresa, int id, double plata, String korisničkoIme, String lozinka) {
+    public Zaposleni(String ime, String prezime, String jMBG, String adresa, String id, double plata, String korisničkoIme, String lozinka) {
     	super(ime, prezime, jMBG, adresa, id);
     	this.plata = plata;
     	this.korisničkoIme = korisničkoIme;

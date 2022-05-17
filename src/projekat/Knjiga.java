@@ -130,14 +130,13 @@ public class Knjiga {
 	public void setŽanr(Žanr žanr) {
 		this.žanr = žanr;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Knjige [id=" + id + ", naslov=" + naslov + ", originalniNaslov=" + originalniNaslov
 				+ ", godinaObjavljivanja=" + godinaObjavljivanja + ", opis=" + opis + ", jezikOriginala="
 				+ jezikOriginala + ", autor=" + autor + ", žanr=" + žanr + "]";
 	}
-
 	
 }
 

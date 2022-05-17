@@ -64,6 +64,9 @@ public class Žanr {
 	public String toString() {
 		return "Žanr [oznaka=" + oznaka + ", opis=" + opis + ", id=" + id + "]";
 	}
+
+
+	
     
 	
     

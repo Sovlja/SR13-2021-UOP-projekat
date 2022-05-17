@@ -8,7 +8,9 @@ import java.time.LocalDate;
 public class Član extends Osoba {
 
     
-    protected String brojČlanskeKarte;
+    protected boolean pol;
+
+	protected String brojČlanskeKarte;
 
     /**
      * 
@@ -26,8 +28,8 @@ public class Član extends Osoba {
     protected boolean aktivan;
 
 	public Član(String ime, String prezime, String jMBG, String adresa, String id, String brojČlanskeKarte,
-			LocalDate datumPoslednjeUplate, int brojMeseciVaženjaUplate, boolean aktivan) {
-		super(ime, prezime, jMBG, adresa, id);
+			LocalDate datumPoslednjeUplate, int brojMeseciVaženjaUplate, boolean aktivan, boolean pol) {
+		super(ime, prezime, jMBG, adresa, id, pol);
 		this.brojČlanskeKarte = brojČlanskeKarte;
 		this.datumPoslednjeUplate = datumPoslednjeUplate;
 		this.brojMeseciVaženjaUplate = brojMeseciVaženjaUplate;

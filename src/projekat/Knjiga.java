@@ -7,7 +7,7 @@ package projekat;
 public class Knjiga {
 
   
-    protected int id;
+    protected String id;
 
     /**
      * 
@@ -44,7 +44,7 @@ public class Knjiga {
      */
     protected Žanr žanr;
 
-	public Knjiga(int id, String naslov, String originalniNaslov, int godinaObjavljivanja, String opis,
+	public Knjiga(String id, String naslov, String originalniNaslov, int godinaObjavljivanja, String opis,
 			String jezikOriginala, String autor, Žanr žanr) {
 		this.id = id;
 		this.naslov = naslov;
@@ -57,7 +57,7 @@ public class Knjiga {
 	}
 
     public Knjiga() {
-    	this.id = 0;
+    	this.id = "";
 		this.naslov = "";
 		this.originalniNaslov = "";
 		this.godinaObjavljivanja = 0;
@@ -67,11 +67,11 @@ public class Knjiga {
 		this.žanr = null;
     }
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

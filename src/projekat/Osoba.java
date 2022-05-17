@@ -1,6 +1,7 @@
 package projekat;
 
 
+
 /**
  * 
  */
@@ -27,17 +28,23 @@ public abstract class Osoba {
      * 
      */
     protected String id;
+    
+    
+
+	protected boolean pol;
 
     /**
      * 
      */
-   
-	public Osoba(String ime, String prezime, String jMBG, String adresa, String id) {
+
+     
+	public Osoba(String ime, String prezime, String jMBG, String adresa, String id, boolean pol) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
-		JMBG = jMBG;
+		this.JMBG = jMBG;
 		this.adresa = adresa;
+		this.pol = pol;
 		this.id = id;
 	}
     
@@ -45,6 +52,7 @@ public abstract class Osoba {
     	this.ime = "";
     	this.prezime = "";
     	this.JMBG = "";
+    	this.pol = false;
     	this.adresa = "";
     	this.id = "";
     }
@@ -89,13 +97,21 @@ public abstract class Osoba {
 		this.id = id;
 	}
 
+	public boolean isPol() {
+		return pol;
+	}
+
+	public void setPol(boolean pol) {
+		this.pol = pol;
+	}
+
 	@Override
 	public String toString() {
 		return "Osoba [ime=" + ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id
-				+ "]";
+				+ ", pol=" + pol + "]";
 	}
+
 	
 	
-    
-    
+	
 }

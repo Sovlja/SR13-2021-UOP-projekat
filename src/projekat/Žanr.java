@@ -6,27 +6,23 @@ package projekat;
 public class Žanr {
 
     protected String oznaka;
-
-
     protected String opis;
-
-    
     protected String id;
+    protected boolean jeObrisan;
 
-
-	public Žanr(String oznaka, String opis, String id) {
-		super();
+	public Žanr(String oznaka, String opis, String id, boolean jeObrisan) {
 		this.oznaka = oznaka;
 		this.opis = opis;
 		this.id = id;
+		this.jeObrisan = jeObrisan;
 	}
 
 
 	public Žanr() {
-		super();
 		this.oznaka = "";
 		this.opis = "";
 		this.id = "";
+		this.jeObrisan = false;
 	}
 
 
@@ -35,18 +31,8 @@ public class Žanr {
 	}
 
 
-	public void setOznaka(String oznaka) {
-		this.oznaka = oznaka;
-	}
-
-
 	public String getOpis() {
 		return opis;
-	}
-
-
-	public void setOpis(String opis) {
-		this.opis = opis;
 	}
 
 
@@ -55,8 +41,28 @@ public class Žanr {
 	}
 
 
+	public boolean isJeObrisan() {
+		return jeObrisan;
+	}
+
+
+	public void setOznaka(String oznaka) {
+		this.oznaka = oznaka;
+	}
+
+
+	public void setOpis(String opis) {
+		this.opis = opis;
+	}
+
+
 	public void setId(String id) {
 		this.id = id;
+	}
+
+
+	public void setJeObrisan(boolean jeObrisan) {
+		this.jeObrisan = jeObrisan;
 	}
 
 

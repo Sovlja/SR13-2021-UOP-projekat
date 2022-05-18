@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,23 +19,27 @@ public class Biblioteka {
     protected ArrayList<Bibliotekar> bibliotekari;
     protected ArrayList<Knjiga> knjige;
     protected ArrayList<Iznajmljivanje> iznajmljivanje;
-    protected ArrayList<Član> članovi;   
+    protected ArrayList<Član> članovi;
+    protected ArrayList<TipČlanarine> tipČlanarine; 
     protected ArrayList<PrimerakKnjige> primerakKnjige;
     protected ArrayList<Žanr> žanrKnjige;
 
   //--------------TO STRING METODA--------------
-	@Override
-	public String toString() {
-		return "Biblioteka [naziv=" + naziv + ", adresa=" + adresa + ", brTelefona=" + brTelefona + ", radnoVreme="
-				+ radnoVreme + ", admini=" + admini + ", bibliotekari=" + bibliotekari + ", knjige=" + knjige
-				+ ", iznajmljivanje=" + iznajmljivanje + ", članovi=" + članovi + ", primerakKnjige=" + primerakKnjige
-				+ "]";
-	}
+	
+    @Override
+    public String toString() {
+    	return "Biblioteka [naziv=" + naziv + ", adresa=" + adresa + ", brTelefona=" + brTelefona + ", radnoVreme="
+    			+ radnoVreme + ", admini=" + admini + ", bibliotekari=" + bibliotekari + ", knjige=" + knjige
+    			+ ", iznajmljivanje=" + iznajmljivanje + ", članovi=" + članovi + ", tipČlanarine=" + tipČlanarine
+    			+ ", primerakKnjige=" + primerakKnjige + ", žanrKnjige=" + žanrKnjige + "]";
+    }
 
 //--------------GETERI I SETERI--------------
 	public String getNaziv() {
 		return naziv;
 	}
+
+
 
 
 	public void setNaziv(String naziv) {
@@ -127,6 +130,10 @@ public class Biblioteka {
 	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {
 		return primerakKnjige;
 	}
+	
+	public ArrayList<TipČlanarine> getTipČlanarine() {
+		return tipČlanarine;
+	}
 
 
 	public void setPrimerakKnjige(ArrayList<PrimerakKnjige> primerakKnjige) {
@@ -144,7 +151,7 @@ public class Biblioteka {
 //--------------PUN KONSTRUKTOR ZA BIBLIOTEKU--------------
 	public Biblioteka(String naziv, String adresa, String brTelefona, LocalTime radnoVreme,
 			ArrayList<Administrator> admini, ArrayList<Bibliotekar> bibliotekari, ArrayList<Knjiga> knjige,
-			ArrayList<Iznajmljivanje> iznajmljivanje, ArrayList<Član> članovi, ArrayList<PrimerakKnjige> primerakKnjige,
+			ArrayList<Iznajmljivanje> iznajmljivanje, ArrayList<Član> članovi, ArrayList<TipČlanarine> tipČlanarine, ArrayList<PrimerakKnjige> primerakKnjige,
 			ArrayList<Žanr> žanrKnjige) {
 		this.naziv = naziv;
 		this.adresa = adresa;
@@ -157,6 +164,7 @@ public class Biblioteka {
 		this.članovi = članovi;
 		this.primerakKnjige = primerakKnjige;
 		this.žanrKnjige = žanrKnjige;
+		this.tipČlanarine = tipČlanarine;
 	}
 //--------------PRAZAN KONSTRUKTOR ZA BIBLIOTEKU--------------
 	public Biblioteka () {
@@ -171,6 +179,7 @@ public class Biblioteka {
 		this.članovi = new ArrayList<Član>();
 		this.primerakKnjige = new ArrayList<PrimerakKnjige>();
 		this.žanrKnjige = new ArrayList<Žanr>();
+		this.tipČlanarine = new ArrayList<TipČlanarine>();
 	}
 	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ADMINISTRATORA IZ FAJLA administratori.txt --------------
@@ -190,12 +199,12 @@ public class Biblioteka {
 				double plataDouble = Double.parseDouble(plata);
 				String korisničkoIme = splitovanRed[6];
 				String lozinka = splitovanRed[7];
-				String pol = splitovanRed[8];
-				Boolean polBoolean = Boolean.parseBoolean(pol);
+				boolean pol = Boolean.parseBoolean(splitovanRed[8]);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
 				
 				
 				
-				Administrator administrator = new Administrator(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, polBoolean);
+				Administrator administrator = new Administrator(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
 				this.admini.add(administrator);
 				
 				
@@ -222,9 +231,13 @@ public class Biblioteka {
 				double plataDouble = Double.parseDouble(splitovanRed[5]);
 				String korisničkoIme = splitovanRed[6];
 				String lozinka = splitovanRed[7];
-				Boolean pol = Boolean.parseBoolean(splitovanRed[8]);
-							
-				Bibliotekar bibliotekar = new Bibliotekar(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol);
+				boolean pol = Boolean.parseBoolean(splitovanRed[8]);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
+				
+//				MALE = TRUE 
+//				FEMALE = FALSE
+				
+				Bibliotekar bibliotekar = new Bibliotekar(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
 				this.bibliotekari.add(bibliotekar);
 				
 			}
@@ -251,23 +264,25 @@ public class Biblioteka {
 				String id = splitovanRed[4];
 				String brojČlanskeKarte = splitovanRed[5];
 				
-				LocalDate datumPoslednjeUplate = LocalDate.now();
-				datumPoslednjeUplate.toString();
-				String poslednjaUplata = splitovanRed[6];
+				LocalDate datumPoslednjeUplate = LocalDate.parse(splitovanRed[6]);
+				
 
 				int važenjeUplate = Integer.parseInt(splitovanRed[7]);
 				boolean aktivan = Boolean.parseBoolean(splitovanRed[8]);
 				Boolean pol = Boolean.parseBoolean(splitovanRed[9]);
 				
-				String strTipČlanarine = splitovanRed[10];
-				TipČlanarine tipČlanarine = TipČlanarine.OSTALI;
-								
-				for (TipČlanarine tip : TipČlanarine.values()) {
-					if (tip.name().equalsIgnoreCase(strTipČlanarine)) {
-						tipČlanarine = tip;
+				
+				TipČlanarine tipČlanarine = null;
+				String tipČlanarineID = splitovanRed[10];
+				for (TipČlanarine t : this.tipČlanarine) {
+					if (t.getId().equals(tipČlanarineID)) {
+						tipČlanarine = t;
 					}
 				}
-				Član član = new Član(ime, prezime, JMBG, adresa, id, brojČlanskeKarte, datumPoslednjeUplate, važenjeUplate, aktivan, pol, tipČlanarine);
+				
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[11]);
+				
+				Član član = new Član(ime, prezime, JMBG, adresa, id, brojČlanskeKarte, datumPoslednjeUplate, važenjeUplate, aktivan, pol, tipČlanarine, jeObrisan);
 				this.članovi.add(član);
 		
 			}
@@ -289,7 +304,9 @@ public class Biblioteka {
 				String oznaka = splitovanRed[0];
 				String opis = splitovanRed[1];
 				String id = splitovanRed[2];
-				Žanr žanr = new Žanr(oznaka, opis, id);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
+				
+				Žanr žanr = new Žanr(oznaka, opis, id, jeObrisan);
 				this.žanrKnjige.add(žanr);
 				
 			}
@@ -326,12 +343,10 @@ public class Biblioteka {
 					}
 				}
 				
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[8]);
 				
-				
-				
-				
-				
-				Knjiga knjiga = new Knjiga(id, naslov, originalniNaslov, godinaObjavljivanja, opis, jezikOriginala, autor, žanr);
+				Knjiga knjiga = new Knjiga(id, naslov, originalniNaslov, godinaObjavljivanja, opis, jezikOriginala, autor, žanr, jeObrisan);
+				this.knjige.add(knjiga);
 			}
 			
 			reader.close();
@@ -341,13 +356,136 @@ public class Biblioteka {
 		}
 		
 	}
+//--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE TIPA ČLANARINE IZ FAJLA članarina.txt --------------
+	protected void učitajTipČlanarine() {
+		try {
+			File tipČlanarineFile = new File("src/txt/članarina.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(tipČlanarineFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				String id = splitovanRed[0];
+				String naziv = splitovanRed[1];
+				int cena = Integer.parseInt(splitovanRed[2]);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
+				
+				TipČlanarine tipČlanarine = new TipČlanarine(id, naziv, cena, jeObrisan);
+				this.tipČlanarine.add(tipČlanarine);
+			}
+			reader.close();
+		} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+//--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE PRIMERAKA KNJIGA IZ FAJLA primerciKnjiga.txt --------------
+	protected void učitajPrimerkeKnjiga() {
+		try {
+			File primerakKnjigeFile = new File("src/txt/primerciKnjige.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(primerakKnjigeFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");	
+				int brojStrana = Integer.parseInt(splitovanRed[0]);
+				int godinaObjavljivanja = Integer.parseInt(splitovanRed[1]);
+				boolean jeIznajmljen = Boolean.parseBoolean(splitovanRed[2]);
+				String naslov = splitovanRed[3];
+				String id = splitovanRed[4];
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[5]);			
+				Jezik jezik = Jezik.valueOf(splitovanRed[6]);
+				
+				Knjiga knjiga = null;
+				String knjigaID = splitovanRed[7];
+				
+				for (Knjiga k : this.knjige) {
+					if (k.getId().equals(knjigaID)) {
+						knjiga = k;
+					}
+				}
+				
+				PrimerakKnjige primerakKnjige = new PrimerakKnjige(brojStrana, godinaObjavljivanja, jeIznajmljen, naslov, id, jeObrisan, jezik, knjiga);
+				this.primerakKnjige.add(primerakKnjige);
+			}
+			
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+//--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE EVIDENCIJE O IZNAJMLJIVANJU IZ FAJLA iznajmljivanje.txt --------------
+	protected void učitajIznajmljivanje() {
+		try {
+			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(iznajmljivanjeFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				
+				String id = splitovanRed[0];
+				LocalDate datumIznajmljivanja = LocalDate.parse(splitovanRed[1]);
+				LocalDate datumVraćanja = LocalDate.parse(splitovanRed[2]);;
+				
+				
+				Zaposleni zaposleni = null;
+				String imeZaposlenogID = splitovanRed[3];
+					
+				for (Zaposleni z : this.bibliotekari) {
+					if(z.getId().equals(imeZaposlenogID)){
+						zaposleni = z;	
+					}	
+				}
+				if (zaposleni == null) {
+					for(Zaposleni z : this.admini) {
+						if(z.getId().equals(imeZaposlenogID)) {
+							zaposleni = z;
+						}
+					}
+				}
+				
+				Član članovi = null;
+				String strČlanovi = splitovanRed[4];
+				
+				for(Član a : this.članovi) {
+					if(a.getId().equals(strČlanovi)) {
+						članovi = a;
+					}
+				}
+				
+				PrimerakKnjige primerak = null;
+				String strKnjige = splitovanRed[5];
+				
+				for(PrimerakKnjige a : this.primerakKnjige) {
+					if(a.getId().equals(strKnjige)) {
+						primerak = a;
+					}
+				}
+				
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[6]);
+				
+						
+				Iznajmljivanje iznajmljivanje = new Iznajmljivanje(id, datumIznajmljivanja, datumVraćanja, zaposleni, članovi, primerak, jeObrisan);
+				this.iznajmljivanje.add(iznajmljivanje);
+			}
+			
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+	
+	
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS ADMINISTRATORA U FAJL administratori.txt --------------
 	protected void upisiAdministratore() {
 		
 		String adminLinija = "";
 		for (Administrator administrator : this.admini) {
 			adminLinija += administrator.getIme() + "|" + administrator.getPrezime() + "|" + administrator.getJMBG() + "|" + administrator.getAdresa() + "|" + 
-					administrator.getId() + "|" + administrator.getPlata() + "|" + administrator.getKorisničkoIme() + "|" + administrator.getLozinka() + "|" + administrator.isPol() + "\n";
+					administrator.getId() + "|" + administrator.getPlata() + "|" + administrator.getKorisničkoIme() + "|" + administrator.getLozinka() + "|" + administrator.isJeMuško() + administrator.isJeObrisan() + "\n";
 		}
 		try {
 			File adminFile = new File("src/txt/administratori.txt");
@@ -367,7 +505,7 @@ public class Biblioteka {
 			String bibliotekarLinija = "";
 			for (Bibliotekar bibliotekar : this.bibliotekari) {
 				bibliotekarLinija += bibliotekar.getIme() + "|" + bibliotekar.getPrezime() + "|" + bibliotekar.getJMBG() + "|" + bibliotekar.getAdresa() + "|" + 
-						bibliotekar.getId() + "|" + bibliotekar.getPlata() + "|" + bibliotekar.getKorisničkoIme() + "|" + bibliotekar.getLozinka() + "|" + bibliotekar.isPol() + "\n";
+						bibliotekar.getId() + "|" + bibliotekar.getPlata() + "|" + bibliotekar.getKorisničkoIme() + "|" + bibliotekar.getLozinka() + "|" + bibliotekar.isJeMuško() + bibliotekar.isJeObrisan() + "\n";
 			}
 			try {
 				File bibliotekarFile = new File("src/txt/bibliotekari.txt");
@@ -382,6 +520,7 @@ public class Biblioteka {
 			
 	
 		}
+
 }
 	
     

@@ -8,32 +8,16 @@ import java.time.LocalDate;
 public class Član extends Osoba {
 
     
-    protected boolean pol;
-
 	protected String brojČlanskeKarte;
-
-    /**
-     * 
-     */
     protected LocalDate datumPoslednjeUplate;
-
-    /**
-     * 
-     */
     protected int brojMeseciVaženjaUplate;
-
-    /**
-     * 
-     */
     protected boolean aktivan;
-    
-
 	protected TipČlanarine tipČlanarine;
 	
 
 	public Član(String ime, String prezime, String jMBG, String adresa, String id, String brojČlanskeKarte,
-			LocalDate datumPoslednjeUplate, int brojMeseciVaženjaUplate, boolean aktivan, boolean pol, TipČlanarine tipČlanarine) {
-		super(ime, prezime, jMBG, adresa, id, pol);
+			LocalDate datumPoslednjeUplate, int brojMeseciVaženjaUplate, boolean aktivan, boolean pol, TipČlanarine tipČlanarine, boolean jeObrisan) {
+		super(ime, prezime, jMBG, adresa, id, pol, jeObrisan);
 		this.brojČlanskeKarte = brojČlanskeKarte;
 		this.datumPoslednjeUplate = datumPoslednjeUplate;
 		this.brojMeseciVaženjaUplate = brojMeseciVaženjaUplate;
@@ -47,10 +31,6 @@ public class Član extends Osoba {
 		this.datumPoslednjeUplate = null;
 		this.brojMeseciVaženjaUplate = 0;
 		this.aktivan = false;
-	}
-
-	public boolean isPol() {
-		return pol;
 	}
 
 	public String getBrojČlanskeKarte() {
@@ -73,9 +53,6 @@ public class Član extends Osoba {
 		return tipČlanarine;
 	}
 
-	public void setPol(boolean pol) {
-		this.pol = pol;
-	}
 
 	public void setBrojČlanskeKarte(String brojČlanskeKarte) {
 		this.brojČlanskeKarte = brojČlanskeKarte;
@@ -99,7 +76,7 @@ public class Član extends Osoba {
 
 	@Override
 	public String toString() {
-		return "Član [pol=" + pol + ", brojČlanskeKarte=" + brojČlanskeKarte + ", datumPoslednjeUplate="
+		return "Član [jeMuško=" + jeMuško + ", brojČlanskeKarte=" + brojČlanskeKarte + ", datumPoslednjeUplate="
 				+ datumPoslednjeUplate + ", brojMeseciVaženjaUplate=" + brojMeseciVaženjaUplate + ", aktivan=" + aktivan
 				+ ", tipČlanarine=" + tipČlanarine + ", ime=" + ime + ", prezime=" + prezime + ", JMBG=" + JMBG
 				+ ", adresa=" + adresa + ", id=" + id + "]";

@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -277,7 +278,28 @@ public class Biblioteka {
 		}
 		
 	}
-	
+//--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ŽANRA IZ FAJLA žanrovi.txt --------------
+	protected void učitajŽanrove() {
+		try {
+			File žanrFile = new File("src/txt/žanrovi.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(žanrFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				String oznaka = splitovanRed[0];
+				String opis = splitovanRed[1];
+				String id = splitovanRed[2];
+				Žanr žanr = new Žanr(oznaka, opis, id);
+				this.žanrKnjige.add(žanr);
+				
+			}
+			reader.close();
+		} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE KNJIGA IZ FAJLA knjige.txt --------------
 	protected void učitajKnjige() {
 		try {
@@ -294,13 +316,22 @@ public class Biblioteka {
 				String opis = splitovanRed[4];
 				String jezikOriginala = splitovanRed[5];
 				String autor = splitovanRed[6];
-				String žanr = splitovanRed[7];
+				
+				Žanr žanr = null;
+				String žanrID = splitovanRed[7];
+				
+				for (Žanr ž : this.žanrKnjige) {
+					if (ž.getId().equals(žanrID)) {
+						žanr = ž;
+					}
+				}
+				
+				
+				
+				
 				
 				
 				Knjiga knjiga = new Knjiga(id, naslov, originalniNaslov, godinaObjavljivanja, opis, jezikOriginala, autor, žanr);
-				
-				
-				
 			}
 			
 			reader.close();

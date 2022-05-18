@@ -20,6 +20,14 @@ public class mainKlasa {
 		biblioteka.učitajČlanove();
 		System.out.println(biblioteka.getČlanovi());
 		
+		System.out.println("");
+		System.out.println("TEST ŽANR:");
+		biblioteka.učitajŽanrove();
+		System.out.println(biblioteka.getŽanrKnjige());
+		
+		
+		biblioteka.učitajKnjige();
+		
 		
 		
 	}

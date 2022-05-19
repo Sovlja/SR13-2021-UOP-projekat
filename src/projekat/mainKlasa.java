@@ -46,7 +46,7 @@ public class mainKlasa {
 		biblioteka.učitajIznajmljivanje();
 		System.out.println(biblioteka.getIznajmljivanje());
 		
-		biblioteka.upisiAdministratore();
+		biblioteka.upišiČlanove();
 		
 		
 		

@@ -10,8 +10,9 @@ public class PrimerakKnjige {
     protected boolean jeObrisan;
     protected Knjiga knjiga;
     protected Jezik jezikŠtampe;
+    protected TipPoveza tipPoveza;
 
-	public PrimerakKnjige(int brojStrana, int godinaŠtampe, boolean iznajmljenost, String nazivKnjige, String id, boolean jeObrisan, Jezik jezikŠtampe, Knjiga knjiga) {
+	public PrimerakKnjige(int brojStrana, int godinaŠtampe, boolean iznajmljenost, String nazivKnjige, String id, boolean jeObrisan, Jezik jezikŠtampe, Knjiga knjiga, TipPoveza tipPoveza) {
 		this.brojStrana = brojStrana;
 		this.godinaŠtampe = godinaŠtampe;
 		this.iznajmljenost = iznajmljenost;
@@ -20,6 +21,7 @@ public class PrimerakKnjige {
 		this.jeObrisan = jeObrisan;
 		this.jezikŠtampe = jezikŠtampe;
 		this.knjiga = knjiga;
+		this.tipPoveza = tipPoveza;
 	}
 	
 	public PrimerakKnjige() {
@@ -31,10 +33,12 @@ public class PrimerakKnjige {
 		this.jeObrisan = false;
 		this.jezikŠtampe = null;
 		this.knjiga = null;
+		this.tipPoveza = null;
 	
 	
 	}
 
+	
 	public int getBrojStrana() {
 		return brojStrana;
 	}
@@ -65,6 +69,10 @@ public class PrimerakKnjige {
 
 	public Jezik getJezikŠtampe() {
 		return jezikŠtampe;
+	}
+
+	public TipPoveza getTipPoveza() {
+		return tipPoveza;
 	}
 
 	public void setBrojStrana(int brojStrana) {
@@ -99,12 +107,18 @@ public class PrimerakKnjige {
 		this.jezikŠtampe = jezikŠtampe;
 	}
 
+	public void setTipPoveza(TipPoveza tipPoveza) {
+		this.tipPoveza = tipPoveza;
+	}
+
 	@Override
 	public String toString() {
 		return "PrimerakKnjige [brojStrana=" + brojStrana + ", godinaŠtampe=" + godinaŠtampe + ", iznajmljenost="
 				+ iznajmljenost + ", nazivKnjige=" + nazivKnjige + ", id=" + id + ", jeObrisan=" + jeObrisan
-				+ ", knjiga=" + knjiga + ", jezikŠtampe=" + jezikŠtampe + "]";
+				+ ", knjiga=" + knjiga + ", jezikŠtampe=" + jezikŠtampe + ", tipPoveza=" + tipPoveza + "]";
 	}
+
+	
 
 	
 	

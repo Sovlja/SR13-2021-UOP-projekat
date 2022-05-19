@@ -62,8 +62,11 @@ public class Zaposleni extends Osoba {
 	@Override
 	public String toString() {
 		return "Zaposleni [plata=" + plata + ", korisničkoIme=" + korisničkoIme + ", lozinka=" + lozinka + ", ime="
-				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + "]";
+				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", jeMuško="
+				+ jeMuško + ", jeObrisan=" + jeObrisan + "]";
 	}
+
+	
     
     
 }

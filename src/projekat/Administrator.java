@@ -21,11 +21,13 @@ public class Administrator extends Zaposleni {
 	
 	
 
+	
+	
 	@Override
 	public String toString() {
 		return "Administrator [plata=" + plata + ", korisničkoIme=" + korisničkoIme + ", lozinka=" + lozinka + ", ime="
-				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", isMuško=" + jeMuško
-				+ "]";
+				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", jeMuško="
+				+ jeMuško + ", jeObrisan=" + jeObrisan + "]";
 	}
 
 	public void setPlata(String plataInput) {

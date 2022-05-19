@@ -18,9 +18,11 @@ public class Bibliotekar extends Zaposleni {
 	@Override
 	public String toString() {
 		return "Bibliotekar [plata=" + plata + ", korisničkoIme=" + korisničkoIme + ", lozinka=" + lozinka + ", ime="
-				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", jeMuško=" + jeMuško
-				+ "]";
+				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", jeMuško="
+				+ jeMuško + ", jeObrisan=" + jeObrisan + "]";
 	}
+
+	
 
 	
 	

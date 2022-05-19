@@ -1,1 +1,1 @@
-394|1997|true|Hari Poter i kamen mudrosti|11223344|false|SRPSKI|123456789
+394|1997|true|Hari Poter i kamen mudrosti|11223344|false|SRPSKI|123456789|MEKI_POVEZ

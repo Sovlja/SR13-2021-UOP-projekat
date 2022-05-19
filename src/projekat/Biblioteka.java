@@ -394,6 +394,7 @@ public class Biblioteka {
 				String id = splitovanRed[4];
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[5]);			
 				Jezik jezik = Jezik.valueOf(splitovanRed[6]);
+				TipPoveza tipPoveza = TipPoveza.valueOf(splitovanRed[8]);
 				
 				Knjiga knjiga = null;
 				String knjigaID = splitovanRed[7];
@@ -404,7 +405,7 @@ public class Biblioteka {
 					}
 				}
 				
-				PrimerakKnjige primerakKnjige = new PrimerakKnjige(brojStrana, godinaObjavljivanja, jeIznajmljen, naslov, id, jeObrisan, jezik, knjiga);
+				PrimerakKnjige primerakKnjige = new PrimerakKnjige(brojStrana, godinaObjavljivanja, jeIznajmljen, naslov, id, jeObrisan, jezik, knjiga, tipPoveza);
 				this.primerakKnjige.add(primerakKnjige);
 			}
 			
@@ -485,7 +486,7 @@ public class Biblioteka {
 		String adminLinija = "";
 		for (Administrator administrator : this.admini) {
 			adminLinija += administrator.getIme() + "|" + administrator.getPrezime() + "|" + administrator.getJMBG() + "|" + administrator.getAdresa() + "|" + 
-					administrator.getId() + "|" + administrator.getPlata() + "|" + administrator.getKorisničkoIme() + "|" + administrator.getLozinka() + "|" + administrator.isJeMuško() + administrator.isJeObrisan() + "\n";
+					administrator.getId() + "|" + administrator.getPlata() + "|" + administrator.getKorisničkoIme() + "|" + administrator.getLozinka() + "|" + administrator.isJeMuško() + "|" + administrator.isJeObrisan() + "\n";
 		}
 		try {
 			File adminFile = new File("src/txt/administratori.txt");
@@ -494,7 +495,7 @@ public class Biblioteka {
 			writer.close();
 			
 		}catch(IOException e){
-			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+			System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
 	}
 		
 
@@ -505,23 +506,134 @@ public class Biblioteka {
 			String bibliotekarLinija = "";
 			for (Bibliotekar bibliotekar : this.bibliotekari) {
 				bibliotekarLinija += bibliotekar.getIme() + "|" + bibliotekar.getPrezime() + "|" + bibliotekar.getJMBG() + "|" + bibliotekar.getAdresa() + "|" + 
-						bibliotekar.getId() + "|" + bibliotekar.getPlata() + "|" + bibliotekar.getKorisničkoIme() + "|" + bibliotekar.getLozinka() + "|" + bibliotekar.isJeMuško() + bibliotekar.isJeObrisan() + "\n";
+						bibliotekar.getId() + "|" + bibliotekar.getPlata() + "|" + bibliotekar.getKorisničkoIme() + "|" + bibliotekar.getLozinka() + "|" + bibliotekar.isJeMuško() + "|" + bibliotekar.isJeObrisan() + "\n";
 			}
 			try {
 				File bibliotekarFile = new File("src/txt/bibliotekari.txt");
 				BufferedWriter writer = new BufferedWriter(new FileWriter(bibliotekarFile));
 				writer.write(bibliotekarLinija);
-				writer.newLine();
 				writer.close();
 				
 			}catch(IOException e){
-				System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+				System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
 		}
 			
 	
 		}
-
-}
+//--------------SLEDEĆA METODA SLUŽI ZA UPIS ČLANOVA U FAJL članovi.txt --------------
+	protected void upišiČlanove() {
+			
+			String članLinija = "";
+			for (Član član : this.članovi) {
+				članLinija += član.getIme() + "|" + član.getPrezime() + "|" + član.getJMBG() + "|" + član.getAdresa() + "|" + 
+						član.getId() + "|" + član.getBrojČlanskeKarte() + "|" + član.getDatumPoslednjeUplate() + "|" + član.getBrojMeseciVaženjaUplate() + "|" + član.isAktivan() + "|" + član.isJeMuško() + "|" + član.getTipČlanarine().getId() + "|" + član.isJeObrisan() + "\n";
+			}
+			try {
+				File članoviFile = new File("src/txt/članovi.txt");
+				BufferedWriter writer = new BufferedWriter(new FileWriter(članoviFile));
+				writer.write(članLinija);
+				writer.close();
+				
+			}catch(IOException e){
+				System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
+		}
+			
 	
-    
+		}
+//--------------SLEDEĆA METODA SLUŽI ZA UPIS ŽANROVA U FAJL žanrovi.txt --------------
+	protected void upišiŽanrove() {
+		
+		String žanrLinija = "";
+		for (Žanr žanr : this.žanrKnjige) {
+			žanrLinija += žanr.getOznaka() + "|" + žanr.getOpis() + "|" + žanr.isJeObrisan() + "\n";
+		}
+		try {
+			File žanrFile = new File("src/txt/žanrovi.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(žanrFile));
+			writer.write(žanrLinija);
+			writer.close();
+			
+		}catch(IOException e){
+			System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
+	}
+		
 
+	}
+//--------------SLEDEĆA METODA SLUŽI ZA UPIS TIPOVA ČLANARINE U FAJL članarina.txt --------------
+	protected void upišiČlanarinu() {
+		
+		String članarinaLinija = "";
+		for (TipČlanarine tipČlanarine : this.tipČlanarine) {
+			članarinaLinija += tipČlanarine.getId() + "|" + tipČlanarine.getNaziv() + "|" + tipČlanarine.getCena() + "|" + tipČlanarine.isjeObrisan() + "\n";
+		}
+		try {
+			File članarinaFile = new File("src/txt/članarina.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(članarinaFile));
+			writer.write(članarinaLinija);
+			writer.close();
+			
+		}catch(IOException e){
+			System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
+	}
+		
+
+	}
+//--------------SLEDEĆA METODA SLUŽI ZA UPIS KNJIGA U FAJL knjige.txt --------------
+	protected void upišiKnjigu() {
+		
+		String knjigaLinija = "";
+		for (Knjiga knjiga : this.knjige) {
+			knjigaLinija += knjiga.getId() + "|" + knjiga.getNaslov() + "|" + knjiga.getOriginalniNaslov() + "|" + knjiga.getGodinaObjavljivanja() + "|" + knjiga.getOpis() + "|" + knjiga.getJezikOriginala() + "|" + knjiga.getAutor() + "|" + knjiga.getŽanr().getId() + "|" + knjiga.isJeObrisan() + "\n";
+		}
+		try {
+			File knjigaFile = new File("src/txt/knjige.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(knjigaFile));
+			writer.write(knjigaLinija);
+			writer.close();
+			
+		}catch(IOException e){
+			System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
+	}
+		
+
+	}
+//--------------SLEDEĆA METODA SLUŽI ZA UPIS PRIMERAKA KNJIGE U FAJL primerciKnjige.txt --------------
+	protected void upišiPrimerakKnjige() {
+		
+		String primerakLinija = "";
+		for (PrimerakKnjige primerak : this.primerakKnjige) {
+			primerakLinija += primerak.getBrojStrana() + "|" + primerak.getGodinaŠtampe() + "|" + primerak.isIznajmljenost() + "|" + primerak.getNazivKnjige() + "|" + primerak.getId() + "|" + primerak.isJeObrisan() + "|" + primerak.getJezikŠtampe() + "|" + primerak.getKnjiga().getId() + "|" + primerak.getTipPoveza() + "\n";
+		}
+		try {
+			File primerciFile = new File("src/txt/primerciKnjige.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(primerciFile));
+			writer.write(primerakLinija);
+			writer.close();
+			
+		}catch(IOException e){
+			System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
+	}
+		
+
+	}
+//--------------SLEDEĆA METODA SLUŽI ZA UPIS IZNAJMLJIVANJA U FAJL iznajmljivanje.txt --------------
+	protected void upisiIznajmljivanje() {
+		
+		String iznajmljivanjeLinija = "";
+		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
+			iznajmljivanjeLinija += iznajmljivanje.getId() + "|" + iznajmljivanje.getDatumIznajmljivanja() + "|" + iznajmljivanje.getDatumVraćanja() + "|" + iznajmljivanje.getZaposleni().getId() + "|" + 
+					iznajmljivanje.getČlan().getId() + "|" + iznajmljivanje.getPrimerak().getId() + "|" + iznajmljivanje.isJeObrisan() + "\n";
+		}
+		try {
+			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(iznajmljivanjeFile));
+			writer.write(iznajmljivanjeLinija);
+			writer.close();
+			
+		}catch(IOException e){
+			System.out.println("Greska prilikom upisa u datoteku: " + e.getMessage());
+	}
+		
+
+	}
+}

@@ -1,1 +1,1 @@
-Čvorak|Bundalo|435432532453|Šimširova ulica|0120a|1.0E28|pero123|pero321|falsefalse
+Čvorak|Bundalo|435432532453|Šimširova ulica|0120a|1.0E28|pero123|pero321|false|false

@@ -10,7 +10,7 @@ public class Bibliotekar extends Zaposleni {
     }
 
 	public Bibliotekar(String ime, String prezime, String jMBG, String adresa, String id, double plata,
-			String korisničkoIme, String lozinka, boolean pol, boolean jeObrisan) {
+			String korisničkoIme, String lozinka, Pol pol, boolean jeObrisan) {
 		super(ime, prezime, jMBG, adresa, id, plata, korisničkoIme, lozinka, pol, jeObrisan);
 		// TODO Auto-generated constructor stub
 	}
@@ -18,9 +18,11 @@ public class Bibliotekar extends Zaposleni {
 	@Override
 	public String toString() {
 		return "Bibliotekar [plata=" + plata + ", korisničkoIme=" + korisničkoIme + ", lozinka=" + lozinka + ", ime="
-				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", jeMuško="
-				+ jeMuško + ", jeObrisan=" + jeObrisan + "]";
+				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", pol=" + pol
+				+ ", jeObrisan=" + jeObrisan + "]";
 	}
+
+	
 
 	
 

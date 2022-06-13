@@ -16,7 +16,7 @@ public class Član extends Osoba {
 	
 
 	public Član(String ime, String prezime, String jMBG, String adresa, String id, String brojČlanskeKarte,
-			LocalDate datumPoslednjeUplate, int brojMeseciVaženjaUplate, boolean aktivan, boolean pol, TipČlanarine tipČlanarine, boolean jeObrisan) {
+			LocalDate datumPoslednjeUplate, int brojMeseciVaženjaUplate, boolean aktivan, Pol pol, TipČlanarine tipČlanarine, boolean jeObrisan) {
 		super(ime, prezime, jMBG, adresa, id, pol, jeObrisan);
 		this.brojČlanskeKarte = brojČlanskeKarte;
 		this.datumPoslednjeUplate = datumPoslednjeUplate;
@@ -76,11 +76,13 @@ public class Član extends Osoba {
 
 	@Override
 	public String toString() {
-		return "Član [jeMuško=" + jeMuško + ", brojČlanskeKarte=" + brojČlanskeKarte + ", datumPoslednjeUplate="
-				+ datumPoslednjeUplate + ", brojMeseciVaženjaUplate=" + brojMeseciVaženjaUplate + ", aktivan=" + aktivan
-				+ ", tipČlanarine=" + tipČlanarine + ", ime=" + ime + ", prezime=" + prezime + ", JMBG=" + JMBG
-				+ ", adresa=" + adresa + ", id=" + id + "]";
+		return "Član [brojČlanskeKarte=" + brojČlanskeKarte + ", datumPoslednjeUplate=" + datumPoslednjeUplate
+				+ ", brojMeseciVaženjaUplate=" + brojMeseciVaženjaUplate + ", aktivan=" + aktivan + ", tipČlanarine="
+				+ tipČlanarine + ", ime=" + ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa
+				+ ", id=" + id + ", pol=" + pol + ", jeObrisan=" + jeObrisan + "]";
 	}
+
+	
 
 	
 

@@ -8,42 +8,21 @@ package projekat;
 public abstract class Osoba {
 	
     protected String ime;
-
-    /**
-     * 
-     */
     protected String prezime;
-
-    /**
-     * 
-     */
     protected String JMBG;
-
-    /**
-     * 
-     */
     protected String adresa;
-
-    /**
-     * 
-     */
     protected String id;
-    
-    
-
-	protected boolean jeMuško;
-
-    
+	protected Pol pol;
 	protected boolean jeObrisan;
 
      
-	public Osoba(String ime, String prezime, String jMBG, String adresa, String id, boolean jeMuško, boolean jeObrisan) {
+	public Osoba(String ime, String prezime, String jMBG, String adresa, String id, Pol pol, boolean jeObrisan) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
 		this.JMBG = jMBG;
 		this.adresa = adresa;
-		this.jeMuško = jeMuško;
+		this.pol = pol;
 		this.id = id;
 		this.jeObrisan = jeObrisan;
 	}
@@ -52,13 +31,11 @@ public abstract class Osoba {
     	this.ime = "";
     	this.prezime = "";
     	this.JMBG = "";
-    	this.jeMuško = true;
+    	this.pol = null;
     	this.adresa = "";
     	this.id = "";
     	this.jeObrisan = false;
     }
-
-	
 
 	public String getIme() {
 		return ime;
@@ -80,8 +57,8 @@ public abstract class Osoba {
 		return id;
 	}
 
-	public boolean isJeMuško() {
-		return jeMuško;
+	public Pol getPol() {
+		return pol;
 	}
 
 	public boolean isJeObrisan() {
@@ -108,8 +85,8 @@ public abstract class Osoba {
 		this.id = id;
 	}
 
-	public void setJeMuško(boolean jeMuško) {
-		this.jeMuško = jeMuško;
+	public void setPol(Pol pol) {
+		this.pol = pol;
 	}
 
 	public void setJeObrisan(boolean jeObrisan) {
@@ -119,8 +96,12 @@ public abstract class Osoba {
 	@Override
 	public String toString() {
 		return "Osoba [ime=" + ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id
-				+ ", jeMuško=" + jeMuško + ", jeObrisan=" + jeObrisan + "]";
+				+ ", pol=" + pol + ", jeObrisan=" + jeObrisan + "]";
 	}
+
+	
+
+    
 
 	
 

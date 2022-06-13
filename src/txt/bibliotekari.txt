@@ -1,1 +1,1 @@
-Pero|Vojnik|053452342141|Šimširova ulica 4|0120b|432.23|pero123|pero321|true|false
+Pero|Vojnik|053452342141|Šimširova ulica 4|0120b|432.23|pero123|pero321|MUŠKI|false

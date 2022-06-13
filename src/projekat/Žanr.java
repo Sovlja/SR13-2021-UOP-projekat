@@ -68,8 +68,11 @@ public class Žanr {
 
 	@Override
 	public String toString() {
-		return "Žanr [oznaka=" + oznaka + ", opis=" + opis + ", id=" + id + "]";
+		return "Žanr [oznaka=" + oznaka + ", opis=" + opis + ", id=" + id + ", jeObrisan=" + jeObrisan + "]";
 	}
+
+
+	
 
 
 	

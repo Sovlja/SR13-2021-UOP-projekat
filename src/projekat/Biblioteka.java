@@ -183,38 +183,7 @@ public class Biblioteka {
 	}
 	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ADMINISTRATORA IZ FAJLA administratori.txt --------------
-	protected void ucitajAdministratore() {
-		try {
-			File adminFile = new File("src/txt/administratori.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(adminFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				String ime = splitovanRed[0];
-				String prezime = splitovanRed[1];
-				String JMBG = splitovanRed[2];
-				String adresa = splitovanRed[3];
-				String id = splitovanRed[4];
-				String plata = splitovanRed[5];
-				double plataDouble = Double.parseDouble(plata);
-				String korisničkoIme = splitovanRed[6];
-				String lozinka = splitovanRed[7];
-				boolean pol = Boolean.parseBoolean(splitovanRed[8]);
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
-				
-				
-				
-				Administrator administrator = new Administrator(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
-				this.admini.add(administrator);
-				
-				
-			}
-			reader.close();
-			} catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
+	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE BIBLIOTEKARA IZ FAJLA bibliotekari.txt --------------
 	protected void ucitajBibliotekare() {
 		try {
@@ -231,7 +200,7 @@ public class Biblioteka {
 				double plataDouble = Double.parseDouble(splitovanRed[5]);
 				String korisničkoIme = splitovanRed[6];
 				String lozinka = splitovanRed[7];
-				boolean pol = Boolean.parseBoolean(splitovanRed[8]);
+				Pol pol = Pol.valueOf(splitovanRed[8]);
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
 				
 //				MALE = TRUE 
@@ -269,7 +238,7 @@ public class Biblioteka {
 
 				int važenjeUplate = Integer.parseInt(splitovanRed[7]);
 				boolean aktivan = Boolean.parseBoolean(splitovanRed[8]);
-				Boolean pol = Boolean.parseBoolean(splitovanRed[9]);
+				Pol pol = Pol.valueOf(splitovanRed[9]);
 				
 				
 				TipČlanarine tipČlanarine = null;
@@ -463,7 +432,7 @@ public class Biblioteka {
 		String adminLinija = "";
 		for (Administrator administrator : this.admini) {
 			adminLinija += administrator.getIme() + "|" + administrator.getPrezime() + "|" + administrator.getJMBG() + "|" + administrator.getAdresa() + "|" + 
-					administrator.getId() + "|" + administrator.getPlata() + "|" + administrator.getKorisničkoIme() + "|" + administrator.getLozinka() + "|" + administrator.isJeMuško() + "|" + administrator.isJeObrisan() + "\n";
+					administrator.getId() + "|" + administrator.getPlata() + "|" + administrator.getKorisničkoIme() + "|" + administrator.getLozinka() + "|" + administrator.getPol() + "|" + administrator.isJeObrisan() + "\n";
 		}
 		try {
 			File adminFile = new File("src/txt/administratori.txt");
@@ -483,7 +452,7 @@ public class Biblioteka {
 			String bibliotekarLinija = "";
 			for (Bibliotekar bibliotekar : this.bibliotekari) {
 				bibliotekarLinija += bibliotekar.getIme() + "|" + bibliotekar.getPrezime() + "|" + bibliotekar.getJMBG() + "|" + bibliotekar.getAdresa() + "|" + 
-						bibliotekar.getId() + "|" + bibliotekar.getPlata() + "|" + bibliotekar.getKorisničkoIme() + "|" + bibliotekar.getLozinka() + "|" + bibliotekar.isJeMuško() + "|" + bibliotekar.isJeObrisan() + "\n";
+						bibliotekar.getId() + "|" + bibliotekar.getPlata() + "|" + bibliotekar.getKorisničkoIme() + "|" + bibliotekar.getLozinka() + "|" + bibliotekar.getPol() + "|" + bibliotekar.isJeObrisan() + "\n";
 			}
 			try {
 				File bibliotekarFile = new File("src/txt/bibliotekari.txt");
@@ -503,7 +472,7 @@ public class Biblioteka {
 			String članLinija = "";
 			for (Član član : this.članovi) {
 				članLinija += član.getIme() + "|" + član.getPrezime() + "|" + član.getJMBG() + "|" + član.getAdresa() + "|" + 
-						član.getId() + "|" + član.getBrojČlanskeKarte() + "|" + član.getDatumPoslednjeUplate() + "|" + član.getBrojMeseciVaženjaUplate() + "|" + član.isAktivan() + "|" + član.isJeMuško() + "|" + član.getTipČlanarine().getId() + "|" + član.isJeObrisan() + "\n";
+						član.getId() + "|" + član.getBrojČlanskeKarte() + "|" + član.getDatumPoslednjeUplate() + "|" + član.getBrojMeseciVaženjaUplate() + "|" + član.isAktivan() + "|" + član.getPol() + "|" + član.getTipČlanarine().getId() + "|" + član.isJeObrisan() + "\n";
 			}
 			try {
 				File članoviFile = new File("src/txt/članovi.txt");
@@ -522,7 +491,7 @@ public class Biblioteka {
 		
 		String žanrLinija = "";
 		for (Žanr žanr : this.žanrKnjige) {
-			žanrLinija += žanr.getOznaka() + "|" + žanr.getOpis() + "|" + žanr.isJeObrisan() + "\n";
+			žanrLinija += žanr.getOznaka() + "|" + žanr.getOpis() + "|" + žanr.getId() + "|" + žanr.isJeObrisan() + "\n";
 		}
 		try {
 			File žanrFile = new File("src/txt/žanrovi.txt");
@@ -613,8 +582,95 @@ public class Biblioteka {
 		
 
 	}
-//--------------CRUD-abilnost ŽANR--------------
-//--------------CRUD-abilnost ŽANR--------------
+//--------------CRUD-abilnost ADMIN--------------
+	protected void ucitajAdministratore() {
+		try {
+			File adminFile = new File("src/txt/administratori.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(adminFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				String ime = splitovanRed[0];
+				String prezime = splitovanRed[1];
+				String JMBG = splitovanRed[2];
+				String adresa = splitovanRed[3];
+				String id = splitovanRed[4];
+				String plata = splitovanRed[5];
+				double plataDouble = Double.parseDouble(plata);
+				String korisničkoIme = splitovanRed[6];
+				String lozinka = splitovanRed[7];
+				Pol pol = Pol.valueOf(splitovanRed[8]);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
+				
+				
+				
+				Administrator administrator = new Administrator(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
+				this.admini.add(administrator);
+				
+				
+			}
+			reader.close();
+			} catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+//---------------------------------------------------
+	public void noviAdmin(String id, String jmbg, String korisnickoIme, String [] izmene, Boolean[] logIzmene, Double[] doubleIzmene, Pol[] polIzmene) {
+		this.ucitajAdministratore();
+		for (Administrator admin : this.admini) {
+			if (admin.getId().equals(id)) {
+				if(admin.getJMBG().equals(jmbg)){
+					if(admin.getKorisničkoIme().equals(korisnickoIme)) {
+						System.out.println("Admin sa tim podacima već postoji!");
+					}
+				}
+			}
+		}
+		Administrator administrator = new Administrator();
+		
+		administrator.setIme(izmene[0]);
+		administrator.setPrezime(izmene[1]);
+		administrator.setJMBG(izmene[2]);
+		administrator.setAdresa(izmene[3]);
+		administrator.setId(izmene[4]);
+		administrator.setPlata(doubleIzmene[5]);
+		administrator.setKorisničkoIme(izmene[6]);
+		administrator.setLozinka(izmene[7]);
+		administrator.setPol(polIzmene[8]);
+		administrator.setJeObrisan(false);
+		
+		this.admini.add(administrator);
+		this.upisiAdministratore();
+	}
+
+//---------------------------------------------------
+	public void brisanjeAdmina(String id) {
+		this.ucitajAdministratore();
+		for (Administrator admin : this.admini) {
+			if (admin.getId().equals(id)) {
+				admin.setJeObrisan(true);
+			}
+		}
+		this.upisiAdministratore();
+	}
+//---------------------------------------------------
+	public void ažurirajAdmina(String id, String [] izmene, Double [] doubleIzmene, Pol [] polIzmene) {
+		this.ucitajAdministratore();
+		for (Administrator admin : this.admini) {
+			if (admin.getId().equals(id)) {
+				admin.setIme(izmene[0]);
+				admin.setPrezime(izmene[1]);
+				admin.setAdresa(izmene[3]);
+				admin.setPlata(doubleIzmene[5]);
+				admin.setKorisničkoIme(izmene[6]);
+				admin.setLozinka(izmene[7]);
+				admin.setPol(polIzmene[8]);
+			}
+		}
+		this.upisiAdministratore();
+	}
+////--------------CRUD-abilnost ŽANR--------------
 	protected void učitajŽanrove() {
 		try {
 			File žanrFile = new File("src/txt/žanrovi.txt");
@@ -638,30 +694,7 @@ public class Biblioteka {
 		}
 		
 	}
-	
-	public void ažurirajŽanr(String id, String [] izmene) {
-		this.učitajŽanrove();
-		for (Žanr žanr : this.žanrKnjige) {
-			if (žanr.getId().equals(id)) {
-				žanr.setOpis(izmene[1]);
-				žanr.setOznaka(izmene[2]);
-			}
-		}
-		this.upišiŽanrove();
-	}
-
-
-	public void brisanjeŽanr(String id) {
-		this.učitajŽanrove();
-		for (Žanr žanr : this.žanrKnjige) {
-			if (žanr.getId().equals(id)) {
-				žanr.setJeObrisan(true);
-			}
-		}
-		this.upišiŽanrove();
-	}
-	
-	
+//---------------------------------------------------
 	public void noviŽanr(String [] izmene) {
 		this.učitajŽanrove();
 		for (Žanr ž : this.žanrKnjige) {
@@ -681,5 +714,27 @@ public class Biblioteka {
 		this.žanrKnjige.add(žanr);
 		this.upišiŽanrove();
 	}
+//---------------------------------------------------
+	public void brisanjeŽanr(String id) {
+		this.učitajŽanrove();
+		for (Žanr žanr : this.žanrKnjige) {
+			if (žanr.getId().equals(id)) {
+				žanr.setJeObrisan(true);
+				this.upišiŽanrove();
+			}
+		}
+	}
+//---------------------------------------------------
+	public void ažurirajŽanr(String id, String [] izmene) {
+		this.učitajŽanrove();
+		for (Žanr žanr : this.žanrKnjige) {
+			if (žanr.getId().equals(id)) {
+				žanr.setOpis(izmene[1]);
+				žanr.setOznaka(izmene[2]);
+			}
+		}
+		this.upišiŽanrove();
+	}
+	
 }
 	

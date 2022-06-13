@@ -1,24 +1,15 @@
 package projekat;
 
-public class Zaposleni extends Osoba {
-
-
-	
+public class Zaposleni extends Osoba {	
     protected double plata;
-    	
-    	
     protected String korisničkoIme;
-
-    /**
-     * 
-     */
     protected String lozinka;
 
     /**
      * 
      */
     protected void DodajČlana() {
-        // TODO implement here
+        
     }
 
     public Zaposleni(String ime, String prezime, String jMBG, String adresa, String id, double plata, String korisničkoIme, String lozinka, boolean pol, boolean jeObrisan) {
@@ -65,6 +56,10 @@ public class Zaposleni extends Osoba {
 				+ ime + ", prezime=" + prezime + ", JMBG=" + JMBG + ", adresa=" + adresa + ", id=" + id + ", jeMuško="
 				+ jeMuško + ", jeObrisan=" + jeObrisan + "]";
 	}
+
+	
+
+	
 
 	
     

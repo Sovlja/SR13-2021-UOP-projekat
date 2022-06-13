@@ -23,6 +23,8 @@ public class Administrator extends Zaposleni {
 
 	
 	
+	
+
 	@Override
 	public String toString() {
 		return "Administrator [plata=" + plata + ", korisničkoIme=" + korisničkoIme + ", lozinka=" + lozinka + ", ime="

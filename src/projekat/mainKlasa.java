@@ -6,9 +6,11 @@ public class mainKlasa {
 		
 		Biblioteka biblioteka = new Biblioteka();
 		
+		
 		System.out.println("TEST ADMIN:");
 		biblioteka.ucitajAdministratore();
 		System.out.println(biblioteka.getAdmini());
+		
 		
 		System.out.println("");
 		System.out.println("TEST BIBLIOTEKAR:");

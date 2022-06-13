@@ -294,29 +294,6 @@ public class Biblioteka {
 		
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ŽANRA IZ FAJLA žanrovi.txt --------------
-	protected void učitajŽanrove() {
-		try {
-			File žanrFile = new File("src/txt/žanrovi.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(žanrFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				String oznaka = splitovanRed[0];
-				String opis = splitovanRed[1];
-				String id = splitovanRed[2];
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
-				
-				Žanr žanr = new Žanr(oznaka, opis, id, jeObrisan);
-				this.žanrKnjige.add(žanr);
-				
-			}
-			reader.close();
-		} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE KNJIGA IZ FAJLA knjige.txt --------------
 	protected void učitajKnjige() {
 		try {
@@ -636,4 +613,73 @@ public class Biblioteka {
 		
 
 	}
+//--------------CRUD-abilnost ŽANR--------------
+//--------------CRUD-abilnost ŽANR--------------
+	protected void učitajŽanrove() {
+		try {
+			File žanrFile = new File("src/txt/žanrovi.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(žanrFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				String oznaka = splitovanRed[0];
+				String opis = splitovanRed[1];
+				String id = splitovanRed[2];
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
+				
+				Žanr žanr = new Žanr(oznaka, opis, id, jeObrisan);
+				this.žanrKnjige.add(žanr);
+				
+			}
+			reader.close();
+		} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+	
+	public void ažurirajŽanr(String id, String [] izmene) {
+		this.učitajŽanrove();
+		for (Žanr žanr : this.žanrKnjige) {
+			if (žanr.getId().equals(id)) {
+				žanr.setOpis(izmene[1]);
+				žanr.setOznaka(izmene[2]);
+			}
+		}
+		this.upišiŽanrove();
+	}
+
+
+	public void brisanjeŽanr(String id) {
+		this.učitajŽanrove();
+		for (Žanr žanr : this.žanrKnjige) {
+			if (žanr.getId().equals(id)) {
+				žanr.setJeObrisan(true);
+			}
+		}
+		this.upišiŽanrove();
+	}
+	
+	
+	public void noviŽanr(String [] izmene) {
+		this.učitajŽanrove();
+		for (Žanr ž : this.žanrKnjige) {
+			if(ž.getId().equals(izmene[0])) {
+				System.out.println("Žanr već postoji!");
+				return;
+			}
+		}
+		
+		Žanr žanr = new Žanr();
+		
+		žanr.setId(izmene[0]);
+		žanr.setOpis(izmene[1]);
+		žanr.setOznaka(izmene[2]);
+		žanr.setJeObrisan(false);
+		
+		this.žanrKnjige.add(žanr);
+		this.upišiŽanrove();
+	}
 }
+	

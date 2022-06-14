@@ -272,28 +272,7 @@ public class Biblioteka {
 		
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE TIPA ČLANARINE IZ FAJLA članarina.txt --------------
-	protected void učitajTipČlanarine() {
-		try {
-			File tipČlanarineFile = new File("src/txt/članarina.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(tipČlanarineFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				String id = splitovanRed[0];
-				String naziv = splitovanRed[1];
-				int cena = Integer.parseInt(splitovanRed[2]);
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
-				
-				TipČlanarine tipČlanarine = new TipČlanarine(id, naziv, cena, jeObrisan);
-				this.tipČlanarine.add(tipČlanarine);
-			}
-			reader.close();
-		} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
+	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE PRIMERAKA KNJIGA IZ FAJLA primerciKnjiga.txt --------------
 	protected void učitajPrimerkeKnjiga() {
 		try {
@@ -790,5 +769,70 @@ public class Biblioteka {
 		this.upišiŽanrove();
 	}
 	
-}
+////--------------CRUD-abilnost TIP ČLANARINE--------------
+	protected void učitajTipČlanarine() {
+		try {
+			File tipČlanarineFile = new File("src/txt/članarina.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(tipČlanarineFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				String id = splitovanRed[0];
+				String naziv = splitovanRed[1];
+				int cena = Integer.parseInt(splitovanRed[2]);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
+				
+				TipČlanarine tipČlanarine = new TipČlanarine(id, naziv, cena, jeObrisan);
+				this.tipČlanarine.add(tipČlanarine);
+			}
+			reader.close();
+		} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+	}
+//---------------------------------------------------
+	public void noviTipČlanarine(String [] izmene, Integer [] izmeneCene) {
+		this.učitajTipČlanarine();
+		for (TipČlanarine članarina : this.tipČlanarine) {
+			if(članarina.getId().equals(izmene[0])) {
+				if(članarina.getNaziv().equals(izmene[1])) {
+					System.out.println("Žanr već postoji!");
+					return;
+				}
+			}
+		}
+		
+		TipČlanarine članarina = new TipČlanarine();
+		
+		članarina.setId(izmene[0]);
+		članarina.setNaziv(izmene[1]);
+		članarina.setCena(izmeneCene[2]);
+		članarina.setjeObrisan(false);
+		
+		this.tipČlanarine.add(članarina);
+		this.upišiČlanarinu();
+	}
+//---------------------------------------------------
+	public void brisanjeČlanarine(String id) {
+		this.učitajTipČlanarine();
+		for (TipČlanarine članarina : this.tipČlanarine) {
+			if (članarina.getId().equals(id)) {
+				članarina.setjeObrisan(true);
+				this.upišiČlanarinu();
+			}
+		}
+	}
+//---------------------------------------------------
+	public void ažurirajČlanarinu(String id, String [] izmene, Integer [] izmeneCena) {
+		this.učitajTipČlanarine();
+		for (TipČlanarine članarina : this.tipČlanarine) {
+			if (članarina.getId().equals(id)) {
+				članarina.setNaziv(izmene[1]);
+				članarina.setCena(izmeneCena[2]);
+			}
+		}
+		this.upišiČlanarinu();
+	}
 	
+}

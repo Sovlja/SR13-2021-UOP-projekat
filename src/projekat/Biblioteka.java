@@ -185,38 +185,7 @@ public class Biblioteka {
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ADMINISTRATORA IZ FAJLA administratori.txt --------------
 	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE BIBLIOTEKARA IZ FAJLA bibliotekari.txt --------------
-	protected void ucitajBibliotekare() {
-		try {
-			File bibliotekarFile = new File("src/txt/bibliotekari.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(bibliotekarFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				String ime = splitovanRed[0];
-				String prezime = splitovanRed[1];
-				String JMBG = splitovanRed[2];
-				String adresa = splitovanRed[3];
-				String id = splitovanRed[4];
-				double plataDouble = Double.parseDouble(splitovanRed[5]);
-				String korisničkoIme = splitovanRed[6];
-				String lozinka = splitovanRed[7];
-				Pol pol = Pol.valueOf(splitovanRed[8]);
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
-				
-//				MALE = TRUE 
-//				FEMALE = FALSE
-				
-				Bibliotekar bibliotekar = new Bibliotekar(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
-				this.bibliotekari.add(bibliotekar);
-				
-			}
-			reader.close();
-			} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
+	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ČLANOVA IZ FAJLA članovi.txt --------------
 	protected void učitajČlanove() {
 		try {
@@ -669,6 +638,91 @@ public class Biblioteka {
 			}
 		}
 		this.upisiAdministratore();
+	}
+////--------------CRUD-abilnost BIBLIOTEKAR--------------
+	protected void ucitajBibliotekare() {
+		try {
+			File bibliotekarFile = new File("src/txt/bibliotekari.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(bibliotekarFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				String ime = splitovanRed[0];
+				String prezime = splitovanRed[1];
+				String JMBG = splitovanRed[2];
+				String adresa = splitovanRed[3];
+				String id = splitovanRed[4];
+				double plataDouble = Double.parseDouble(splitovanRed[5]);
+				String korisničkoIme = splitovanRed[6];
+				String lozinka = splitovanRed[7];
+				Pol pol = Pol.valueOf(splitovanRed[8]);
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
+				
+				Bibliotekar bibliotekar = new Bibliotekar(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
+				this.bibliotekari.add(bibliotekar);
+				
+			}
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+//---------------------------------------------------
+	public void noviBibliotekar(String id, String jmbg, String korisnickoIme, String [] izmene, Boolean[] logIzmene, Double[] doubleIzmene, Pol[] polIzmene) {
+		this.ucitajBibliotekare();
+		for (Bibliotekar bibliotekar : this.bibliotekari) {
+			if (bibliotekar.getId().equals(id)) {
+				if(bibliotekar.getJMBG().equals(jmbg)){
+					if(bibliotekar.getKorisničkoIme().equals(korisnickoIme)) {
+						System.out.println("Bibliotekar sa tim podacima već postoji!");
+					}
+				}
+			}
+		}
+		Bibliotekar bibliotekar = new Bibliotekar();
+		
+		bibliotekar.setIme(izmene[0]);
+		bibliotekar.setPrezime(izmene[1]);
+		bibliotekar.setJMBG(izmene[2]);
+		bibliotekar.setAdresa(izmene[3]);
+		bibliotekar.setId(izmene[4]);
+		bibliotekar.setPlata(doubleIzmene[5]);
+		bibliotekar.setKorisničkoIme(izmene[6]);
+		bibliotekar.setLozinka(izmene[7]);
+		bibliotekar.setPol(polIzmene[8]);
+		bibliotekar.setJeObrisan(false);
+		
+		this.bibliotekari.add(bibliotekar);
+		this.upisiBibliotekare();
+	}
+
+//---------------------------------------------------
+	public void brisanjeBibliotekara(String id) {
+		this.ucitajBibliotekare();
+		for (Bibliotekar bibliotekar : this.bibliotekari) {
+			if (bibliotekar.getId().equals(id)) {
+				bibliotekar.setJeObrisan(true);
+			}
+		}
+		this.upisiBibliotekare();
+	}
+//---------------------------------------------------
+	public void ažurirajBibliotekara(String id, String [] izmene, Double [] doubleIzmene, Pol [] polIzmene) {
+		this.ucitajBibliotekare();
+		for (Bibliotekar bibliotekar : this.bibliotekari) {
+			if (bibliotekar.getId().equals(id)) {
+				bibliotekar.setIme(izmene[0]);
+				bibliotekar.setPrezime(izmene[1]);
+				bibliotekar.setAdresa(izmene[3]);
+				bibliotekar.setPlata(doubleIzmene[5]);
+				bibliotekar.setKorisničkoIme(izmene[6]);
+				bibliotekar.setLozinka(izmene[7]);
+				bibliotekar.setPol(polIzmene[8]);
+			}
+		}
+		this.upisiBibliotekare();
 	}
 ////--------------CRUD-abilnost ŽANR--------------
 	protected void učitajŽanrove() {

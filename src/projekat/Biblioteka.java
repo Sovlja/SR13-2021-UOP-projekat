@@ -183,54 +183,8 @@ public class Biblioteka {
 	}
 	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ADMINISTRATORA IZ FAJLA administratori.txt --------------
-	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE BIBLIOTEKARA IZ FAJLA bibliotekari.txt --------------
-	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ČLANOVA IZ FAJLA članovi.txt --------------
-	protected void učitajČlanove() {
-		try {
-			File članFile = new File("src/txt/članovi.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(članFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				
-				String ime = splitovanRed[0];
-				String prezime = splitovanRed[1];
-				String JMBG = splitovanRed[2];
-				String adresa = splitovanRed[3];
-				String id = splitovanRed[4];
-				String brojČlanskeKarte = splitovanRed[5];
-				
-				LocalDate datumPoslednjeUplate = LocalDate.parse(splitovanRed[6]);
-				
-
-				int važenjeUplate = Integer.parseInt(splitovanRed[7]);
-				boolean aktivan = Boolean.parseBoolean(splitovanRed[8]);
-				Pol pol = Pol.valueOf(splitovanRed[9]);
-				
-				
-				TipČlanarine tipČlanarine = null;
-				String tipČlanarineID = splitovanRed[10];
-				for (TipČlanarine t : this.tipČlanarine) {
-					if (t.getId().equals(tipČlanarineID)) {
-						tipČlanarine = t;
-					}
-				}
-				
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[11]);
-				
-				Član član = new Član(ime, prezime, JMBG, adresa, id, brojČlanskeKarte, datumPoslednjeUplate, važenjeUplate, aktivan, pol, tipČlanarine, jeObrisan);
-				this.članovi.add(član);
-		
-			}
-			reader.close();
-			} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ŽANRA IZ FAJLA žanrovi.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE KNJIGA IZ FAJLA knjige.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE TIPA ČLANARINE IZ FAJLA članarina.txt --------------
@@ -904,11 +858,11 @@ public class Biblioteka {
 		
 		PrimerakKnjige primerak = new PrimerakKnjige();
 		
-		primerak.setBrojStrana(intIzmene[0]);
+		primerak.setId(izmene[0]);
 		primerak.setGodinaŠtampe(intIzmene[1]);
 		primerak.setIznajmljenost(false);
 		primerak.setNazivKnjige(izmene[3]);
-		primerak.setId(izmene[4]);
+		primerak.setBrojStrana(intIzmene[4]);
 		primerak.setJeObrisan(false);
 		primerak.setJezikŠtampe(jezikIzmene[6]);
 		primerak.setKnjiga(knjigaIzmene[7]);
@@ -930,7 +884,7 @@ public class Biblioteka {
 	}
 //---------------------------------------------------
 	public void ažurirajPrimerak(String id, String [] izmene, TipPoveza [] povezIzmene) {
-		this.upišiPrimerakKnjige();
+		this.učitajPrimerkeKnjiga();
 		for (PrimerakKnjige primerak : this.primerakKnjige) {
 			if (primerak.getId().equals(id)) {
 				primerak.setIznajmljenost(false);
@@ -939,5 +893,109 @@ public class Biblioteka {
 			}
 		}
 		this.upišiPrimerakKnjige();
+	}
+//--------------CRUD-abilnost ČLAN--------------
+	protected void učitajČlanove() {
+		try {
+			File članFile = new File("src/txt/članovi.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(članFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				
+				String ime = splitovanRed[0];
+				String prezime = splitovanRed[1];
+				String JMBG = splitovanRed[2];
+				String adresa = splitovanRed[3];
+				String id = splitovanRed[4];
+				String brojČlanskeKarte = splitovanRed[5];
+				
+				LocalDate datumPoslednjeUplate = LocalDate.parse(splitovanRed[6]);
+				
+
+				int važenjeUplate = Integer.parseInt(splitovanRed[7]);
+				boolean aktivan = Boolean.parseBoolean(splitovanRed[8]);
+				Pol pol = Pol.valueOf(splitovanRed[9]);
+				
+				
+				TipČlanarine tipČlanarine = null;
+				String tipČlanarineID = splitovanRed[10];
+				for (TipČlanarine t : this.tipČlanarine) {
+					if (t.getId().equals(tipČlanarineID)) {
+						tipČlanarine = t;
+					}
+				}
+				
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[11]);
+				
+				Član član = new Član(ime, prezime, JMBG, adresa, id, brojČlanskeKarte, datumPoslednjeUplate, važenjeUplate, aktivan, pol, tipČlanarine, jeObrisan);
+				this.članovi.add(član);
+		
+			}
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}	
+	}
+//---------------------------------------------------
+	public void noviČlan(String [] izmene, Integer [] intIzmene, LocalDate [] datumIzmene, Pol [] polIzmene, TipČlanarine [] članarinaIzmene) {
+		this.učitajČlanove();
+		for (Član član : this.članovi) {
+			if(član.getId().equals(izmene[0])) {
+				if(član.getBrojČlanskeKarte().equals(izmene[5])) {
+					if(član.getJMBG().equals(izmene[2])) {
+						System.out.println("Član već postoji!");
+						return;	
+					}
+				}
+			}
+		}
+		
+		Član član = new Član();
+		
+		član.setId(izmene[0]);
+		član.setIme(izmene[1]);
+		član.setPrezime(izmene[2]);
+		član.setJMBG(izmene[3]);
+		član.setAdresa(izmene[4]);
+		član.setBrojČlanskeKarte(izmene[5]);
+		član.setDatumPoslednjeUplate(datumIzmene[6]);
+		član.setBrojMeseciVaženjaUplate(intIzmene[7]);
+		član.setAktivan(true);
+		član.setPol(polIzmene[8]);
+		član.setTipČlanarine(članarinaIzmene[9]);
+		član.setJeObrisan(false);
+		
+		this.članovi.add(član);
+		this.upišiČlanove();
+	}
+//---------------------------------------------------
+	public void brisanjeČlana(String id) {
+		this.učitajČlanove();
+		for (Član član : this.članovi) {
+			if (član.getId().equals(id)) {
+				
+				član.setJeObrisan(true);
+				this.upišiČlanove();
+			}
+		}
+	}
+//---------------------------------------------------
+	public void ažurirajČlana(String id, String [] izmene, Integer [] intIzmene, TipČlanarine [] članarinaIzmene, LocalDate [] datumIzmene, Pol [] polIzmene) {
+		this.učitajČlanove();
+		for (Član član : this.članovi) {
+			if (član.getId().equals(id)) {
+				član.setIme(izmene[0]);
+				član.setPrezime(izmene[1]);
+				član.setAdresa(izmene[3]);
+				član.setBrojČlanskeKarte(izmene[5]);
+				član.setDatumPoslednjeUplate(datumIzmene[6]);
+				član.setBrojMeseciVaženjaUplate(intIzmene[7]);
+				član.setPol(polIzmene[9]);
+				član.setTipČlanarine(članarinaIzmene[10]);
+			}
+		}
+		this.upišiČlanove();
 	}
 }

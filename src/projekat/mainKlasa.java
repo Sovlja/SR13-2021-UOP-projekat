@@ -6,7 +6,6 @@ public class mainKlasa {
 		
 		Biblioteka biblioteka = new Biblioteka();
 		
-		
 		System.out.println("TEST ADMIN:");
 		biblioteka.ucitajAdministratore();
 		System.out.println(biblioteka.getAdmini());
@@ -47,11 +46,6 @@ public class mainKlasa {
 		System.out.println("TEST IZNAJMLJIVANJE:");
 		biblioteka.učitajIznajmljivanje();
 		System.out.println(biblioteka.getIznajmljivanje());
-		
-		biblioteka.upišiČlanove();
-		
-		
-		
 		
 	}
 

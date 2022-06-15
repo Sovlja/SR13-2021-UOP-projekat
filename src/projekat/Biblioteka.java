@@ -233,46 +233,7 @@ public class Biblioteka {
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ŽANRA IZ FAJLA žanrovi.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE KNJIGA IZ FAJLA knjige.txt --------------
-	protected void učitajKnjige() {
-		try {
-			File knjigaFile = new File("src/txt/knjige.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(knjigaFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				
-				String id = splitovanRed[0];
-				String naslov = splitovanRed[1];
-				String originalniNaslov = splitovanRed[2];
-				int godinaObjavljivanja = Integer.parseInt(splitovanRed[3]);
-				String opis = splitovanRed[4];
-				String jezikOriginala = splitovanRed[5];
-				String autor = splitovanRed[6];
-				
-				Žanr žanr = null;
-				String žanrID = splitovanRed[7];
-				
-				for (Žanr ž : this.žanrKnjige) {
-					if (ž.getId().equals(žanrID)) {
-						žanr = ž;
-					}
-				}
-				
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[8]);
-				
-				Knjiga knjiga = new Knjiga(id, naslov, originalniNaslov, godinaObjavljivanja, opis, jezikOriginala, autor, žanr, jeObrisan);
-				this.knjige.add(knjiga);
-			}
-			
-			reader.close();
-			} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE TIPA ČLANARINE IZ FAJLA članarina.txt --------------
-	
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE PRIMERAKA KNJIGA IZ FAJLA primerciKnjiga.txt --------------
 	protected void učitajPrimerkeKnjiga() {
 		try {
@@ -618,7 +579,7 @@ public class Biblioteka {
 		}
 		this.upisiAdministratore();
 	}
-////--------------CRUD-abilnost BIBLIOTEKAR--------------
+//--------------CRUD-abilnost BIBLIOTEKAR--------------
 	protected void ucitajBibliotekare() {
 		try {
 			File bibliotekarFile = new File("src/txt/bibliotekari.txt");
@@ -703,7 +664,7 @@ public class Biblioteka {
 		}
 		this.upisiBibliotekare();
 	}
-////--------------CRUD-abilnost ŽANR--------------
+//--------------CRUD-abilnost ŽANR--------------
 	protected void učitajŽanrove() {
 		try {
 			File žanrFile = new File("src/txt/žanrovi.txt");
@@ -769,7 +730,7 @@ public class Biblioteka {
 		this.upišiŽanrove();
 	}
 	
-////--------------CRUD-abilnost TIP ČLANARINE--------------
+//--------------CRUD-abilnost TIP ČLANARINE--------------
 	protected void učitajTipČlanarine() {
 		try {
 			File tipČlanarineFile = new File("src/txt/članarina.txt");
@@ -818,8 +779,8 @@ public class Biblioteka {
 		this.učitajTipČlanarine();
 		for (TipČlanarine članarina : this.tipČlanarine) {
 			if (članarina.getId().equals(id)) {
+				
 				članarina.setjeObrisan(true);
-				this.upišiČlanarinu();
 			}
 		}
 	}
@@ -834,5 +795,92 @@ public class Biblioteka {
 		}
 		this.upišiČlanarinu();
 	}
-	
+//--------------CRUD-abilnost KNJIGA--------------	
+	protected void učitajKnjige() {
+		try {
+			File knjigaFile = new File("src/txt/knjige.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(knjigaFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				
+				String id = splitovanRed[0];
+				String naslov = splitovanRed[1];
+				String originalniNaslov = splitovanRed[2];
+				int godinaObjavljivanja = Integer.parseInt(splitovanRed[3]);
+				String opis = splitovanRed[4];
+				String jezikOriginala = splitovanRed[5];
+				String autor = splitovanRed[6];
+				
+				Žanr žanr = null;
+				String žanrID = splitovanRed[7];
+				
+				for (Žanr ž : this.žanrKnjige) {
+					if (ž.getId().equals(žanrID)) {
+						žanr = ž;
+					}
+				}
+				
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[8]);
+				
+				Knjiga knjiga = new Knjiga(id, naslov, originalniNaslov, godinaObjavljivanja, opis, jezikOriginala, autor, žanr, jeObrisan);
+				this.knjige.add(knjiga);
+			}
+			
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+//---------------------------------------------------
+	public void novaKnjiga(String [] izmene, Integer [] intIzmene, Žanr [] zanrIzmene) {
+		this.učitajKnjige();
+		for (Knjiga knjiga : this.knjige) {
+			if(knjiga.getId().equals(izmene[0])) {
+				if(knjiga.getOriginalniNaslov().equals(izmene[2])) {
+					System.out.println("Žanr već postoji!");
+					return;	
+				}
+			}
+		}
+		
+		Knjiga knjiga = new Knjiga();
+		
+		knjiga.setId(izmene[0]);
+		knjiga.setNaslov(izmene[1]);
+		knjiga.setOriginalniNaslov(izmene[2]);
+		knjiga.setGodinaObjavljivanja(intIzmene[3]);
+		knjiga.setOpis(izmene[4]);
+		knjiga.setJezikOriginala(izmene[5]);
+		knjiga.setAutor(izmene[6]);
+		knjiga.setŽanr(zanrIzmene[7]);
+		knjiga.setJeObrisan(false);
+		
+		this.knjige.add(knjiga);
+		this.upišiKnjigu();
+	}
+//---------------------------------------------------
+	public void brisanjeKnjige(String id) {
+		this.učitajKnjige();
+		for (Knjiga knjiga : this.knjige) {
+			if (knjiga.getId().equals(id)) {
+				
+				knjiga.setJeObrisan(true);
+				this.upišiKnjigu();
+			}
+		}
+	}
+//---------------------------------------------------
+	public void ažurirajKnjigu(String id, String [] izmene) {
+		this.učitajKnjige();
+		for (Knjiga knjiga : this.knjige) {
+			if (knjiga.getId().equals(id)) {
+				knjiga.setNaslov(izmene[1]);
+				knjiga.setOpis(izmene[4]);
+			}
+		}
+		this.upišiKnjigu();
+	}
 }

@@ -235,42 +235,6 @@ public class Biblioteka {
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE KNJIGA IZ FAJLA knjige.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE TIPA ČLANARINE IZ FAJLA članarina.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE PRIMERAKA KNJIGA IZ FAJLA primerciKnjiga.txt --------------
-	protected void učitajPrimerkeKnjiga() {
-		try {
-			File primerakKnjigeFile = new File("src/txt/primerciKnjige.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(primerakKnjigeFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");	
-				int brojStrana = Integer.parseInt(splitovanRed[0]);
-				int godinaObjavljivanja = Integer.parseInt(splitovanRed[1]);
-				boolean jeIznajmljen = Boolean.parseBoolean(splitovanRed[2]);
-				String naslov = splitovanRed[3];
-				String id = splitovanRed[4];
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[5]);			
-				Jezik jezik = Jezik.valueOf(splitovanRed[6]);
-				TipPoveza tipPoveza = TipPoveza.valueOf(splitovanRed[8]);
-				
-				Knjiga knjiga = null;
-				String knjigaID = splitovanRed[7];
-				
-				for (Knjiga k : this.knjige) {
-					if (k.getId().equals(knjigaID)) {
-						knjiga = k;
-					}
-				}
-				
-				PrimerakKnjige primerakKnjige = new PrimerakKnjige(brojStrana, godinaObjavljivanja, jeIznajmljen, naslov, id, jeObrisan, jezik, knjiga, tipPoveza);
-				this.primerakKnjige.add(primerakKnjige);
-			}
-			
-			reader.close();
-			} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE EVIDENCIJE O IZNAJMLJIVANJU IZ FAJLA iznajmljivanje.txt --------------
 	protected void učitajIznajmljivanje() {
 		try {
@@ -758,7 +722,7 @@ public class Biblioteka {
 		for (TipČlanarine članarina : this.tipČlanarine) {
 			if(članarina.getId().equals(izmene[0])) {
 				if(članarina.getNaziv().equals(izmene[1])) {
-					System.out.println("Žanr već postoji!");
+					System.out.println("Tip članarine već postoji!");
 					return;
 				}
 			}
@@ -840,7 +804,7 @@ public class Biblioteka {
 		for (Knjiga knjiga : this.knjige) {
 			if(knjiga.getId().equals(izmene[0])) {
 				if(knjiga.getOriginalniNaslov().equals(izmene[2])) {
-					System.out.println("Žanr već postoji!");
+					System.out.println("Knjiga već postoji!");
 					return;	
 				}
 			}
@@ -848,6 +812,14 @@ public class Biblioteka {
 		
 		Knjiga knjiga = new Knjiga();
 		
+//		intIzmene[0] = Integer.parseInt(izmene[0]);
+//		intIzmene[1] = Integer.parseInt(izmene[1]);
+//		intIzmene[2] = Integer.parseInt(izmene[2]);
+//		intIzmene[4] = Integer.parseInt(izmene[4]);
+//		intIzmene[5] = Integer.parseInt(izmene[5]);
+//		intIzmene[6] = Integer.parseInt(izmene[6]);
+//		zanrIzmene[4] = Žanr.
+				
 		knjiga.setId(izmene[0]);
 		knjiga.setNaslov(izmene[1]);
 		knjiga.setOriginalniNaslov(izmene[2]);
@@ -857,6 +829,7 @@ public class Biblioteka {
 		knjiga.setAutor(izmene[6]);
 		knjiga.setŽanr(zanrIzmene[7]);
 		knjiga.setJeObrisan(false);
+		
 		
 		this.knjige.add(knjiga);
 		this.upišiKnjigu();
@@ -882,5 +855,89 @@ public class Biblioteka {
 			}
 		}
 		this.upišiKnjigu();
+	}
+//--------------CRUD-abilnost PRIMERAK KNJIGE--------------
+	protected void učitajPrimerkeKnjiga() {
+		try {
+			File primerakKnjigeFile = new File("src/txt/primerciKnjige.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(primerakKnjigeFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");	
+				int brojStrana = Integer.parseInt(splitovanRed[0]);
+				int godinaObjavljivanja = Integer.parseInt(splitovanRed[1]);
+				boolean jeIznajmljen = Boolean.parseBoolean(splitovanRed[2]);
+				String naslov = splitovanRed[3];
+				String id = splitovanRed[4];
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[5]);			
+				Jezik jezik = Jezik.valueOf(splitovanRed[6]);
+				TipPoveza tipPoveza = TipPoveza.valueOf(splitovanRed[8]);
+				
+				Knjiga knjiga = null;
+				String knjigaID = splitovanRed[7];
+				
+				for (Knjiga k : this.knjige) {
+					if (k.getId().equals(knjigaID)) {
+						knjiga = k;
+					}
+				}
+				
+				PrimerakKnjige primerakKnjige = new PrimerakKnjige(brojStrana, godinaObjavljivanja, jeIznajmljen, naslov, id, jeObrisan, jezik, knjiga, tipPoveza);
+				this.primerakKnjige.add(primerakKnjige);
+			}
+			
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+	}
+//---------------------------------------------------
+	public void novPrimerak(String [] izmene, Integer [] intIzmene, Jezik [] jezikIzmene, TipPoveza [] povezIzmene, Knjiga [] knjigaIzmene) {
+		this.učitajPrimerkeKnjiga();
+		for (PrimerakKnjige primerak : this.primerakKnjige) {
+			if(primerak.getId().equals(izmene[0])) {
+				System.out.println("Primerak već postoji!");
+				return;	
+			}
+		}
+		
+		PrimerakKnjige primerak = new PrimerakKnjige();
+		
+		primerak.setBrojStrana(intIzmene[0]);
+		primerak.setGodinaŠtampe(intIzmene[1]);
+		primerak.setIznajmljenost(false);
+		primerak.setNazivKnjige(izmene[3]);
+		primerak.setId(izmene[4]);
+		primerak.setJeObrisan(false);
+		primerak.setJezikŠtampe(jezikIzmene[6]);
+		primerak.setKnjiga(knjigaIzmene[7]);
+		primerak.setTipPoveza(povezIzmene[8]);
+		
+		this.primerakKnjige.add(primerak);
+		this.upišiPrimerakKnjige();
+	}
+//---------------------------------------------------
+	public void brisanjePrimerka(String id) {
+		this.učitajPrimerkeKnjiga();
+		for (PrimerakKnjige primerak : this.primerakKnjige) {
+			if (primerak.getId().equals(id)) {
+				
+				primerak.setJeObrisan(true);
+				this.upišiPrimerakKnjige();
+			}
+		}
+	}
+//---------------------------------------------------
+	public void ažurirajPrimerak(String id, String [] izmene, TipPoveza [] povezIzmene) {
+		this.upišiPrimerakKnjige();
+		for (PrimerakKnjige primerak : this.primerakKnjige) {
+			if (primerak.getId().equals(id)) {
+				primerak.setIznajmljenost(false);
+				primerak.setNazivKnjige(izmene[2]);
+				primerak.setTipPoveza(povezIzmene[8]);
+			}
+		}
+		this.upišiPrimerakKnjige();
 	}
 }

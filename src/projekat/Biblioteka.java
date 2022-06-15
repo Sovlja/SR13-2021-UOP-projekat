@@ -190,69 +190,6 @@ public class Biblioteka {
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE TIPA ČLANARINE IZ FAJLA članarina.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE PRIMERAKA KNJIGA IZ FAJLA primerciKnjiga.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE EVIDENCIJE O IZNAJMLJIVANJU IZ FAJLA iznajmljivanje.txt --------------
-	protected void učitajIznajmljivanje() {
-		try {
-			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(iznajmljivanjeFile));
-			String red;
-			while ((red = reader.readLine()) != null) {
-				String[] splitovanRed = red.split("\\|");
-				
-				String id = splitovanRed[0];
-				LocalDate datumIznajmljivanja = LocalDate.parse(splitovanRed[1]);
-				LocalDate datumVraćanja = LocalDate.parse(splitovanRed[2]);;
-				
-				
-				Zaposleni zaposleni = null;
-				String imeZaposlenogID = splitovanRed[3];
-					
-				for (Zaposleni z : this.bibliotekari) {
-					if(z.getId().equals(imeZaposlenogID)){
-						zaposleni = z;	
-					}	
-				}
-				if (zaposleni == null) {
-					for(Zaposleni z : this.admini) {
-						if(z.getId().equals(imeZaposlenogID)) {
-							zaposleni = z;
-						}
-					}
-				}
-				
-				Član članovi = null;
-				String strČlanovi = splitovanRed[4];
-				
-				for(Član a : this.članovi) {
-					if(a.getId().equals(strČlanovi)) {
-						članovi = a;
-					}
-				}
-				
-				PrimerakKnjige primerak = null;
-				String strKnjige = splitovanRed[5];
-				
-				for(PrimerakKnjige a : this.primerakKnjige) {
-					if(a.getId().equals(strKnjige)) {
-						primerak = a;
-					}
-				}
-				
-				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[6]);
-				
-						
-				Iznajmljivanje iznajmljivanje = new Iznajmljivanje(id, datumIznajmljivanja, datumVraćanja, zaposleni, članovi, primerak, jeObrisan);
-				this.iznajmljivanje.add(iznajmljivanje);
-			}
-			
-			reader.close();
-			} 
-		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
-		}
-		
-	}
-	
-	
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS ADMINISTRATORA U FAJL administratori.txt --------------
 	protected void upisiAdministratore() {
 		
@@ -997,5 +934,114 @@ public class Biblioteka {
 			}
 		}
 		this.upišiČlanove();
+	}
+//--------------CRUD-abilnost IZNAJMLJIVANJE--------------
+	protected void učitajIznajmljivanje() {
+		try {
+			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(iznajmljivanjeFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				
+				String id = splitovanRed[0];
+				LocalDate datumIznajmljivanja = LocalDate.parse(splitovanRed[1]);
+				LocalDate datumVraćanja = LocalDate.parse(splitovanRed[2]);;
+				
+				
+				Zaposleni zaposleni = null;
+				String imeZaposlenogID = splitovanRed[3];
+					
+				for (Zaposleni z : this.bibliotekari) {
+					if(z.getId().equals(imeZaposlenogID)){
+						zaposleni = z;	
+					}	
+				}
+				if (zaposleni == null) {
+					for(Zaposleni z : this.admini) {
+						if(z.getId().equals(imeZaposlenogID)) {
+							zaposleni = z;
+						}
+					}
+				}
+				
+				Član članovi = null;
+				String strČlanovi = splitovanRed[4];
+				
+				for(Član a : this.članovi) {
+					if(a.getId().equals(strČlanovi)) {
+						članovi = a;
+					}
+				}
+				
+				PrimerakKnjige primerak = null;
+				String strKnjige = splitovanRed[5];
+				
+				for(PrimerakKnjige a : this.primerakKnjige) {
+					if(a.getId().equals(strKnjige)) {
+						primerak = a;
+					}
+				}
+				
+				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[6]);
+				
+						
+				Iznajmljivanje iznajmljivanje = new Iznajmljivanje(id, datumIznajmljivanja, datumVraćanja, zaposleni, članovi, primerak, jeObrisan);
+				this.iznajmljivanje.add(iznajmljivanje);
+			}
+			
+			reader.close();
+			} 
+		catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
+	}
+//---------------------------------------------------
+	public void novoIznajmljivanje(String [] izmene, Zaposleni [] zaposleniIzmene, PrimerakKnjige [] primerakIzmene, LocalDate [] datumIzmene, Član [] članIzmene, TipČlanarine [] članarinaIzmene) {
+		this.učitajIznajmljivanje();
+		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
+			if(iznajmljivanje.getId().equals(izmene[0])) {
+				if(iznajmljivanje.getČlan().equals(članIzmene[1])) {
+					System.out.println("Iznajmljivanje već postoji!");
+					return;	
+				}
+			}
+		}
+		
+		Iznajmljivanje iznajmljivanje = new Iznajmljivanje();
+		
+		iznajmljivanje.setId(izmene[0]);
+		iznajmljivanje.setDatumIznajmljivanja(datumIzmene[1]);
+		iznajmljivanje.setDatumVraćanja(datumIzmene[2]);
+		iznajmljivanje.setZaposleni(zaposleniIzmene[3]);
+		iznajmljivanje.setČlan(članIzmene[1]);
+		iznajmljivanje.setPrimerak(primerakIzmene[0]);
+		iznajmljivanje.setJeObrisan(false);
+		
+		this.iznajmljivanje.add(iznajmljivanje);
+		this.upisiIznajmljivanje();
+	}
+//---------------------------------------------------
+	public void brisanjeIznajmljivanja(String id) {
+		this.učitajIznajmljivanje();
+		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
+			if (iznajmljivanje.getId().equals(id)) {
+				
+				iznajmljivanje.setJeObrisan(true);
+				this.upisiIznajmljivanje();
+			}
+		}
+	}
+//---------------------------------------------------
+	public void ažurirajIznajmljivanje(String id, LocalDate [] datumIzmene) {
+		this.učitajIznajmljivanje();
+		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
+			if (iznajmljivanje.getId().equals(id)) {
+				iznajmljivanje.setDatumVraćanja(datumIzmene[0]);
+//				!ŠTO SE TIČE AŽURIRANJA IZNAJMLJIVANJA, JEDINO IMA SMISLA PRODUŽITI ROK ZA VRAĆANJE KNJIGE!
+			}
+		}
+		this.upisiIznajmljivanje();
 	}
 }

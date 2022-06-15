@@ -113,8 +113,12 @@ public class Iznajmljivanje {
 	@Override
 	public String toString() {
 		return "Iznajmljivanje [id=" + id + ", datumIznajmljivanja=" + datumIznajmljivanja + ", datumVraćanja="
-				+ datumVraćanja + ", zaposleni=" + zaposleni + ", član=" + član + ", primerak=" + primerak + "]";
+				+ datumVraćanja + ", zaposleni=" + zaposleni + ", član=" + član + ", primerak=" + primerak
+				+ ", jeObrisan=" + jeObrisan + "]";
 	}
+
+
+	
 
     	
 

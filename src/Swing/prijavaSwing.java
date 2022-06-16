@@ -1,33 +1,34 @@
 package Swing;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.Color;
 import java.awt.Button;
-import java.awt.SystemColor;
 import javax.swing.JTextField;
-import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 
+import projekat.Bibliotekar;
+import projekat.Biblioteka;
+
+
+@SuppressWarnings("serial")
 public class prijavaSwing extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JPasswordField passwordField_1;
+	private JTextField usernameUnos;
+	private JPasswordField lozinkaUnos;
+	
 	
 	int xx,xy;
 
@@ -43,6 +44,7 @@ public class prijavaSwing extends JFrame {
 					frame.setResizable(false);
 					frame.setLocationRelativeTo(null);
 					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -50,15 +52,13 @@ public class prijavaSwing extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
+	
 	public prijavaSwing() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(prijavaSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Prijava - Biblioteka");
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 700, 476);
+		setBounds(100, 100, 705, 473);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,7 +78,29 @@ public class prijavaSwing extends JFrame {
 		
 		Button button = new Button("Prijava");
 		button.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				String username = usernameUnos.getText().trim();
+				String lozinka = new String(lozinkaUnos.getPassword()).trim();
+				
+				if(username.equals("") || lozinka.equals("")) {
+					JOptionPane.showMessageDialog(null, "Niste uneli sve podatke za prijavu!", "Greška", JOptionPane.WARNING_MESSAGE);
+				}
+				else {
+					Biblioteka b = new Biblioteka();
+					Bibliotekar prijavljeni = b.loginBibliotekar(username, lozinka);
+					if(prijavljeni.getKorisničkoIme().equals(String.valueOf(username)) || prijavljeni.getLozinka().equals(String.valueOf(lozinka))) {
+						JOptionPane.showMessageDialog(null, "Uspešna prijava!");
+						prijavaSwing.this.dispose();
+						prijavaSwing.this.setVisible(false);
+						naslovnaSwing gp = new naslovnaSwing();
+						gp.setVisible(true);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Pogrešni login podaci.", "Greška", JOptionPane.WARNING_MESSAGE);
+					}
+				}
 			}
 		});
 		button.setForeground(Color.WHITE);
@@ -86,10 +108,10 @@ public class prijavaSwing extends JFrame {
 		button.setBounds(366, 351, 243, 36);
 		contentPane.add(button);
 		
-		textField = new JTextField();
-		textField.setBounds(346, 222, 283, 36);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		usernameUnos = new JTextField(20);
+		usernameUnos.setBounds(346, 222, 283, 36);
+		contentPane.add(usernameUnos);
+		usernameUnos.setColumns(10);
 		
 		JLabel lblUsername = new JLabel("Korisni\u010Dko ime");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -101,19 +123,20 @@ public class prijavaSwing extends JFrame {
 		lblEmail.setBounds(346, 269, 94, 14);
 		contentPane.add(lblEmail);
 		
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(346, 294, 283, 36);
-		contentPane.add(passwordField_1);
+		lozinkaUnos = new JPasswordField(20);
+		lozinkaUnos.setBounds(346, 294, 283, 36);
+		contentPane.add(lozinkaUnos);
 		
-		JLabel lblNewLabel = new JLabel("PRIJAVITE SE NA VA\u0160 NALOG!");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel.setBounds(346, 11, 283, 36);
-		contentPane.add(lblNewLabel);
+		JLabel naslovnica = new JLabel("PRIJAVITE SE NA VA\u0160 NALOG!");
+		naslovnica.setHorizontalAlignment(SwingConstants.CENTER);
+		naslovnica.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		naslovnica.setBounds(346, 11, 283, 36);
+		contentPane.add(naslovnica);
 		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setIcon(new ImageIcon(prijavaSwing.class.getResource("/images/avatar.png")));
-		lblNewLabel_3.setBounds(421, 58, 128, 128);
-		contentPane.add(lblNewLabel_3);
+		JLabel avatar = new JLabel("New label");
+		avatar.setIcon(new ImageIcon(prijavaSwing.class.getResource("/images/avatar.png")));
+		avatar.setBounds(421, 58, 128, 128);
+		contentPane.add(avatar);
 	}
 }
+

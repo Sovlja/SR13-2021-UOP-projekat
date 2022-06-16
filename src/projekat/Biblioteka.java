@@ -7,22 +7,23 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Biblioteka {
     protected String naziv;
-    protected String adresa;
-    protected String brTelefona;
-    protected LocalTime radnoVreme;
-    protected ArrayList<Administrator> admini; 
-    protected ArrayList<Bibliotekar> bibliotekari;
-    protected ArrayList<Knjiga> knjige;
-    protected ArrayList<Iznajmljivanje> iznajmljivanje;
-    protected ArrayList<Član> članovi;
-    protected ArrayList<TipČlanarine> tipČlanarine; 
-    protected ArrayList<PrimerakKnjige> primerakKnjige;
-    protected ArrayList<Žanr> žanrKnjige;
+    public String adresa;
+    public String brTelefona;
+    public LocalTime radnoVreme;
+    public ArrayList<Administrator> admini; 
+    public ArrayList<Bibliotekar> bibliotekari;
+    public ArrayList<Knjiga> knjige;
+    public ArrayList<Iznajmljivanje> iznajmljivanje;
+    public ArrayList<Član> članovi;
+    public ArrayList<TipČlanarine> tipČlanarine; 
+    public ArrayList<PrimerakKnjige> primerakKnjige;
+    public ArrayList<Žanr> žanrKnjige;
 
   //--------------TO STRING METODA--------------
 	
@@ -435,7 +436,7 @@ public class Biblioteka {
 		this.upisiAdministratore();
 	}
 //--------------CRUD-abilnost BIBLIOTEKAR--------------
-	protected void ucitajBibliotekare() {
+	public void ucitajBibliotekare() {
 		try {
 			File bibliotekarFile = new File("src/txt/bibliotekari.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(bibliotekarFile));
@@ -1043,5 +1044,26 @@ public class Biblioteka {
 			}
 		}
 		this.upisiIznajmljivanje();
+	}
+
+//--------------FUNKCIJA ZA PRIJAVU--------------
+	public Bibliotekar loginBibliotekar(String korisnickoIme, String lozinka) {
+		for(Bibliotekar bibliotekar : bibliotekari) {
+			if(bibliotekar.getKorisničkoIme().equalsIgnoreCase(korisnickoIme) &&
+					bibliotekar.getLozinka().equals(lozinka) && !bibliotekar.isJeObrisan()) {
+				return bibliotekar;
+			}
+		}
+		return null;
+	}
+	
+	public Administrator loginAdmin(String korisnickoIme, String lozinka) {
+		for(Administrator admin : admini) {
+			if(admin.getKorisničkoIme().equalsIgnoreCase(korisnickoIme) &&
+					admin.getLozinka().equals(lozinka) && !admin.isJeObrisan()) {
+				return admin;
+			}
+		}
+		return null;
 	}
 }

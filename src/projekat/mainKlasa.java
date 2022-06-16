@@ -5,7 +5,6 @@ public class mainKlasa {
 	public static void main(String[] args) {
 		
 		Biblioteka biblioteka = new Biblioteka();
-		
 		System.out.println("TEST ADMIN:");
 		biblioteka.ucitajAdministratore();
 		System.out.println(biblioteka.getAdmini());
@@ -48,5 +47,4 @@ public class mainKlasa {
 		System.out.println(biblioteka.getIznajmljivanje());
 		
 	}
-
 }

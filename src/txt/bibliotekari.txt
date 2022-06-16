@@ -1,1 +1,2 @@
-Pero|Vojnik|053452342141|Šimširova ulica 4|0120b|432.23|pero123|pero321|MUŠKI|false
+Pero|Legokocka|053452342141|Šimširova ulica 4|0001|432.23|pero123|pero321|MUŠKI|false
+Vasilije|Legokocka|053452342545|Šimširova ulica 4|0002|432.23|vaso123|pero321|MUŠKI|false

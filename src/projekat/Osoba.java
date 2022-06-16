@@ -57,8 +57,8 @@ public abstract class Osoba {
 		return id;
 	}
 
-	public Pol getPol() {
-		return pol;
+	public String getPol() {
+		return pol.toString();
 	}
 
 	public boolean isJeObrisan() {

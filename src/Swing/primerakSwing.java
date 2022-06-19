@@ -331,7 +331,7 @@ public class primerakSwing extends JFrame {
 					model.addRow(row);
 				
 					
-					JOptionPane.showMessageDialog(null, "Knjiga uspešno dodata u listu!");
+					JOptionPane.showMessageDialog(null, "Primerak uspešno dodat u listu!");
 					
 					headingCopyField.setText("");
 					printingYearField.setText("");
@@ -370,7 +370,7 @@ public class primerakSwing extends JFrame {
 						model.setValueAt(jezikŠtampe.getSelectedItem(), i, 4);
 						model.setValueAt(bookField.getText(), i, 5);
 						model.setValueAt(povezi.getSelectedItem(), i, 6);
-						JOptionPane.showMessageDialog(null, "Knjiga je uspešno ažurirana!");																	
+						JOptionPane.showMessageDialog(null, "Primerak je uspešno ažuriran!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
 					headingCopyField.setText("");
@@ -382,7 +382,7 @@ public class primerakSwing extends JFrame {
 					povezi.setSelectedItem(null);
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Izaberite knjigu za ažuriranje!");
+					JOptionPane.showMessageDialog(null, "Izaberite primerak za ažuriranje!");
 				}
 			}
 		
@@ -404,7 +404,7 @@ public class primerakSwing extends JFrame {
 				int i = table.getSelectedRow();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
-					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati knjigu?","Upozorenje", dialogButton);
+					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati primerak?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
 						model.removeRow(i);
@@ -415,13 +415,13 @@ public class primerakSwing extends JFrame {
 						bookField.setText("");
 						jezikŠtampe.setSelectedItem(null);
 						povezi.setSelectedItem(null);
-						JOptionPane.showMessageDialog(null, "Knjiga je uspešno obrisana!");												
+						JOptionPane.showMessageDialog(null, "Primerak je uspešno obrisan!");												
 					}
 					
 					JOptionPane.getRootFrame().dispose();
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Molimo Vas da obeležite knjigu za brisanje!");
+					JOptionPane.showMessageDialog(null, "Molimo Vas da obeležite primerak za brisanje!");
 				}
 			}
 		});

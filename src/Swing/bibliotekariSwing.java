@@ -32,18 +32,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JComboBox;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class bibliotekariSwing extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField nameField;
-	private JTextField surnameField;
-	private JTextField jmbgField;
-	private JTextField addressField;
-	private JTextField idField;
-	private JTextField wageField;
-	private JTextField usernameField;
 	private JTable table;
 	private JScrollPane scrollPane;
 	private JButton addButton;
@@ -53,6 +47,13 @@ public class bibliotekariSwing extends JFrame {
 	private JButton clearButton;
 	private JLabel headingBibliotekari;
 	private DefaultTableModel model;
+	private JTextField nameField;
+	private JTextField surnameField;
+	private JTextField jmbgField;
+	private JTextField addressField;
+	private JTextField idField;
+	private JTextField wageField;
+	private JTextField usernameField;
 	private JTextField passwordField;
 
 	/**
@@ -75,6 +76,7 @@ public class bibliotekariSwing extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+
 	@SuppressWarnings("unchecked")
 	public bibliotekariSwing() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(bibliotekariSwing.class.getResource("/images/library-logo.png")));
@@ -148,122 +150,37 @@ public class bibliotekariSwing extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel name = new JLabel("IME:");
-		name.setForeground(new Color(255, 255, 255));
-		name.setHorizontalAlignment(SwingConstants.RIGHT);
-		name.setBounds(23, 139, 112, 30);
-		panel.add(name);
-		
-		JLabel surname = new JLabel("PREZIME:");
-		surname.setForeground(new Color(255, 255, 255));
-		surname.setHorizontalAlignment(SwingConstants.RIGHT);
-		surname.setBounds(23, 180, 112, 30);
-		panel.add(surname);
-		
-		JLabel jmbg = new JLabel("JMBG:");
-		jmbg.setForeground(new Color(255, 255, 255));
-		jmbg.setHorizontalAlignment(SwingConstants.RIGHT);
-		jmbg.setBounds(23, 221, 112, 30);
-		panel.add(jmbg);
-		
-		JLabel address = new JLabel("ADRESA:");
-		address.setForeground(new Color(255, 255, 255));
-		address.setHorizontalAlignment(SwingConstants.RIGHT);
-		address.setBounds(362, 139, 112, 30);
-		panel.add(address);
-		
-		JLabel id = new JLabel("ID:");
-		id.setForeground(new Color(255, 255, 255));
-		id.setHorizontalAlignment(SwingConstants.RIGHT);
-		id.setBounds(362, 180, 112, 30);
-		panel.add(id);
-		
-		JLabel wage = new JLabel("PLATA:");
-		wage.setForeground(new Color(255, 255, 255));
-		wage.setHorizontalAlignment(SwingConstants.RIGHT);
-		wage.setBounds(362, 221, 112, 30);
-		panel.add(wage);
-		
-		JLabel username = new JLabel("KORISNI\u010CKO IME:");
-		username.setForeground(new Color(255, 255, 255));
-		username.setHorizontalAlignment(SwingConstants.RIGHT);
-		username.setBounds(732, 139, 112, 30);
-		panel.add(username);
-		
-		JLabel password = new JLabel("KORISNI\u010CKA \u0160IFRA:");
-		password.setForeground(new Color(255, 255, 255));
-		password.setHorizontalAlignment(SwingConstants.RIGHT);
-		password.setBounds(732, 180, 112, 30);
-		panel.add(password);
-		
-		JLabel gender = new JLabel("POL:");
-		gender.setForeground(new Color(255, 255, 255));
-		gender.setHorizontalAlignment(SwingConstants.RIGHT);
-		gender.setBounds(732, 221, 112, 30);
-		panel.add(gender);
-		
-		nameField = new JTextField();
-		nameField.setBounds(140, 139, 144, 30);
-		panel.add(nameField);
-		nameField.setColumns(10);
-		
-		surnameField = new JTextField();
-		surnameField.setColumns(10);
-		surnameField.setBounds(140, 180, 144, 30);
-		panel.add(surnameField);
-		
-		jmbgField = new JTextField();
-		jmbgField.setColumns(10);
-		jmbgField.setBounds(140, 221, 144, 30);
-		panel.add(jmbgField);
-		
-		addressField = new JTextField();
-		addressField.setColumns(10);
-		addressField.setBounds(479, 139, 144, 30);
-		panel.add(addressField);
-		
-		idField = new JTextField();
-		idField.setColumns(10);
-		idField.setBounds(479, 180, 144, 30);
-		panel.add(idField);
-		
-		wageField = new JTextField();
-		wageField.setColumns(10);
-		wageField.setBounds(479, 221, 144, 30);
-		panel.add(wageField);
-		
-		usernameField = new JTextField();
-		usernameField.setColumns(10);
-		usernameField.setBounds(849, 139, 144, 30);
-		panel.add(usernameField);
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 347, 1089, 311);
-		panel.add(scrollPane);
-		
 		@SuppressWarnings("rawtypes")
 		JComboBox polovi = new JComboBox();
-		polovi.setBounds(849, 221, 144, 30);
+		polovi.setBounds(745, 125, 144, 30);
 		polovi.setSelectedItem("Izaberite pol");
 		polovi.addItem(Pol.OSTALO);
 		polovi.addItem(Pol.MUŠKI);
 		polovi.addItem(Pol.ŽENSKI);
 		panel.add(polovi);
 		
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(23, 391, 1089, 267);
+		panel.add(scrollPane);
+		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i = table.getSelectedRow();
 				idField.setText(model.getValueAt(i, 0).toString());
+				idField.disable();
 				surnameField.setText(model.getValueAt(i, 1).toString());
 				jmbgField.setText(model.getValueAt(i, 2).toString());
+				jmbgField.disable();
 				addressField.setText(model.getValueAt(i, 3).toString());
 				nameField.setText(model.getValueAt(i, 4).toString());
 				wageField.setText(model.getValueAt(i, 5).toString());
 				usernameField.setText(model.getValueAt(i, 6).toString());
 				passwordField.setText(model.getValueAt(i, 7).toString());
-				polovi.setSelectedItem(model.getValueAt(i, 7).toString());								
+				polovi.setSelectedItem(model.getValueAt(i, 8));								
 			}
 		});
 		table.setBackground(new Color(153, 255, 255));
@@ -323,6 +240,14 @@ public class bibliotekariSwing extends JFrame {
 		
 //---------------------------------------------------------------------------------
 		addButton = new JButton("Dodaj bibliotekara");
+		addButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				idField.enable();
+				jmbgField.enable();
+			}
+		});
 		Biblioteka biblioteka = new Biblioteka();
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -331,25 +256,27 @@ public class bibliotekariSwing extends JFrame {
 					usernameField.getText().equals("") || passwordField.getText().equals("") || polovi.getSelectedItem().equals("")) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
-					
+					return;
 				}
 				else {
-					
+					biblioteka.ucitajBibliotekare();
 					for(Bibliotekar bibliotekar : biblioteka.bibliotekari){
-						
-						if(bibliotekar.getJMBG().contains(idField.getText().toString())){
-							JOptionPane.showMessageDialog(null, "Bibliotekar sa prosleđenim ID-ijem već postoji!");
-							break;
+						if(bibliotekar.getJMBG().contains(jmbgField.getText().toString())){
+							JOptionPane.showMessageDialog(null, "Bibliotekar sa prosleđenim JMBG-om već postoji!");
+							jmbgField.setText("");
+							return;
 						}
 						
 						if(bibliotekar.getId().equals(idField.getText().toString())){
 							JOptionPane.showMessageDialog(null, "Bibliotekar sa prosleđenim ID-ijem već postoji!");
-							
+							idField.setText("");	
+							return;
 						}
 						
 						if(bibliotekar.getKorisničkoIme().equals(usernameField.getText().toString())){
 							JOptionPane.showMessageDialog(null, "Korisničko ime koje ste uneli je već zauzeto!");
-							
+							usernameField.setText("");
+							return;
 						}
 						
 					}	
@@ -363,6 +290,7 @@ public class bibliotekariSwing extends JFrame {
 					row[7] = passwordField.getText();
 					row[8] = polovi.getSelectedItem();
 					model.addRow(row);
+				
 					
 					JOptionPane.showMessageDialog(null, "Bibliotekar uspešno dodat u listu!");
 					
@@ -380,10 +308,18 @@ public class bibliotekariSwing extends JFrame {
 					
 			}
 		});
-		addButton.setBounds(34, 683, 177, 42);
+		addButton.setBounds(906, 338, 177, 30);
 		panel.add(addButton);
 		
 		updateButton = new JButton("Ažuriraj bibliotekara");
+		updateButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				idField.enable();
+				jmbgField.enable();
+			}
+		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
@@ -392,7 +328,6 @@ public class bibliotekariSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(idField.getText(), i, 0);
 						model.setValueAt(surnameField.getText(), i, 1);
 						model.setValueAt(jmbgField.getText(), i, 2);
 						model.setValueAt(addressField.getText(), i, 3);
@@ -420,10 +355,18 @@ public class bibliotekariSwing extends JFrame {
 			}
 		
 		});
-		updateButton.setBounds(243, 683, 177, 42);
+		updateButton.setBounds(47, 691, 177, 34);
 		panel.add(updateButton);
 //---------------------------------------------------------------------------------
 		btnUkloniBibliotekara = new JButton("Ukloni bibliotekara");
+		btnUkloniBibliotekara.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				idField.enable();
+				jmbgField.enable();
+			}
+		});
 		btnUkloniBibliotekara.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
@@ -453,7 +396,7 @@ public class bibliotekariSwing extends JFrame {
 			}
 		});
 //---------------------------------------------------------------------------------
-		btnUkloniBibliotekara.setBounds(450, 683, 177, 42);
+		btnUkloniBibliotekara.setBounds(249, 691, 177, 34);
 		panel.add(btnUkloniBibliotekara);
 		
 		cancelButton = new JButton("Iza\u0111i");
@@ -470,10 +413,18 @@ public class bibliotekariSwing extends JFrame {
 				}
 			}
 		});
-		cancelButton.setBounds(926, 683, 177, 42);
+		cancelButton.setBounds(906, 691, 177, 34);
 		panel.add(cancelButton);
 		
 		clearButton = new JButton("Obriši unos");
+		clearButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				idField.enable();
+				jmbgField.enable();
+			}
+		});
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nameField.setText("");
@@ -487,20 +438,115 @@ public class bibliotekariSwing extends JFrame {
 				polovi.setSelectedItem(Pol.OSTALO);
 			}
 		});
-		clearButton.setBounds(903, 282, 177, 42);
+		clearButton.setBounds(449, 691, 177, 34);
 		panel.add(clearButton);
 		
 		headingBibliotekari = new JLabel("~BIBLIOTEKARI~");
 		headingBibliotekari.setForeground(new Color(255, 255, 255));
 		headingBibliotekari.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 70));
 		headingBibliotekari.setHorizontalAlignment(SwingConstants.CENTER);
-		headingBibliotekari.setBounds(215, 38, 692, 90);
+		headingBibliotekari.setBounds(187, 11, 702, 90);
 		panel.add(headingBibliotekari);
+		
+		JLabel name = new JLabel("IME:");
+		name.setHorizontalAlignment(SwingConstants.LEFT);
+		name.setForeground(Color.WHITE);
+		name.setBounds(187, 100, 112, 30);
+		panel.add(name);
+		
+		nameField = new JTextField();
+		nameField.setColumns(10);
+		nameField.setBounds(187, 125, 144, 30);
+		panel.add(nameField);
+		
+		JLabel surname = new JLabel("PREZIME:");
+		surname.setHorizontalAlignment(SwingConstants.LEFT);
+		surname.setForeground(Color.WHITE);
+		surname.setBounds(187, 154, 112, 30);
+		panel.add(surname);
+		
+		surnameField = new JTextField();
+		surnameField.setColumns(10);
+		surnameField.setBounds(187, 179, 144, 30);
+		panel.add(surnameField);
+		
+		JLabel jmbg = new JLabel("JMBG:");
+		jmbg.setHorizontalAlignment(SwingConstants.LEFT);
+		jmbg.setForeground(Color.WHITE);
+		jmbg.setBounds(187, 207, 112, 30);
+		panel.add(jmbg);
+		
+		jmbgField = new JTextField();
+		jmbgField.setColumns(10);
+		jmbgField.setBounds(187, 231, 144, 30);
+		panel.add(jmbgField);
+		
+		JLabel address = new JLabel("ADRESA:");
+		address.setHorizontalAlignment(SwingConstants.LEFT);
+		address.setForeground(Color.WHITE);
+		address.setBounds(187, 258, 112, 30);
+		panel.add(address);
+		
+		addressField = new JTextField();
+		addressField.setColumns(10);
+		addressField.setBounds(187, 281, 144, 30);
+		panel.add(addressField);
+		
+		JLabel id = new JLabel("ID:");
+		id.setHorizontalAlignment(SwingConstants.CENTER);
+		id.setForeground(Color.WHITE);
+		id.setBounds(465, 315, 144, 30);
+		panel.add(id);
+		
+		idField = new JTextField();
+		idField.setColumns(10);
+		idField.setBounds(465, 338, 144, 30);
+		panel.add(idField);
+		
+		JLabel gender = new JLabel("POL:");
+		gender.setHorizontalAlignment(SwingConstants.LEFT);
+		gender.setForeground(Color.WHITE);
+		gender.setBounds(745, 100, 112, 30);
+		panel.add(gender);
+		
+		
+		JLabel wage = new JLabel("PLATA:");
+		wage.setHorizontalAlignment(SwingConstants.LEFT);
+		wage.setForeground(Color.WHITE);
+		wage.setBounds(745, 154, 112, 30);
+		panel.add(wage);
+		
+		wageField = new JTextField();
+		wageField.setColumns(10);
+		wageField.setBounds(745, 179, 144, 30);
+		panel.add(wageField);
+		
+		JLabel username = new JLabel("KORISNIČKO IME:");
+		username.setHorizontalAlignment(SwingConstants.LEFT);
+		username.setForeground(Color.WHITE);
+		username.setBounds(745, 207, 112, 30);
+		panel.add(username);
+		
+		usernameField = new JTextField();
+		usernameField.setColumns(10);
+		usernameField.setBounds(745, 231, 144, 30);
+		panel.add(usernameField);
+		
+		JLabel password = new JLabel("KORISNIČKA ŠIFRA:");
+		password.setHorizontalAlignment(SwingConstants.LEFT);
+		password.setForeground(Color.WHITE);
+		password.setBounds(745, 258, 112, 30);
+		panel.add(password);
 		
 		passwordField = new JTextField();
 		passwordField.setColumns(10);
-		passwordField.setBounds(849, 180, 144, 30);
+		passwordField.setBounds(745, 281, 144, 30);
 		panel.add(passwordField);
+		
+		JLabel picLabel = new JLabel("");
+		picLabel.setIcon(new ImageIcon(bibliotekariSwing.class.getResource("/images/librarianAvatar.png")));
+		picLabel.setBounds(430, 100, 210, 210);
+		panel.add(picLabel);
 		
 	}
 }

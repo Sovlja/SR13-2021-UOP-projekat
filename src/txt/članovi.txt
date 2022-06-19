@@ -1,1 +1,1 @@
-Vasilije|Markovic|2212003123213|Boj na Kosovu 1389|69969691|174829b/7|2021-05-15|14|false|MUŠKI|789987|false
+Vasilije|Markovic|2212003123213|Boj na Kosovu 1389|69969691|1747b|2021-05-15|14|true|MUŠKI|789987|false

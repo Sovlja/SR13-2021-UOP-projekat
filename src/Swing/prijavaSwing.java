@@ -14,8 +14,10 @@ import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.awt.Toolkit;
 
 import projekat.Bibliotekar;
@@ -77,9 +79,9 @@ public class prijavaSwing extends JFrame {
 		panel.add(lblNewLabel_1);
 		
 		Button button = new Button("Prijava");
-		button.addActionListener(new ActionListener() {
+		button.addMouseListener(new MouseAdapter() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void mouseClicked(MouseEvent e) {
 				
 				String username = usernameUnos.getText().trim();
 				String lozinka = new String(lozinkaUnos.getPassword()).trim();
@@ -92,10 +94,8 @@ public class prijavaSwing extends JFrame {
 					Bibliotekar prijavljeni = b.loginBibliotekar(username, lozinka);
 					if(prijavljeni.getKorisničkoIme().equals(String.valueOf(username)) || prijavljeni.getLozinka().equals(String.valueOf(lozinka))) {
 						JOptionPane.showMessageDialog(null, "Uspešna prijava!");
-						prijavaSwing.this.dispose();
-						prijavaSwing.this.setVisible(false);
-						naslovnaSwing gp = new naslovnaSwing();
-						gp.setVisible(true);
+						dispose();
+						naslovnaSwing.main(null);
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "Pogrešni login podaci.", "Greška", JOptionPane.WARNING_MESSAGE);

@@ -212,7 +212,7 @@ public class Biblioteka {
 
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS BIBLIOTEKARA U FAJL bibliotekari.txt --------------
-	protected void upisiBibliotekare() {
+	public void upisiBibliotekare() {
 			
 			String bibliotekarLinija = "";
 			for (Bibliotekar bibliotekar : this.bibliotekari) {
@@ -348,7 +348,7 @@ public class Biblioteka {
 
 	}
 //--------------CRUD-abilnost ADMIN--------------
-	protected void ucitajAdministratore() {
+	public void ucitajAdministratore() {
 		try {
 			File adminFile = new File("src/txt/administratori.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(adminFile));
@@ -521,7 +521,7 @@ public class Biblioteka {
 		this.upisiBibliotekare();
 	}
 //--------------CRUD-abilnost ŽANR--------------
-	protected void učitajŽanrove() {
+	public void učitajŽanrove() {
 		try {
 			File žanrFile = new File("src/txt/žanrovi.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(žanrFile));
@@ -587,7 +587,7 @@ public class Biblioteka {
 	}
 	
 //--------------CRUD-abilnost TIP ČLANARINE--------------
-	protected void učitajTipČlanarine() {
+	public void učitajTipČlanarine() {
 		try {
 			File tipČlanarineFile = new File("src/txt/članarina.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(tipČlanarineFile));
@@ -652,7 +652,7 @@ public class Biblioteka {
 		this.upišiČlanarinu();
 	}
 //--------------CRUD-abilnost KNJIGA--------------	
-	protected void učitajKnjige() {
+	public void učitajKnjige() {
 		try {
 			File knjigaFile = new File("src/txt/knjige.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(knjigaFile));
@@ -749,7 +749,7 @@ public class Biblioteka {
 		this.upišiKnjigu();
 	}
 //--------------CRUD-abilnost PRIMERAK KNJIGE--------------
-	protected void učitajPrimerkeKnjiga() {
+	public void učitajPrimerkeKnjiga() {
 		try {
 			File primerakKnjigeFile = new File("src/txt/primerciKnjige.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(primerakKnjigeFile));
@@ -833,7 +833,7 @@ public class Biblioteka {
 		this.upišiPrimerakKnjige();
 	}
 //--------------CRUD-abilnost ČLAN--------------
-	protected void učitajČlanove() {
+	public void učitajČlanove() {
 		try {
 			File članFile = new File("src/txt/članovi.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(članFile));
@@ -937,7 +937,7 @@ public class Biblioteka {
 		this.upišiČlanove();
 	}
 //--------------CRUD-abilnost IZNAJMLJIVANJE--------------
-	protected void učitajIznajmljivanje() {
+	public void učitajIznajmljivanje() {
 		try {
 			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(iznajmljivanjeFile));

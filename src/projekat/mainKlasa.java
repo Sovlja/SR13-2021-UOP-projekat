@@ -45,6 +45,5 @@ public class mainKlasa {
 		System.out.println("TEST IZNAJMLJIVANJE:");
 		biblioteka.učitajIznajmljivanje();
 		System.out.println(biblioteka.getIznajmljivanje());
-		
 	}
 }

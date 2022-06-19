@@ -32,6 +32,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.JComboBox;
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
+
 
 @SuppressWarnings("serial")
 public class adminiSwing extends JFrame {
@@ -75,6 +77,7 @@ public class adminiSwing extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	
 	@SuppressWarnings("unchecked")
 	public adminiSwing() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(adminiSwing.class.getResource("/images/library-logo.png")));
@@ -150,100 +153,100 @@ public class adminiSwing extends JFrame {
 		
 		JLabel name = new JLabel("IME:");
 		name.setForeground(new Color(255, 255, 255));
-		name.setHorizontalAlignment(SwingConstants.RIGHT);
-		name.setBounds(23, 139, 112, 30);
+		name.setHorizontalAlignment(SwingConstants.LEFT);
+		name.setBounds(193, 129, 112, 30);
 		panel.add(name);
 		
 		JLabel surname = new JLabel("PREZIME:");
 		surname.setForeground(new Color(255, 255, 255));
-		surname.setHorizontalAlignment(SwingConstants.RIGHT);
-		surname.setBounds(23, 180, 112, 30);
+		surname.setHorizontalAlignment(SwingConstants.LEFT);
+		surname.setBounds(193, 183, 112, 30);
 		panel.add(surname);
 		
 		JLabel jmbg = new JLabel("JMBG:");
 		jmbg.setForeground(new Color(255, 255, 255));
-		jmbg.setHorizontalAlignment(SwingConstants.RIGHT);
-		jmbg.setBounds(23, 221, 112, 30);
+		jmbg.setHorizontalAlignment(SwingConstants.LEFT);
+		jmbg.setBounds(193, 236, 112, 30);
 		panel.add(jmbg);
 		
 		JLabel address = new JLabel("ADRESA:");
 		address.setForeground(new Color(255, 255, 255));
-		address.setHorizontalAlignment(SwingConstants.RIGHT);
-		address.setBounds(362, 139, 112, 30);
+		address.setHorizontalAlignment(SwingConstants.LEFT);
+		address.setBounds(193, 287, 112, 30);
 		panel.add(address);
 		
 		JLabel id = new JLabel("ID:");
 		id.setForeground(new Color(255, 255, 255));
-		id.setHorizontalAlignment(SwingConstants.RIGHT);
-		id.setBounds(362, 180, 112, 30);
+		id.setHorizontalAlignment(SwingConstants.CENTER);
+		id.setBounds(471, 344, 144, 30);
 		panel.add(id);
 		
 		JLabel wage = new JLabel("PLATA:");
 		wage.setForeground(new Color(255, 255, 255));
-		wage.setHorizontalAlignment(SwingConstants.RIGHT);
-		wage.setBounds(362, 221, 112, 30);
+		wage.setHorizontalAlignment(SwingConstants.LEFT);
+		wage.setBounds(751, 183, 112, 30);
 		panel.add(wage);
 		
 		JLabel username = new JLabel("KORISNI\u010CKO IME:");
 		username.setForeground(new Color(255, 255, 255));
-		username.setHorizontalAlignment(SwingConstants.RIGHT);
-		username.setBounds(732, 139, 112, 30);
+		username.setHorizontalAlignment(SwingConstants.LEFT);
+		username.setBounds(751, 236, 112, 30);
 		panel.add(username);
 		
 		JLabel password = new JLabel("KORISNI\u010CKA \u0160IFRA:");
 		password.setForeground(new Color(255, 255, 255));
-		password.setHorizontalAlignment(SwingConstants.RIGHT);
-		password.setBounds(732, 180, 112, 30);
+		password.setHorizontalAlignment(SwingConstants.LEFT);
+		password.setBounds(751, 287, 112, 30);
 		panel.add(password);
 		
 		JLabel gender = new JLabel("POL:");
 		gender.setForeground(new Color(255, 255, 255));
-		gender.setHorizontalAlignment(SwingConstants.RIGHT);
-		gender.setBounds(732, 221, 112, 30);
+		gender.setHorizontalAlignment(SwingConstants.LEFT);
+		gender.setBounds(751, 129, 112, 30);
 		panel.add(gender);
 		
 		nameField = new JTextField();
-		nameField.setBounds(140, 139, 144, 30);
+		nameField.setBounds(193, 154, 144, 30);
 		panel.add(nameField);
 		nameField.setColumns(10);
 		
 		surnameField = new JTextField();
 		surnameField.setColumns(10);
-		surnameField.setBounds(140, 180, 144, 30);
+		surnameField.setBounds(193, 208, 144, 30);
 		panel.add(surnameField);
 		
 		jmbgField = new JTextField();
 		jmbgField.setColumns(10);
-		jmbgField.setBounds(140, 221, 144, 30);
+		jmbgField.setBounds(193, 260, 144, 30);
 		panel.add(jmbgField);
 		
 		addressField = new JTextField();
 		addressField.setColumns(10);
-		addressField.setBounds(479, 139, 144, 30);
+		addressField.setBounds(193, 310, 144, 30);
 		panel.add(addressField);
 		
 		idField = new JTextField();
 		idField.setColumns(10);
-		idField.setBounds(479, 180, 144, 30);
+		idField.setBounds(471, 367, 144, 30);
 		panel.add(idField);
 		
 		wageField = new JTextField();
 		wageField.setColumns(10);
-		wageField.setBounds(479, 221, 144, 30);
+		wageField.setBounds(751, 208, 144, 30);
 		panel.add(wageField);
 		
 		usernameField = new JTextField();
 		usernameField.setColumns(10);
-		usernameField.setBounds(849, 139, 144, 30);
+		usernameField.setBounds(751, 260, 144, 30);
 		panel.add(usernameField);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(23, 347, 1089, 311);
+		scrollPane.setBounds(23, 408, 1089, 264);
 		panel.add(scrollPane);
 		
 		@SuppressWarnings("rawtypes")
 		JComboBox polovi = new JComboBox();
-		polovi.setBounds(849, 221, 144, 30);
+		polovi.setBounds(751, 154, 144, 30);
 		polovi.setSelectedItem("Izaberite pol");
 		polovi.addItem(Pol.OSTALO);
 		polovi.addItem(Pol.MUŠKI);
@@ -252,18 +255,21 @@ public class adminiSwing extends JFrame {
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i = table.getSelectedRow();
 				idField.setText(model.getValueAt(i, 0).toString());
+				idField.disable();
 				surnameField.setText(model.getValueAt(i, 1).toString());
 				jmbgField.setText(model.getValueAt(i, 2).toString());
+				jmbgField.disable();
 				addressField.setText(model.getValueAt(i, 3).toString());
 				nameField.setText(model.getValueAt(i, 4).toString());
 				wageField.setText(model.getValueAt(i, 5).toString());
 				usernameField.setText(model.getValueAt(i, 6).toString());
 				passwordField.setText(model.getValueAt(i, 7).toString());
-				polovi.setSelectedItem(model.getValueAt(i, 7).toString());								
+				polovi.setSelectedItem(model.getValueAt(i, 8));								
 			}
 		});
 		table.setBackground(new Color(153, 255, 255));
@@ -323,36 +329,51 @@ public class adminiSwing extends JFrame {
 		
 //---------------------------------------------------------------------------------
 		addButton = new JButton("Dodaj admina");
+		addButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				idField.enable();
+				jmbgField.enable();
+			}
+		});
 		Biblioteka biblioteka = new Biblioteka();
+		
+		
 		addButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(nameField.getText().equals("") || surnameField.getText().equals("") || jmbgField.getText().equals("") || 
-					addressField.getText().equals("") || idField.getText().equals("") || wageField.getText().equals("") || 
-					usernameField.getText().equals("") || passwordField.getText().equals("") || polovi.getSelectedItem().equals("")) {
-					
-					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
-					
+						addressField.getText().equals("") || idField.getText().equals("") || wageField.getText().equals("") || 
+						usernameField.getText().equals("") || passwordField.getText().equals("") || polovi.getSelectedItem().equals("")) {
+						
+						JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
+						return;
 				}
 				else {
-					
-					for(Administrator admin : biblioteka.admini){
-						
-						if(admin.getJMBG().contains(idField.getText().toString())){
-							JOptionPane.showMessageDialog(null, "Administrator sa prosleđenim ID-ijem već postoji!");
-							break;
+					biblioteka.ucitajAdministratore();
+					for (Administrator admin : biblioteka.admini) {
+						if(admin.getJMBG().equals(jmbgField.getText().toString())){
+							JOptionPane.showMessageDialog(null, "Administrator sa prosleđenim JMBG-om već postoji!");
+							jmbgField.setText("");
+							return;
 						}
 						
 						if(admin.getId().equals(idField.getText().toString())){
 							JOptionPane.showMessageDialog(null, "Administrator sa prosleđenim ID-ijem već postoji!");
-							
+							idField.setText("");
+							return;
 						}
 						
 						if(admin.getKorisničkoIme().equals(usernameField.getText().toString())){
 							JOptionPane.showMessageDialog(null, "Korisničko ime koje ste uneli je već zauzeto!");
-							
+							usernameField.setText("");
+							return;
 						}
 						
-					}	
+					}
+				}
+				
 					row[0] = idField.getText();
 					row[1] = surnameField.getText();
 					row[2] = jmbgField.getText();
@@ -365,7 +386,7 @@ public class adminiSwing extends JFrame {
 					model.addRow(row);
 					
 					JOptionPane.showMessageDialog(null, "Administrator je uspešno dodat u listu!");
-					
+					System.out.println("2");
 					nameField.setText("");
 					surnameField.setText("");
 					jmbgField.setText("");
@@ -377,13 +398,19 @@ public class adminiSwing extends JFrame {
 					polovi.setSelectedItem(Pol.OSTALO);	
 					
 				}
-					
-			}
 		});
-		addButton.setBounds(34, 683, 177, 42);
+		addButton.setBounds(909, 367, 177, 30);
 		panel.add(addButton);
 		
 		updateButton = new JButton("Ažuriraj admina");
+		updateButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				jmbgField.enable();
+				idField.enable();
+			}
+		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
@@ -392,7 +419,6 @@ public class adminiSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(idField.getText(), i, 0);
 						model.setValueAt(surnameField.getText(), i, 1);
 						model.setValueAt(jmbgField.getText(), i, 2);
 						model.setValueAt(addressField.getText(), i, 3);
@@ -420,10 +446,18 @@ public class adminiSwing extends JFrame {
 			}
 		
 		});
-		updateButton.setBounds(243, 683, 177, 42);
+		updateButton.setBounds(55, 691, 177, 34);
 		panel.add(updateButton);
 //---------------------------------------------------------------------------------
 		removeButton = new JButton("Ukloni admina");
+		removeButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				jmbgField.enable();
+				idField.enable();
+			}
+		});
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
@@ -453,7 +487,7 @@ public class adminiSwing extends JFrame {
 			}
 		});
 //---------------------------------------------------------------------------------
-		removeButton.setBounds(450, 683, 177, 42);
+		removeButton.setBounds(264, 691, 177, 34);
 		panel.add(removeButton);
 		
 		cancelButton = new JButton("Iza\u0111i");
@@ -470,10 +504,18 @@ public class adminiSwing extends JFrame {
 				}
 			}
 		});
-		cancelButton.setBounds(926, 683, 177, 42);
+		cancelButton.setBounds(909, 691, 177, 34);
 		panel.add(cancelButton);
 		
 		clearButton = new JButton("Obriši unos");
+		clearButton.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				jmbgField.enable();
+				idField.enable();
+			}
+		});
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				nameField.setText("");
@@ -487,20 +529,25 @@ public class adminiSwing extends JFrame {
 				polovi.setSelectedItem(Pol.OSTALO);
 			}
 		});
-		clearButton.setBounds(903, 282, 177, 42);
+		clearButton.setBounds(471, 691, 177, 34);
 		panel.add(clearButton);
 		
 		headingAdmini = new JLabel("~ADMINISTRATORI~");
 		headingAdmini.setForeground(new Color(255, 255, 255));
 		headingAdmini.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 70));
 		headingAdmini.setHorizontalAlignment(SwingConstants.CENTER);
-		headingAdmini.setBounds(183, 38, 712, 90);
+		headingAdmini.setBounds(182, 11, 712, 100);
 		panel.add(headingAdmini);
 		
 		passwordField = new JTextField();
 		passwordField.setColumns(10);
-		passwordField.setBounds(849, 180, 144, 30);
+		passwordField.setBounds(751, 310, 144, 30);
 		panel.add(passwordField);
+		
+		JLabel picLabel = new JLabel("");
+		picLabel.setIcon(new ImageIcon(adminiSwing.class.getResource("/images/Webp.net-resizeimage (4).png")));
+		picLabel.setBounds(418, 104, 240, 240);
+		panel.add(picLabel);
 		
 	}
 }

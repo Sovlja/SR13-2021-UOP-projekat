@@ -118,6 +118,13 @@ public class žanroviSwing extends JFrame {
 		admin.add(skladište);
 		
 		JMenuItem knjige = new JMenuItem("Knjige");
+		knjige.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				knjigaSwing.main(null);
+				dispose();
+			}
+		});
 		skladište.add(knjige);
 		
 		JMenuItem članarine = new JMenuItem("\u010Clanarine");

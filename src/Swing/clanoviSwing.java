@@ -345,8 +345,8 @@ public class clanoviSwing extends JFrame {
 				int važenjeUplate = Integer.parseInt(splitovanRed[7]);
 				row[7] = važenjeUplate;
 				
-				Biblioteka b = new Biblioteka();
-				b.getČlanovi();
+			
+				biblioteka.učitajČlanove();
 				
 				if(splitovanRed[8].equals("true")) {
 					row[8] = "aktivan";
@@ -358,8 +358,9 @@ public class clanoviSwing extends JFrame {
 				Pol pol = Pol.valueOf(splitovanRed[9]);
 				row[9] = pol;
 				
-				TipČlanarine tipČlanarine = null;
+				TipČlanarine tipČlanarine = new TipČlanarine();
 				String tipČlanarineID = splitovanRed[10];
+				biblioteka.učitajTipČlanarine();
 				for (TipČlanarine t : biblioteka.tipČlanarine) {
 					if (t.getId().equals(tipČlanarineID)) {
 						tipČlanarine = t;

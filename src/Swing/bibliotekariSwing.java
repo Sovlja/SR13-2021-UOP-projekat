@@ -157,6 +157,7 @@ public class bibliotekariSwing extends JFrame {
 		polovi.addItem(Pol.OSTALO);
 		polovi.addItem(Pol.MUŠKI);
 		polovi.addItem(Pol.ŽENSKI);
+		polovi.setSelectedItem(null);
 		panel.add(polovi);
 		
 		
@@ -253,7 +254,7 @@ public class bibliotekariSwing extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(nameField.getText().equals("") || surnameField.getText().equals("") || jmbgField.getText().equals("") || 
 					addressField.getText().equals("") || idField.getText().equals("") || wageField.getText().equals("") || 
-					usernameField.getText().equals("") || passwordField.getText().equals("") || polovi.getSelectedItem().equals("")) {
+					usernameField.getText().equals("") || passwordField.getText().equals("") || polovi.getSelectedItem().equals(null)) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
 					return;
@@ -302,7 +303,7 @@ public class bibliotekariSwing extends JFrame {
 					wageField.setText("");
 					usernameField.setText("");
 					passwordField.setText("");
-					polovi.setSelectedItem(Pol.OSTALO);	
+					polovi.setSelectedItem(null);	
 					
 				}
 					
@@ -347,7 +348,7 @@ public class bibliotekariSwing extends JFrame {
 					wageField.setText("");
 					usernameField.setText("");
 					passwordField.setText("");
-					polovi.setSelectedItem(Pol.OSTALO);
+					polovi.setSelectedItem(null);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Izaberite bibliotekara za ažuriranje!");
@@ -384,7 +385,7 @@ public class bibliotekariSwing extends JFrame {
 						wageField.setText("");
 						usernameField.setText("");
 						passwordField.setText("");
-						polovi.setSelectedItem(Pol.OSTALO);
+						polovi.setSelectedItem(null);
 						JOptionPane.showMessageDialog(null, "Bibliotekar je uspešno obrisan!");												
 					}
 					
@@ -435,7 +436,7 @@ public class bibliotekariSwing extends JFrame {
 				wageField.setText("");
 				usernameField.setText("");
 				passwordField.setText("");
-				polovi.setSelectedItem(Pol.OSTALO);
+				polovi.setSelectedItem(null);
 			}
 		});
 		clearButton.setBounds(449, 691, 177, 34);

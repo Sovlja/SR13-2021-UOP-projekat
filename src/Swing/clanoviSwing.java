@@ -270,6 +270,7 @@ public class clanoviSwing extends JFrame {
 		polovi.addItem(Pol.OSTALO);
 		polovi.addItem(Pol.MUŠKI);
 		polovi.addItem(Pol.ŽENSKI);
+		polovi.setSelectedItem(null);
 		panel.add(polovi);
 		
 		table = new JTable();
@@ -394,7 +395,7 @@ public class clanoviSwing extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(nameField.getText().equals("") || surnameField.getText().equals("") || jmbgField.getText().equals("") || 
 					addressField.getText().equals("") || idField.getText().equals("") || cardField.getText().equals("") || 
-					lastPaymentField.getText().equals("") || monthsValidField.getText().equals("") || polovi.getSelectedItem().equals("") || passTypeField.getText().equals("")) {
+					lastPaymentField.getText().equals("") || monthsValidField.getText().equals("") || polovi.getSelectedItem().equals(null) || passTypeField.getText().equals("")) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
 					
@@ -441,7 +442,7 @@ public class clanoviSwing extends JFrame {
 						}
 						else {
 							activityCheck.setSelected(false);
-							row[9] = "neaktivan";
+							row[8] = "neaktivan";
 						}
 					}
 					
@@ -462,7 +463,7 @@ public class clanoviSwing extends JFrame {
 					lastPaymentField.setText("");
 					monthsValidField.setText("");
 					activityCheck.setSelected(false);
-					polovi.setSelectedItem(Pol.OSTALO);	
+					polovi.setSelectedItem(null);	
 					passTypeField.setText("");
 					
 				}
@@ -525,7 +526,7 @@ public class clanoviSwing extends JFrame {
 					lastPaymentField.setText("");
 					monthsValidField.setText("");
 					
-					polovi.setSelectedItem(Pol.OSTALO);
+					polovi.setSelectedItem(null);
 					passTypeField.setText("");
 				}
 				else {
@@ -564,7 +565,7 @@ public class clanoviSwing extends JFrame {
 						lastPaymentField.setText("");
 						monthsValidField.setText("");
 						activityCheck.setSelected(false);
-						polovi.setSelectedItem(Pol.OSTALO);
+						polovi.setSelectedItem(null);
 						passTypeField.setText("");
 						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");												
 					}
@@ -617,7 +618,7 @@ public class clanoviSwing extends JFrame {
 				lastPaymentField.setText("");
 				monthsValidField.setText("");
 				activityCheck.setSelected(false);
-				polovi.setSelectedItem(Pol.OSTALO);
+				polovi.setSelectedItem(null);
 			}
 		});
 		clearButton.setBounds(513, 758, 200, 42);

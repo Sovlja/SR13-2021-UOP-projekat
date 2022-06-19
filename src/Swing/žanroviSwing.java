@@ -74,7 +74,7 @@ public class žanroviSwing extends JFrame {
 		setTitle("Žanrovi - Biblioteka");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 930, 737);
+		setBounds(100, 100, 930, 719);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -191,7 +191,7 @@ public class žanroviSwing extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(51, 51, 153));
-		panel.setBounds(0, 0, 921, 676);
+		panel.setBounds(0, 0, 914, 665);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -229,7 +229,7 @@ public class žanroviSwing extends JFrame {
 		panel.add(markField);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(545, 139, 325, 381);
+		scrollPane.setBounds(545, 139, 325, 395);
 		panel.add(scrollPane);
 		
 		table = new JTable();
@@ -282,7 +282,7 @@ public class žanroviSwing extends JFrame {
 		
 		
 //---------------------------------------------------------------------------------
-		addButton = new JButton("Dodaj članarinu");
+		addButton = new JButton("Dodaj žanr");
 		addButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -324,10 +324,10 @@ public class žanroviSwing extends JFrame {
 					
 			}
 		});
-		addButton.setBounds(101, 589, 177, 42);
+		addButton.setBounds(71, 599, 177, 42);
 		panel.add(addButton);
 		
-		updateButton = new JButton("Ažuriraj članarinu");
+		updateButton = new JButton("Ažuriraj žanr");
 		updateButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -358,10 +358,10 @@ public class žanroviSwing extends JFrame {
 			}
 		
 		});
-		updateButton.setBounds(299, 589, 177, 42);
+		updateButton.setBounds(269, 599, 177, 42);
 		panel.add(updateButton);
 //---------------------------------------------------------------------------------
-		removeButton = new JButton("Ukloni članarinu");
+		removeButton = new JButton("Ukloni žanr");
 		removeButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -392,7 +392,7 @@ public class žanroviSwing extends JFrame {
 			}
 		});
 //---------------------------------------------------------------------------------
-		removeButton.setBounds(496, 589, 177, 42);
+		removeButton.setBounds(466, 599, 177, 42);
 		panel.add(removeButton);
 		
 		cancelButton = new JButton("Iza\u0111i");
@@ -409,7 +409,7 @@ public class žanroviSwing extends JFrame {
 				}
 			}
 		});
-		cancelButton.setBounds(693, 589, 177, 42);
+		cancelButton.setBounds(663, 599, 177, 42);
 		panel.add(cancelButton);
 		
 		clearButton = new JButton("Obriši unos");
@@ -427,7 +427,7 @@ public class žanroviSwing extends JFrame {
 				markField.setText("");
 			}
 		});
-		clearButton.setBounds(136, 505, 275, 30);
+		clearButton.setBounds(136, 504, 275, 30);
 		panel.add(clearButton);
 		
 		headingŽanrovi = new JLabel("~ŽANROVI~");

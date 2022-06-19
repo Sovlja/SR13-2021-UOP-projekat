@@ -1,2 +1,2 @@
-Čvorak|Bundalo|435432532453|Šimširova ulica|0120a|57.56|pero123|pero321|MUŠKI|false
-Marko|Kojic|435432543435|Gajeva ulica|0120b|757.65|marko123|marko321|MUŠKI|false
+Čvorak|Bundalo|435432532453|Šimširova ulica|0120a|57.56|admin123|admin321|MUŠKI|false
+Marko|Kojic|435432543435|Gajeva ulica|0120b|757.65|adminka123|adminka321|MUŠKI|false

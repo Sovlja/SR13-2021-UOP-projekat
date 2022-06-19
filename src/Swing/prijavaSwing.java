@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.Toolkit;
 
 import projekat.Bibliotekar;
+import projekat.Administrator;
 import projekat.Biblioteka;
 
 
@@ -80,26 +81,55 @@ public class prijavaSwing extends JFrame {
 		
 		Button button = new Button("Prijava");
 		button.addMouseListener(new MouseAdapter() {
+			@SuppressWarnings("deprecation")
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
+				String username = usernameUnos.getText().toString();
+				String password = lozinkaUnos.getText().toString();
 				
-				String username = usernameUnos.getText().trim();
-				String lozinka = new String(lozinkaUnos.getPassword()).trim();
+				Biblioteka b = new Biblioteka();
 				
-				if(username.equals("") || lozinka.equals("")) {
-					JOptionPane.showMessageDialog(null, "Niste uneli sve podatke za prijavu!", "Greška", JOptionPane.WARNING_MESSAGE);
+				
+				if(username.equals("") || password.equals("")) {
+					JOptionPane.showMessageDialog(null, "Molimo Vas da se prijavite!");
 				}
-				else {
-					Biblioteka b = new Biblioteka();
-					Bibliotekar prijavljeni = b.loginBibliotekar(username, lozinka);
-					if(prijavljeni.getKorisničkoIme().equals(String.valueOf(username)) || prijavljeni.getLozinka().equals(String.valueOf(lozinka))) {
-						JOptionPane.showMessageDialog(null, "Uspešna prijava!");
-						dispose();
-						naslovnaSwing.main(null);
+				else{
+					b.ucitajAdministratore();
+					b.ucitajBibliotekare();
+					for(Administrator a : b.admini) {
+						if(a.getKorisničkoIme().equals(username) && a.getLozinka().equals(password)) {
+							JOptionPane.showMessageDialog(null, "Uspešna prijava!");
+							dispose();
+							naslovnaAdminSwing.main(null);
+							return;
+						}
+						else if(a.getKorisničkoIme().equals(username) && !a.getLozinka().equals(password)) {
+							JOptionPane.showMessageDialog(null, "Netačna lozinka!");
+							JOptionPane.getRootFrame().dispose();
+							
+						}
+						else {
+							for(Bibliotekar bib : b.bibliotekari) {
+								if(bib.getKorisničkoIme().equals(username) && bib.getLozinka().equals(password)) {
+									JOptionPane.showMessageDialog(null, "Uspešna prijava!");
+									dispose();
+									naslovnaSwing.main(null);
+									return;
+								}
+								else if(bib.getKorisničkoIme().equals(username) && !bib.getLozinka().equals(password)) {
+									JOptionPane.showMessageDialog(null, "Netačna lozinka!");
+									JOptionPane.getRootFrame().dispose();
+									return;
+								}
+								else {
+									JOptionPane.showMessageDialog(null, "Unesite validne podatke za prijavu!");
+									return;
+								}
+							}
+						}
 					}
-					else {
-						JOptionPane.showMessageDialog(null, "Pogrešni login podaci.", "Greška", JOptionPane.WARNING_MESSAGE);
-					}
+					
+					
 				}
 			}
 		});

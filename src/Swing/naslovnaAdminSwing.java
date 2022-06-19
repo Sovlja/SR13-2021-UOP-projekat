@@ -10,6 +10,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Toolkit;
@@ -18,12 +20,9 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 
 @SuppressWarnings("serial")
-public class naslovnaSwing extends JFrame {
+public class naslovnaAdminSwing extends JFrame {
 
 	private JPanel contentPane;
 
@@ -34,7 +33,7 @@ public class naslovnaSwing extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					naslovnaSwing frame = new naslovnaSwing();
+					naslovnaAdminSwing frame = new naslovnaAdminSwing();
 					frame.setVisible(true);
 					frame.setResizable(false);
 					frame.setLocationRelativeTo(null);
@@ -48,8 +47,8 @@ public class naslovnaSwing extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public naslovnaSwing() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(naslovnaSwing.class.getResource("/images/library-logo.png")));
+	public naslovnaAdminSwing() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(naslovnaAdminSwing.class.getResource("/images/library-logo.png")));
 		setForeground(Color.BLACK);
 		setTitle("Po\u010Detna - Biblioteka");
 		setBackground(Color.WHITE);
@@ -68,7 +67,6 @@ public class naslovnaSwing extends JFrame {
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
-		zaposleni.setEnabled(false);
 		admin.add(zaposleni);
 		
 		JMenuItem bibliotekari = new JMenuItem("Bibliotekari");
@@ -92,7 +90,6 @@ public class naslovnaSwing extends JFrame {
 		zaposleni.add(admini);
 		
 		JMenu skladište = new JMenu("Skladi\u0161te");
-		skladište.setEnabled(false);
 		admin.add(skladište);
 		
 		JMenuItem knjige = new JMenuItem("Knjige");
@@ -202,43 +199,54 @@ public class naslovnaSwing extends JFrame {
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 26));
 		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setBounds(536, 136, 417, 66);
+		lblNewLabel_1.setBounds(535, 122, 417, 66);
 		naziv.add(lblNewLabel_1);
 		
 		JLabel adresa = new JLabel("Dunavska 1, Novi Sad 21101");
 		adresa.setHorizontalAlignment(SwingConstants.CENTER);
 		adresa.setForeground(Color.WHITE);
 		adresa.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
-		adresa.setBounds(536, 179, 417, 55);
+		adresa.setBounds(535, 165, 417, 55);
 		naziv.add(adresa);
 		
 		JLabel radnoVreme1 = new JLabel("PONEDELJAK/PETAK: 07:30 - 20:00");
 		radnoVreme1.setHorizontalAlignment(SwingConstants.CENTER);
 		radnoVreme1.setForeground(Color.WHITE);
 		radnoVreme1.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 20));
-		radnoVreme1.setBounds(537, 293, 405, 66);
+		radnoVreme1.setBounds(536, 279, 405, 66);
 		naziv.add(radnoVreme1);
 		
 		JLabel radnoVreme2 = new JLabel("SUBOTA: 08:00 - 14:00");
 		radnoVreme2.setHorizontalAlignment(SwingConstants.CENTER);
 		radnoVreme2.setForeground(Color.WHITE);
 		radnoVreme2.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 20));
-		radnoVreme2.setBounds(537, 345, 405, 66);
+		radnoVreme2.setBounds(536, 331, 405, 66);
 		naziv.add(radnoVreme2);
 		
 		JLabel radnoVreme3 = new JLabel("NEDELJA: NERADNA");
 		radnoVreme3.setHorizontalAlignment(SwingConstants.CENTER);
 		radnoVreme3.setForeground(Color.WHITE);
 		radnoVreme3.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 20));
-		radnoVreme3.setBounds(537, 394, 405, 66);
+		radnoVreme3.setBounds(536, 380, 405, 66);
 		naziv.add(radnoVreme3);
 		
 		JLabel adresa_1 = new JLabel("021/ 451 - 233");
 		adresa_1.setHorizontalAlignment(SwingConstants.CENTER);
 		adresa_1.setForeground(Color.WHITE);
 		adresa_1.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
-		adresa_1.setBounds(536, 227, 417, 55);
+		adresa_1.setBounds(535, 213, 417, 55);
 		naziv.add(adresa_1);
+		
+		JButton radnoVremeIzmena = new JButton("Izmeni radno vreme");
+		radnoVremeIzmena.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JOptionPane.showMessageDialog(null, "Ova verzija nema mogućnost izmene radnog vremena!");
+			}
+		});
+		
+		radnoVremeIzmena.setBounds(599, 442, 298, 36);
+		naziv.add(radnoVremeIzmena);
 		
 		JButton cancelButton = new JButton("Izađi");
 		cancelButton.addMouseListener(new MouseAdapter() {
@@ -259,7 +267,7 @@ public class naslovnaSwing extends JFrame {
 				});
 			}
 		});
-		cancelButton.setBounds(627, 471, 238, 46);
+		cancelButton.setBounds(599, 497, 298, 36);
 		naziv.add(cancelButton);
 	}
 }

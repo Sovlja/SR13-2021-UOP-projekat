@@ -102,24 +102,71 @@ public class knjigaSwing extends JFrame {
 		admin.add(zaposleni);
 		
 		JMenuItem bibliotekari = new JMenuItem("Bibliotekari");
+		bibliotekari.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				bibliotekariSwing.main(null);
+				dispose();
+			}
+		});
 		zaposleni.add(bibliotekari);
 		
 		JMenuItem admini = new JMenuItem("Administratori");
+		admini.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				adminiSwing.main(null);
+				dispose();
+			}
+		});
 		zaposleni.add(admini);
 		
 		JMenu skladište = new JMenu("Skladi\u0161te");
 		admin.add(skladište);
 		
 		JMenuItem knjige = new JMenuItem("Knjige");
+		knjige.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				knjigaSwing.main(null);
+				dispose();
+			}
+		});
 		skladište.add(knjige);
 		
 		JMenuItem članarine = new JMenuItem("\u010Clanarine");
+		članarine.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				tipClanarineSwing.main(null);
+				dispose();
+			}
+		});
 		skladište.add(članarine);
 		
 		JMenuItem žanrovi = new JMenuItem("\u017Danrovi");
+		žanrovi.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				žanroviSwing.main(null);
+				dispose();
+			}
+		});
 		skladište.add(žanrovi);
 		
 		JMenuItem odjava = new JMenuItem("Odjavi se");
+		odjava.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int dialogResult = JOptionPane.showConfirmDialog(null, "Da li želite da se odjavite?","Potvrda", dialogButton);
+				
+				if(dialogResult == 0) {
+					prijavaSwing.main(null);
+					dispose();																	
+				}
+			}
+		});
 		admin.add(odjava);
 		
 		JMenu članovi = new JMenu("\u010Clanovi");
@@ -127,9 +174,23 @@ public class knjigaSwing extends JFrame {
 		menuBar.add(članovi);
 		
 		JMenuItem listaČlanova = new JMenuItem("Lista \u010Dlanova");
+		listaČlanova.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				clanoviSwing.main(null);
+				dispose();
+			}
+		});
 		članovi.add(listaČlanova);
 		
 		JMenuItem iznajmljivanja = new JMenuItem("Iznajmljivanja");
+		iznajmljivanja.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				iznajmljivanjeSwing.main(null);
+				dispose();
+			}
+		});
 		članovi.add(iznajmljivanja);
 		
 		JMenu info = new JMenu("Informacije");

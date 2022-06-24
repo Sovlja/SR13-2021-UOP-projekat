@@ -34,12 +34,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
 import java.awt.Toolkit;
 import javax.swing.JRadioButton;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
@@ -63,8 +62,7 @@ public class clanoviSwing extends JFrame {
 	private JLabel headingČlanovi;
 	private DefaultTableModel model;
 	private JTextField monthsValidField;
-	private JTextField passTypeField;
-
+	private Biblioteka biblioteka;
 	/**
 	 * Launch the application.
 	 */
@@ -85,8 +83,9 @@ public class clanoviSwing extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public clanoviSwing() {
+		this.biblioteka = new Biblioteka();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(clanoviSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Članovi - Biblioteka");
 		setResizable(false);
@@ -109,6 +108,7 @@ public class clanoviSwing extends JFrame {
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
+		zaposleni.setEnabled(false);
 		admin.add(zaposleni);
 		
 		JMenuItem bibliotekari = new JMenuItem("Bibliotekari");
@@ -132,6 +132,7 @@ public class clanoviSwing extends JFrame {
 		zaposleni.add(admini);
 		
 		JMenu skladište = new JMenu("Skladi\u0161te");
+		skladište.setEnabled(false);
 		admin.add(skladište);
 		
 		JMenuItem knjige = new JMenuItem("Knjige");
@@ -327,7 +328,6 @@ public class clanoviSwing extends JFrame {
 		scrollPane.setBounds(23, 422, 1137, 311);
 		panel.add(scrollPane);
 		
-		@SuppressWarnings("rawtypes")
 		JComboBox polovi = new JComboBox();
 		polovi.setBounds(243, 354, 144, 30);
 		polovi.addItem(Pol.OSTALO);
@@ -336,17 +336,26 @@ public class clanoviSwing extends JFrame {
 		polovi.setSelectedItem(null);
 		panel.add(polovi);
 		
+		
+		DefaultComboBoxModel tipoviČlanarine = new DefaultComboBoxModel();
+		for (TipČlanarine tip : biblioteka.dobaviNeobrisaneČlanarine()) {
+			tipoviČlanarine.addElement(tip.getNaziv());
+		}
+		JComboBox passTypeCombo = new JComboBox(tipoviČlanarine);
+		passTypeCombo.setBounds(746, 242, 144, 30);
+		passTypeCombo.setSelectedItem(null);
+		panel.add(passTypeCombo);
+		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i = table.getSelectedRow();
 				idField.setText(model.getValueAt(i, 0).toString());
-				idField.disable();
+				idField.setEnabled(false);
 				surnameField.setText(model.getValueAt(i, 1).toString());
 				jmbgField.setText(model.getValueAt(i, 2).toString());
-				jmbgField.disable();
+				jmbgField.setEnabled(false);
 				addressField.setText(model.getValueAt(i, 3).toString());
 				nameField.setText(model.getValueAt(i, 4).toString());
 				cardField.setText(model.getValueAt(i, 5).toString());
@@ -354,11 +363,12 @@ public class clanoviSwing extends JFrame {
 				monthsValidField.setText(model.getValueAt(i, 7).toString());
 				activityCheck.setSelected(model.getValueAt(i, 8).toString().equals("aktivan"));
 				polovi.setSelectedItem(model.getValueAt(i, 9));	
+				passTypeCombo.setSelectedItem(model.getValueAt(i, 10).toString());
 				
-				Biblioteka b = new Biblioteka();
-				b.getČlanovi();
 				
-				for(Član č : b.članovi) {
+				biblioteka.getČlanovi();
+				
+				for(Član č : biblioteka.članovi) {
 					if(č.isAktivan()) {
 						activityCheck.setSelected(true);	
 					}
@@ -378,7 +388,6 @@ public class clanoviSwing extends JFrame {
 		table.setModel(model);
 		scrollPane.setViewportView(table);
 //---------------------------------------------------------------------------------
-		Biblioteka biblioteka = new Biblioteka();
 		try {
 			File članFile = new File("src/txt/članovi.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(članFile));
@@ -461,7 +470,7 @@ public class clanoviSwing extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(nameField.getText().equals("") || surnameField.getText().equals("") || jmbgField.getText().equals("") || 
 					addressField.getText().equals("") || idField.getText().equals("") || cardField.getText().equals("") || 
-					lastPaymentField.getText().equals("") || monthsValidField.getText().equals("") || polovi.getSelectedItem().equals(null) || passTypeField.getText().equals("")) {
+					lastPaymentField.getText().equals("") || monthsValidField.getText().equals("") || polovi.getSelectedItem().equals(null) || passTypeCombo.getSelectedItem().equals(null)) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
 					
@@ -498,29 +507,28 @@ public class clanoviSwing extends JFrame {
 					row[6] = lastPaymentField.getText();
 					row[7] = monthsValidField.getText();
 					
-					Biblioteka b = new Biblioteka();
-					b.getČlanovi();
+					String aktivan = String.valueOf(activityCheck.isSelected());
 					
-					for(Član č : b.članovi) {
-						if(č.isAktivan()) {
-							activityCheck.setSelected(true);
-							row[8] = "aktivan";
-						}
-						else {
-							activityCheck.setSelected(false);
-							row[8] = "neaktivan";
-						}
+					if(aktivan == "true") {
+						row[8] = "aktivan";
 					}
+					else {
+						row[8] = "neaktivan";
+					}
+					
+						
 					
 					
 					row[9] = polovi.getSelectedItem();
-					row[10] = passTypeField.getText();
+					int selected = passTypeCombo.getSelectedIndex();
+					row[10] = passTypeCombo.getSelectedItem();
+					String selectedID = biblioteka.dobaviNeobrisaneČlanarine().get(selected).getId();
 					
 					model.addRow(row);
 					
 					String članLinija = "";
 					
-					članLinija += row[4] + "|" + row[1] + "|" + row[2] + "|" + row[3] + "|" + row[0] + "|" + row[5] + "|" + row[6] + "|" + row[7] + "|" + row[8] + "|" + row[9] + "|" + row[10] + "|" + "false" + "\n";
+					članLinija +=  row[4] + "|" + row[1] + "|" + row[2] + "|" + row[3] + "|" + row[0] + "|" + row[5] + "|" + row[6] + "|" + row[7] + "|" + aktivan + "|" + row[9] + "|" + selectedID + "|" + "false" + "\n";
 					
 					try {
 						File članFile = new File("src/txt/članovi.txt");
@@ -543,7 +551,7 @@ public class clanoviSwing extends JFrame {
 					monthsValidField.setText("");
 					activityCheck.setSelected(false);
 					polovi.setSelectedItem(null);	
-					passTypeField.setText("");
+					passTypeCombo.setSelectedItem(null);
 					
 				}
 					
@@ -569,7 +577,6 @@ public class clanoviSwing extends JFrame {
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
-					
 					if(dialogResult == 0) {
 						
 						
@@ -585,11 +592,20 @@ public class clanoviSwing extends JFrame {
 						izmene[3] = addressField.getText();
 						izmene[5] = cardField.getText();
 						datumIzmene[6] = LocalDate.parse(lastPaymentField.getText());
-						intIzmene[7] = Integer.parseInt(monthsValid.getText());
-						polIzmene[9] = Pol.valueOf(polovi.getSelectedItem().toString());
-						StrČlanarinaIzmene[10] = passTypeField.getText();
+						intIzmene[7] = Integer.parseInt(monthsValidField.getText());
 						
-						biblioteka.ažurirajČlana(članID, StrČlanarinaIzmene, intIzmene, članarinaIzmene, datumIzmene, polIzmene);
+						polIzmene[9] = Pol.valueOf(polovi.getSelectedItem().toString());
+						int selected = passTypeCombo.getSelectedIndex();
+						TipČlanarine članarinaIzmene;
+						if(selected == -1) {
+							članarinaIzmene = biblioteka.dobaviNeobrisaneČlanove().get(i).getTipČlanarine();
+						}
+						else {
+							članarinaIzmene = biblioteka.dobaviNeobrisaneČlanarine().get(selected);
+						}
+						row[10] = passTypeCombo.getSelectedItem();
+						
+						biblioteka.ažurirajČlana(članID, izmene, intIzmene, članarinaIzmene, datumIzmene, polIzmene);
 						
 						JOptionPane.showMessageDialog(null, "Član je uspešno ažuriran!");																	
 					}
@@ -604,7 +620,7 @@ public class clanoviSwing extends JFrame {
 					monthsValidField.setText("");
 					
 					polovi.setSelectedItem(null);
-					passTypeField.setText("");
+					passTypeCombo.setSelectedItem(null);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Izaberite člana za ažuriranje!");
@@ -644,7 +660,7 @@ public class clanoviSwing extends JFrame {
 						monthsValidField.setText("");
 						activityCheck.setSelected(false);
 						polovi.setSelectedItem(null);
-						passTypeField.setText("");
+						passTypeCombo.setSelectedItem(null);
 						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");
 						biblioteka.upišiČlanove();
 					}
@@ -715,13 +731,6 @@ public class clanoviSwing extends JFrame {
 		monthsValidField.setBounds(746, 354, 144, 30);
 		panel.add(monthsValidField);
 		
-		
-		passTypeField = new JTextField();
-		passTypeField.setHorizontalAlignment(SwingConstants.LEFT);
-		passTypeField.setColumns(10);
-		passTypeField.setBounds(746, 242, 144, 30);
-		panel.add(passTypeField);
-		
 		JLabel passType = new JLabel("TIP ČLANARINE:");
 		passType.setHorizontalAlignment(SwingConstants.LEFT);
 		passType.setForeground(Color.WHITE);
@@ -732,6 +741,8 @@ public class clanoviSwing extends JFrame {
 		lblNewLabel.setIcon(new ImageIcon(clanoviSwing.class.getResource("/images/avatarPic.png")));
 		lblNewLabel.setBounds(467, 134, 200, 200);
 		panel.add(lblNewLabel);
+		
+		
 		
 	}
 }

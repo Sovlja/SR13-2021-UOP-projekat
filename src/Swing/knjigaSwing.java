@@ -27,12 +27,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Toolkit;
 import javax.swing.JTextArea;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 
 @SuppressWarnings("serial")
 public class knjigaSwing extends JFrame {
@@ -53,7 +57,7 @@ public class knjigaSwing extends JFrame {
 	private JTextField idField;
 	private JTextField languageField;
 	private JTextField writterField;
-	private JTextField genreField;
+	private Biblioteka biblioteka;
 
 	/**
 	 * Launch the application.
@@ -74,9 +78,12 @@ public class knjigaSwing extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param new Biblioteka() 
 	 */
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public knjigaSwing() {
+		this.biblioteka = new Biblioteka();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(knjigaSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Knjige - Biblioteka");
 		setResizable(false);
@@ -177,7 +184,7 @@ public class knjigaSwing extends JFrame {
 		listaČlanova.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				clanoviSwing.main(null);
+				clanoviAdminSwing.main(null);
 				dispose();
 			}
 		});
@@ -187,7 +194,7 @@ public class knjigaSwing extends JFrame {
 		iznajmljivanja.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				iznajmljivanjeSwing.main(null);
+				iznajmljivanjeAdminSwing.main(null);
 				dispose();
 			}
 		});
@@ -219,6 +226,16 @@ public class knjigaSwing extends JFrame {
 		scrollPane.setBounds(22, 438, 1089, 267);
 		panel.add(scrollPane);
 		
+		biblioteka.učitajŽanrove();
+		DefaultComboBoxModel zanrovi = new DefaultComboBoxModel();
+		for (Žanr ž : biblioteka.dobaviNeobrisaneŽanrove()) {
+			zanrovi.addElement(ž.getOznaka());
+		}
+		JComboBox genreBox = new JComboBox(zanrovi);
+		genreBox.setBounds(746, 241, 270, 30);
+		genreBox.setSelectedItem(null);
+		panel.add(genreBox);
+		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
@@ -231,10 +248,13 @@ public class knjigaSwing extends JFrame {
 				originalHeadingField.setText(model.getValueAt(i, 2).toString());
 				originalHeadingField.disable();
 				yearField.setText(model.getValueAt(i, 3).toString());
+				yearField.disable();
 				textArea.setText(model.getValueAt(i, 4).toString());
 				languageField.setText(model.getValueAt(i, 5).toString());
+				languageField.disable();
 				writterField.setText(model.getValueAt(i, 6).toString());
-				genreField.setText(model.getValueAt(i, 7).toString());							
+				genreBox.setSelectedItem(model.getValueAt(i, 7).toString());
+				genreBox.disable();
 			}
 		});
 		table.setBackground(new Color(153, 255, 255));
@@ -245,8 +265,6 @@ public class knjigaSwing extends JFrame {
 		table.setModel(model);
 		scrollPane.setViewportView(table);
 //---------------------------------------------------------------------------------
-		
-		Biblioteka b = new Biblioteka();
 		try {
 			File knjigeFile = new File("src/txt/knjige.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(knjigeFile));
@@ -254,38 +272,39 @@ public class knjigaSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String ID = splitovanRed[0];
-				row[0] = ID;
-				
-				String naslov = splitovanRed[1];
-				row[1] = naslov;
-				
-				String originalniNaslov = splitovanRed[2];
-				row[2] = originalniNaslov;
-				
-				int godina = Integer.parseInt(splitovanRed[3]);
-				row[3] = godina;
-				
-				String opis = splitovanRed[4];
-				row[4] = opis;
-				
-				String jezik = splitovanRed[5];
-				row[5] = jezik;
-				
-				String pisac = splitovanRed[6];
-				row[6] = pisac;
-				
-				b.učitajŽanrove();
-				Žanr žanr = new Žanr();
-				String žanrID = splitovanRed[7];
-				
-				for (Žanr ž : b.žanrKnjige) {
-					if (ž.getId().equals(žanrID)) {
-						žanr = ž;
-						row[7] = žanr.getOpis();
+				if (splitovanRed[8].equals("false")) {
+					String ID = splitovanRed[0];
+					row[0] = ID;
+					
+					String naslov = splitovanRed[1];
+					row[1] = naslov;
+					
+					String originalniNaslov = splitovanRed[2];
+					row[2] = originalniNaslov;
+					
+					int godina = Integer.parseInt(splitovanRed[3]);
+					row[3] = godina;
+					
+					String opis = splitovanRed[4];
+					row[4] = opis;
+					
+					String jezik = splitovanRed[5];
+					row[5] = jezik;
+					
+					String pisac = splitovanRed[6];
+					row[6] = pisac;
+					
+					Žanr žanr = new Žanr();
+					String žanrID = splitovanRed[7];
+					biblioteka.učitajŽanrove();
+					for (Žanr ž : biblioteka.žanrKnjige) {
+						if (ž.getId().equals(žanrID)) {
+							žanr = ž;
+							row[7] = žanr.getOznaka();
+						}
 					}
+					model.addRow(row);
 				}
-				model.addRow(row);
 				
 			}
 			reader.close();
@@ -305,14 +324,17 @@ public class knjigaSwing extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				originalHeadingField.enable();
+				yearField.enable();
+				writterField.enable();
+				languageField.enable();
+				genreBox.enable();
 			}
 		});
-		Biblioteka biblioteka = new Biblioteka();
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(textArea.getText().equals("") || headingField.getText().equals("") || originalHeadingField.getText().equals("") || 
 					yearField.getText().equals("") || idField.getText().equals("") || languageField.getText().equals("") || 
-					writterField.getText().equals("") || genreField.getText().equals("")) {
+					writterField.getText().equals("") || genreBox.getSelectedItem().equals(null)) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
 					return;
@@ -340,10 +362,25 @@ public class knjigaSwing extends JFrame {
 					row[4] = textArea.getText();
 					row[5] = languageField.getText();
 					row[6] = writterField.getText();
-					row[7] = genreField.getText();
+					int selected = genreBox.getSelectedIndex();
+					row[7] = genreBox.getSelectedItem();
+					String selectedID = biblioteka.dobaviNeobrisaneŽanrove().get(selected).getId();
+					
 					model.addRow(row);
 				
+					String knjigaLinija = "";
 					
+					knjigaLinija += row[0] + "|" + row[1] + "|" + row[2] + "|" + row[3] + "|" + row[4] + "|" + row[5] + "|" + row[6] + "|" + selectedID + "|" + "false" + "\n";
+					
+					try {
+						File članFile = new File("src/txt/knjige.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(članFile, true));
+						writer.write(knjigaLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
 					JOptionPane.showMessageDialog(null, "Knjiga uspešno dodata u listu!");
 					
 					textArea.setText("");
@@ -353,7 +390,7 @@ public class knjigaSwing extends JFrame {
 					idField.setText("");
 					languageField.setText("");
 					writterField.setText("");
-					genreField.setText("");
+					genreBox.setSelectedItem(null);
 				}
 					
 			}
@@ -368,6 +405,10 @@ public class knjigaSwing extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				originalHeadingField.enable();
+				yearField.enable();
+				writterField.enable();
+				languageField.enable();
+				genreBox.enable();
 			}
 		});
 		updateButton.addActionListener(new ActionListener() {
@@ -378,13 +419,15 @@ public class knjigaSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(headingField.getText(), i, 1);
-						model.setValueAt(originalHeadingField.getText(), i, 2);
-						model.setValueAt(yearField.getText(), i, 3);
-						model.setValueAt(textArea.getText(), i, 4);
-						model.setValueAt(languageField.getText(), i, 5);
-						model.setValueAt(writterField.getText(), i, 6);
-						model.setValueAt(genreField.getText(), i, 7);
+						
+						String knjigaID = biblioteka.dobaviNeobrisaneKnjige().get(i).getId();
+						String [] izmene = new String[7];
+						
+						izmene[1] = headingField.getText();
+						izmene[4] = textArea.getText();
+						
+						biblioteka.ažurirajKnjigu(knjigaID, izmene);
+						
 						JOptionPane.showMessageDialog(null, "Knjiga je uspešno ažurirana!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
@@ -395,7 +438,7 @@ public class knjigaSwing extends JFrame {
 					idField.setText("");
 					languageField.setText("");
 					writterField.setText("");
-					genreField.setText("");
+					genreBox.setSelectedItem(null);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Izaberite knjigu za ažuriranje!");
@@ -413,6 +456,10 @@ public class knjigaSwing extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				originalHeadingField.enable();
+				yearField.enable();
+				writterField.enable();
+				languageField.enable();
+				genreBox.enable();
 			}
 		});
 		removeButton.addActionListener(new ActionListener() {
@@ -423,6 +470,7 @@ public class knjigaSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati knjigu?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisaneKnjige().get(i).setJeObrisan(true);
 						model.removeRow(i);
 						textArea.setText("");
 						headingField.setText("");
@@ -431,8 +479,9 @@ public class knjigaSwing extends JFrame {
 						idField.setText("");
 						languageField.setText("");
 						writterField.setText("");
-						genreField.setText("");
-						JOptionPane.showMessageDialog(null, "Knjiga je uspešno obrisana!");												
+						genreBox.setSelectedItem(null);;
+						JOptionPane.showMessageDialog(null, "Knjiga je uspešno obrisana!");
+						biblioteka.upišiKnjigu();
 					}
 					
 					JOptionPane.getRootFrame().dispose();
@@ -467,9 +516,13 @@ public class knjigaSwing extends JFrame {
 		clearButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				originalHeadingField.enable();
+				yearField.enable();
+				writterField.enable();
+				languageField.enable();
+				genreBox.enable();
 			}
 		});
 		clearButton.addActionListener(new ActionListener() {
@@ -481,7 +534,8 @@ public class knjigaSwing extends JFrame {
 				idField.setText("");
 				languageField.setText("");
 				writterField.setText("");
-				genreField.setText("");
+				genreBox.setSelectedItem(null);
+				
 			}
 		});
 		clearButton.setBounds(570, 397, 177, 30);
@@ -573,11 +627,6 @@ public class knjigaSwing extends JFrame {
 		genre.setBounds(746, 216, 112, 30);
 		panel.add(genre);
 		
-		genreField = new JTextField();
-		genreField.setColumns(10);
-		genreField.setBounds(746, 239, 270, 30);
-		panel.add(genreField);
-		
 		JLabel picLabel = new JLabel("");
 		picLabel.setIcon(new ImageIcon(knjigaSwing.class.getResource("/images/book_add.png")));
 		picLabel.setBounds(414, 112, 250, 256);
@@ -593,6 +642,8 @@ public class knjigaSwing extends JFrame {
 		});
 		examplesButton.setBounds(460, 730, 225, 35);
 		panel.add(examplesButton);
+		
+		
 		
 		
 	}

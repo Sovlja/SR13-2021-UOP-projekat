@@ -1,3 +1,2 @@
-N12-M|Fantastika|789987|false
-N13-Mag|Romantika|127994|true
-Fića|Horor|0101|true
+Fantastika|Fantasticno!|789987|false
+Romantika|Romanticno!|113322|true

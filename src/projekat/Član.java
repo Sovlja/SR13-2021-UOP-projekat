@@ -83,6 +83,7 @@ public class Član extends Osoba {
 				+ ", id=" + id + ", pol=" + pol + ", jeObrisan=" + jeObrisan + "]";
 	}
 
+
 	
 
 	

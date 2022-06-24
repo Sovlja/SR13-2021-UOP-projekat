@@ -99,6 +99,7 @@ public class iznajmljivanjeSwing extends JFrame {
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
+		zaposleni.setEnabled(false);
 		admin.add(zaposleni);
 		
 		JMenuItem bibliotekari = new JMenuItem("Bibliotekari");
@@ -122,6 +123,7 @@ public class iznajmljivanjeSwing extends JFrame {
 		zaposleni.add(admini);
 		
 		JMenu skladište = new JMenu("Skladi\u0161te");
+		skladište.setEnabled(false);
 		admin.add(skladište);
 		
 		JMenuItem knjige = new JMenuItem("Knjige");

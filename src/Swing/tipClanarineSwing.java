@@ -172,7 +172,7 @@ public class tipClanarineSwing extends JFrame {
 		listaČlanova.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				clanoviSwing.main(null);
+				clanoviAdminSwing.main(null);
 				dispose();
 			}
 		});
@@ -182,7 +182,7 @@ public class tipClanarineSwing extends JFrame {
 		iznajmljivanja.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				iznajmljivanjeSwing.main(null);
+				iznajmljivanjeAdminSwing.main(null);
 				dispose();
 			}
 		});

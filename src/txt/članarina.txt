@@ -1,1 +1,3 @@
 789987|penzionerski|100|false
+112233|dečji|150|true
+112244|odrasli|250|false

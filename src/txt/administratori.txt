@@ -1,2 +1,5 @@
-Čvorak|Bundalo|435432532453|Šimširova ulica|0120a|57.56|admin123|admin321|MUŠKI|false
-Marko|Kojic|435432543435|Gajeva ulica|0120b|757.65|adminka123|adminka321|MUŠKI|false
+Petar|Šovljanac|1111002800020|Natoševićeva 15|0001|100.25|shovlja123|shovlja321|MUŠKI|true
+Vasilije|Marković|2212002800019|Kosovska 20|0002|450.23|vaske02|vaske20|MUŠKI|true
+Petar|Ajvarusa|123456789012|Natoševićeva 15|0003|100.25|kvrga123|kvrga321|MUŠKI|false
+Burek|Sirac|1130231831213|Milovana 5|0004|435.24|burek123|burek321|ŽENSKI|true
+Peđa|Banjac|0508004800069|Jovana Subotića 12|0005|500.0|coficar123|coficar321|MUŠKI|false

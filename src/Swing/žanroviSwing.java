@@ -26,8 +26,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
@@ -267,16 +269,19 @@ public class žanroviSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String oznaka = splitovanRed[0];
-				row[2] = oznaka;
+				if(splitovanRed[3].equals("false")) {
+					String oznaka = splitovanRed[0];
+					row[2] = oznaka;
+					
+					String opis = splitovanRed[1];
+					row[1] = opis;
+					
+					String ID = splitovanRed[2];
+					row[0] = ID;
+					
+					model.addRow(row);					
+				}
 				
-				String opis = splitovanRed[1];
-				row[1] = opis;
-				
-				String ID = splitovanRed[2];
-				row[0] = ID;
-				
-				model.addRow(row);
 				
 			}
 			reader.close();
@@ -322,7 +327,23 @@ public class žanroviSwing extends JFrame {
 					
 					model.addRow(row);
 					
+					String žanrLinija = "";
+					
+					žanrLinija += row[2] + "|" + row[1] + "|" + row[0] + "|" + "false" + "\n" ;
+					
+					try {
+						File žanrFile = new File("src/txt/žanrovi.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(žanrFile, true));
+						writer.write(žanrLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
+					
+					
 					JOptionPane.showMessageDialog(null, "Žanr uspešno dodat u listu!");
+					
 					
 					descriptionField.setText("");
 					idField.setText("");
@@ -338,20 +359,29 @@ public class žanroviSwing extends JFrame {
 		updateButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 			}
 		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				biblioteka.učitajŽanrove();
 				int i = table.getSelectedRow();
+				
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(descriptionField.getText(), i, 1);
-						model.setValueAt(markField.getText(), i, 2);
+						String žanrID = biblioteka.dobaviNeobrisaneŽanrove().get(i).getId();
+						String[] izmene = new String[3];
+						izmene[1] = markField.getText();
+						izmene[0] = descriptionField.getText();
+						
+					
+						
+						biblioteka.ažurirajŽanr(žanrID, izmene);
+						
 						JOptionPane.showMessageDialog(null, "Žanr je uspešno ažuriran!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
@@ -379,16 +409,19 @@ public class žanroviSwing extends JFrame {
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
+				biblioteka.učitajŽanrove();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati žanr?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisaneŽanrove().get(i).setJeObrisan(true);
 						model.removeRow(i);
 						descriptionField.setText("");
 						idField.setText("");
 						markField.setText("");
-						JOptionPane.showMessageDialog(null, "Žanr je uspešno obrisan!");												
+						JOptionPane.showMessageDialog(null, "Žanr je uspešno obrisan!");	
+						biblioteka.upišiŽanrove();
 					}
 					
 					JOptionPane.getRootFrame().dispose();

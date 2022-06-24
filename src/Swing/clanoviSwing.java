@@ -28,10 +28,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import javax.swing.JComboBox;
 import java.awt.Toolkit;
@@ -248,8 +252,6 @@ public class clanoviSwing extends JFrame {
 		JRadioButton activityCheck = new JRadioButton("AKTIVNOST");
 		activityCheck.setForeground(new Color(255, 255, 255));
 		activityCheck.setBackground(new Color(51, 51, 153));
-		
-		activityCheck.setSelected(true);
 		activityCheck.setBounds(522, 335, 93, 30);
 		panel.add(activityCheck);
 		
@@ -350,6 +352,7 @@ public class clanoviSwing extends JFrame {
 				cardField.setText(model.getValueAt(i, 5).toString());
 				lastPaymentField.setText(model.getValueAt(i, 6).toString());
 				monthsValidField.setText(model.getValueAt(i, 7).toString());
+				activityCheck.setSelected(model.getValueAt(i, 8).toString().equals("aktivan"));
 				polovi.setSelectedItem(model.getValueAt(i, 9));	
 				
 				Biblioteka b = new Biblioteka();
@@ -383,54 +386,56 @@ public class clanoviSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String ime = splitovanRed[0];
-				row[4] = ime;
-				
-				String prezime = splitovanRed[1];
-				row[1] = prezime;
-				
-				String JMBG = splitovanRed[2];
-				row[2] = JMBG;
-				
-				String adresa = splitovanRed[3];
-				row[3] = adresa;
-				
-				String ID = splitovanRed[4];
-				row[0] = ID;
-				
-				String brojČlanskeKarte = splitovanRed[5];
-				row[5] = brojČlanskeKarte;
-				
-				LocalDate datumPoslednjeUplate = LocalDate.parse(splitovanRed[6]);
-				row[6] = datumPoslednjeUplate;
-
-				int važenjeUplate = Integer.parseInt(splitovanRed[7]);
-				row[7] = važenjeUplate;
-				
-			
-				biblioteka.učitajČlanove();
-				
-				if(splitovanRed[8].equals("true")) {
-					row[8] = "aktivan";
-				}
-				else {
-					row[8] = "neaktivan";
-				}
-				
-				Pol pol = Pol.valueOf(splitovanRed[9]);
-				row[9] = pol;
-				
-				TipČlanarine tipČlanarine = new TipČlanarine();
-				String tipČlanarineID = splitovanRed[10];
-				biblioteka.učitajTipČlanarine();
-				for (TipČlanarine t : biblioteka.tipČlanarine) {
-					if (t.getId().equals(tipČlanarineID)) {
-						tipČlanarine = t;
-						row[10] = tipČlanarine.getNaziv();
+				if(splitovanRed[11].equals("false")) {
+					String ime = splitovanRed[0];
+					row[4] = ime;
+					
+					String prezime = splitovanRed[1];
+					row[1] = prezime;
+					
+					String JMBG = splitovanRed[2];
+					row[2] = JMBG;
+					
+					String adresa = splitovanRed[3];
+					row[3] = adresa;
+					
+					String ID = splitovanRed[4];
+					row[0] = ID;
+					
+					String brojČlanskeKarte = splitovanRed[5];
+					row[5] = brojČlanskeKarte;
+					
+					LocalDate datumPoslednjeUplate = LocalDate.parse(splitovanRed[6]);
+					row[6] = datumPoslednjeUplate;
+					
+					int važenjeUplate = Integer.parseInt(splitovanRed[7]);
+					row[7] = važenjeUplate;
+					
+					
+					biblioteka.učitajČlanove();
+					
+					if(splitovanRed[8].equals("true")) {
+						row[8] = "aktivan";
 					}
+					else {
+						row[8] = "neaktivan";
+					}
+					
+					Pol pol = Pol.valueOf(splitovanRed[9]);
+					row[9] = pol;
+					
+					TipČlanarine tipČlanarine = new TipČlanarine();
+					String tipČlanarineID = splitovanRed[10];
+					biblioteka.učitajTipČlanarine();
+					for (TipČlanarine t : biblioteka.tipČlanarine) {
+						if (t.getId().equals(tipČlanarineID)) {
+							tipČlanarine = t;
+							row[10] = tipČlanarine.getNaziv();
+						}
+					}
+					
+					model.addRow(row);
 				}
-				
-				model.addRow(row);
 
 			}
 			reader.close();
@@ -513,6 +518,19 @@ public class clanoviSwing extends JFrame {
 					
 					model.addRow(row);
 					
+					String članLinija = "";
+					
+					članLinija += row[4] + "|" + row[1] + "|" + row[2] + "|" + row[3] + "|" + row[0] + "|" + row[5] + "|" + row[6] + "|" + row[7] + "|" + row[8] + "|" + row[9] + "|" + row[10] + "|" + "false" + "\n";
+					
+					try {
+						File članFile = new File("src/txt/članovi.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(članFile, true));
+						writer.write(članLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
 					JOptionPane.showMessageDialog(null, "Član uspešno dodat u listu!");
 					
 					nameField.setText("");
@@ -545,36 +563,34 @@ public class clanoviSwing extends JFrame {
 		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				biblioteka.učitajČlanove();
+				biblioteka.učitajTipČlanarine();
 				int i = table.getSelectedRow();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(surnameField.getText(), i, 1);
-						model.setValueAt(jmbgField.getText(), i, 2);
-						model.setValueAt(addressField.getText(), i, 3);
-						model.setValueAt(nameField.getText(), i, 4);
-						model.setValueAt(cardField.getText(), i, 5);
-						model.setValueAt(lastPaymentField.getText(), i, 6);
-						model.setValueAt(monthsValidField.getText(), i, 7);
 						
-//						Biblioteka b = new Biblioteka();
-//						b.getČlanovi();
-//						
-//						for(Član č : b.članovi) {
-//							if(č.isAktivan()) {
-//								activityCheck.setSelected(true);
-//								row[8] = "aktivan";
-//							}
-//							else {
-//								activityCheck.setSelected(false);
-//								row[8] = "neaktivan";
-//							}
-//						}
 						
-						model.setValueAt(polovi.getSelectedItem(), i, 9);
-						model.setValueAt(passTypeField.getText(), i, 10);
+						String članID = biblioteka.dobaviNeobrisaneČlanove().get(i).getId();
+						String[] izmene = new String[11];
+						Integer[] intIzmene = new Integer[8];
+						LocalDate[] datumIzmene = new LocalDate[7];
+						Pol[] polIzmene = new Pol[10];
+						
+						
+						izmene[0] = nameField.getText();
+						izmene[1] = surnameField.getText();
+						izmene[3] = addressField.getText();
+						izmene[5] = cardField.getText();
+						datumIzmene[6] = LocalDate.parse(lastPaymentField.getText());
+						intIzmene[7] = Integer.parseInt(monthsValid.getText());
+						polIzmene[9] = Pol.valueOf(polovi.getSelectedItem().toString());
+						StrČlanarinaIzmene[10] = passTypeField.getText();
+						
+						biblioteka.ažurirajČlana(članID, StrČlanarinaIzmene, intIzmene, članarinaIzmene, datumIzmene, polIzmene);
+						
 						JOptionPane.showMessageDialog(null, "Član je uspešno ažuriran!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
@@ -616,6 +632,7 @@ public class clanoviSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati člana?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisaneČlanove().get(i).setJeObrisan(true);
 						model.removeRow(i);
 						nameField.setText("");
 						surnameField.setText("");
@@ -628,7 +645,8 @@ public class clanoviSwing extends JFrame {
 						activityCheck.setSelected(false);
 						polovi.setSelectedItem(null);
 						passTypeField.setText("");
-						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");												
+						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");
+						biblioteka.upišiČlanove();
 					}
 					
 					JOptionPane.getRootFrame().dispose();

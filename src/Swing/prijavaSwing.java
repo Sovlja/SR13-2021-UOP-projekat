@@ -89,13 +89,13 @@ public class prijavaSwing extends JFrame {
 				
 				Biblioteka b = new Biblioteka();
 				
+				b.ucitajAdministratore();
+				b.ucitajBibliotekare();
 				
 				if(username.equals("") || password.equals("")) {
 					JOptionPane.showMessageDialog(null, "Molimo Vas da se prijavite!");
 				}
 				else{
-					b.ucitajAdministratore();
-					b.ucitajBibliotekare();
 					for(Administrator a : b.admini) {
 						if(a.getKorisničkoIme().equals(username) && a.getLozinka().equals(password)) {
 							JOptionPane.showMessageDialog(null, "Uspešna prijava!");
@@ -103,22 +103,12 @@ public class prijavaSwing extends JFrame {
 							naslovnaAdminSwing.main(null);
 							return;
 						}
-						else if(a.getKorisničkoIme().equals(username) && !a.getLozinka().equals(password)) {
-							JOptionPane.showMessageDialog(null, "Netačna lozinka!");
-							JOptionPane.getRootFrame().dispose();
-							
-						}
 						else {
 							for(Bibliotekar bib : b.bibliotekari) {
 								if(bib.getKorisničkoIme().equals(username) && bib.getLozinka().equals(password)) {
 									JOptionPane.showMessageDialog(null, "Uspešna prijava!");
 									dispose();
 									naslovnaSwing.main(null);
-									return;
-								}
-								else if(bib.getKorisničkoIme().equals(username) && !bib.getLozinka().equals(password)) {
-									JOptionPane.showMessageDialog(null, "Netačna lozinka!");
-									JOptionPane.getRootFrame().dispose();
 									return;
 								}
 								else {

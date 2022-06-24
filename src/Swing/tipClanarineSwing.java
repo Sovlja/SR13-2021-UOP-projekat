@@ -26,8 +26,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
@@ -267,15 +269,17 @@ public class tipClanarineSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String ID = splitovanRed[0];
-				row[0] = ID;
-				
-				String naziv = splitovanRed[1];
-				row[1] = naziv;
-				int cena = Integer.parseInt(splitovanRed[2]);
-				row[2] = cena;
-				
-				model.addRow(row);
+				if(splitovanRed[3].equals("false")) {
+					String ID = splitovanRed[0];
+					row[0] = ID;
+					
+					String naziv = splitovanRed[1];
+					row[1] = naziv;
+					int cena = Integer.parseInt(splitovanRed[2]);
+					row[2] = cena;
+					
+					model.addRow(row);					
+				}
 				
 			}
 			reader.close();
@@ -321,6 +325,20 @@ public class tipClanarineSwing extends JFrame {
 					
 					model.addRow(row);
 					
+					String tipČlanarineLinija = "";
+					
+					tipČlanarineLinija += row[0] + "|" + row[1] + "|" + row[2] + "|" + "false" + "\n";
+					
+					try {
+						File tipČlanarineFile = new File("src/txt/članarina.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(tipČlanarineFile, true));
+						writer.write(tipČlanarineLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
+					
 					JOptionPane.showMessageDialog(null, "Članarina uspešno dodata u listu!");
 					
 					nameField.setText("");
@@ -337,20 +355,27 @@ public class tipClanarineSwing extends JFrame {
 		updateButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 			}
 		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				biblioteka.učitajTipČlanarine();
 				int i = table.getSelectedRow();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(nameField.getText(), i, 1);
-						model.setValueAt(priceField.getText(), i, 2);
+						String članarinaID = biblioteka.dobaviNeobrisaneČlanarine().get(i).getId();
+						String[] izmene = new String[2];
+						Integer[] intIzmene = new Integer[3];
+						izmene[1] = nameField.getText();
+						intIzmene[2] = Integer.parseInt(priceField.getText());
+						
+						
+						biblioteka.ažurirajČlanarinu(članarinaID, izmene, intIzmene);
 						JOptionPane.showMessageDialog(null, "Tip članarine je uspešno ažuriran!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
@@ -378,16 +403,19 @@ public class tipClanarineSwing extends JFrame {
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
+				biblioteka.učitajTipČlanarine();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati članarinu?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisaneČlanarine().get(i).setjeObrisan(true);
 						model.removeRow(i);
 						nameField.setText("");
 						idField.setText("");
 						priceField.setText("");
-						JOptionPane.showMessageDialog(null, "Tip članarine je uspešno obrisan!");												
+						JOptionPane.showMessageDialog(null, "Tip članarine je uspešno obrisan!");
+						biblioteka.upišiČlanarinu();
 					}
 					
 					JOptionPane.getRootFrame().dispose();

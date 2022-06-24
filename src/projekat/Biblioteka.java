@@ -192,7 +192,7 @@ public class Biblioteka {
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE PRIMERAKA KNJIGA IZ FAJLA primerciKnjiga.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE EVIDENCIJE O IZNAJMLJIVANJU IZ FAJLA iznajmljivanje.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS ADMINISTRATORA U FAJL administratori.txt --------------
-	protected void upisiAdministratore() {
+	public void upisiAdministratore() {
 		
 		String adminLinija = "";
 		for (Administrator administrator : this.admini) {
@@ -211,6 +211,86 @@ public class Biblioteka {
 		
 
 	}
+	
+	public ArrayList<Administrator> dobaviNeobrisaneAdmine(){
+		this.ucitajAdministratore();
+		ArrayList<Administrator> neobrisaniAdmini = new ArrayList<Administrator>();
+		for (Administrator admin : this.admini) {
+			if(!admin.isJeObrisan()) {
+				neobrisaniAdmini.add(admin);
+			}
+		}
+		return neobrisaniAdmini;
+	}
+	
+	
+	
+	public ArrayList<Član> dobaviNeobrisaneČlanove(){
+		this.učitajČlanove();
+		ArrayList<Član> neobrisaniČlanovi = new ArrayList<Član>();
+		for (Član član : this.članovi) {
+			if(!član.isJeObrisan()) {
+				neobrisaniČlanovi.add(član);
+			}
+		}
+		return neobrisaniČlanovi;
+	}
+	
+	public ArrayList<TipČlanarine> dobaviNeobrisaneČlanarine(){
+		this.učitajTipČlanarine();
+		ArrayList<TipČlanarine> neobrisaneČlanarine = new ArrayList<TipČlanarine>();
+		for (TipČlanarine članarina : this.tipČlanarine) {
+			if(!članarina.isjeObrisan()) {
+				neobrisaneČlanarine.add(članarina);
+			}
+		}
+		return neobrisaneČlanarine;
+	}
+	
+	public ArrayList<Knjiga> dobaviNeobrisaneKnjige(){
+		this.učitajKnjige();
+		ArrayList<Knjiga> neobrisaneKnjige = new ArrayList<Knjiga>();
+		for (Knjiga knjiga : this.knjige) {
+			if(!knjiga.isJeObrisan()) {
+				neobrisaneKnjige.add(knjiga);
+			}
+		}
+		return neobrisaneKnjige;
+	}
+	
+	public ArrayList<PrimerakKnjige> dobaviNeobrisanePrimerke(){
+		this.učitajPrimerkeKnjiga();
+		ArrayList<PrimerakKnjige> neobrisaniPrimerci = new ArrayList<PrimerakKnjige>();
+		for (PrimerakKnjige primerak : this.primerakKnjige) {
+			if(!primerak.isJeObrisan()) {
+				neobrisaniPrimerci.add(primerak);
+			}
+		}
+		return neobrisaniPrimerci;
+	}
+	
+	public ArrayList<Žanr> dobaviNeobrisaneŽanrove(){
+		this.učitajŽanrove();
+		ArrayList<Žanr> neobrisaniŽanrovi = new ArrayList<Žanr>();
+		for (Žanr žanr : this.žanrKnjige) {
+			if(!žanr.isJeObrisan()) {
+				neobrisaniŽanrovi.add(žanr);
+			}
+		}
+		return neobrisaniŽanrovi;
+	}
+	
+	public ArrayList<Iznajmljivanje> dobaviNeobrisanaIznajmljivanja(){
+		this.učitajIznajmljivanje();
+		ArrayList<Iznajmljivanje> neobrisanaIznajmljivanja = new ArrayList<Iznajmljivanje>();
+		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
+			if(!iznajmljivanje.isJeObrisan()) {
+				neobrisanaIznajmljivanja.add(iznajmljivanje);
+			}
+		}
+		return neobrisanaIznajmljivanja;
+	}
+	
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS BIBLIOTEKARA U FAJL bibliotekari.txt --------------
 	public void upisiBibliotekare() {
 			
@@ -231,8 +311,19 @@ public class Biblioteka {
 			
 	
 		}
+	
+	public ArrayList<Bibliotekar> dobaviNeobrisaneBibliotekare(){
+		this.ucitajBibliotekare();
+		ArrayList<Bibliotekar> neobrisaniBibliotekari = new ArrayList<Bibliotekar>();
+		for (Bibliotekar bibliotekar : this.bibliotekari) {
+			if(!bibliotekar.isJeObrisan()) {
+				neobrisaniBibliotekari.add(bibliotekar);
+			}
+		}
+		return neobrisaniBibliotekari;
+	}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS ČLANOVA U FAJL članovi.txt --------------
-	protected void upišiČlanove() {
+	public void upišiČlanove() {
 			
 			String članLinija = "";
 			for (Član član : this.članovi) {
@@ -252,7 +343,7 @@ public class Biblioteka {
 	
 		}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS ŽANROVA U FAJL žanrovi.txt --------------
-	protected void upišiŽanrove() {
+	public void upišiŽanrove() {
 		
 		String žanrLinija = "";
 		for (Žanr žanr : this.žanrKnjige) {
@@ -271,7 +362,7 @@ public class Biblioteka {
 
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS TIPOVA ČLANARINE U FAJL članarina.txt --------------
-	protected void upišiČlanarinu() {
+	public void upišiČlanarinu() {
 		
 		String članarinaLinija = "";
 		for (TipČlanarine tipČlanarine : this.tipČlanarine) {
@@ -290,7 +381,7 @@ public class Biblioteka {
 
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS KNJIGA U FAJL knjige.txt --------------
-	protected void upišiKnjigu() {
+	public void upišiKnjigu() {
 		
 		String knjigaLinija = "";
 		for (Knjiga knjiga : this.knjige) {
@@ -309,7 +400,7 @@ public class Biblioteka {
 
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS PRIMERAKA KNJIGE U FAJL primerciKnjige.txt --------------
-	protected void upišiPrimerakKnjige() {
+	public void upišiPrimerakKnjige() {
 		
 		String primerakLinija = "";
 		for (PrimerakKnjige primerak : this.primerakKnjige) {
@@ -328,7 +419,7 @@ public class Biblioteka {
 
 	}
 //--------------SLEDEĆA METODA SLUŽI ZA UPIS IZNAJMLJIVANJA U FAJL iznajmljivanje.txt --------------
-	protected void upisiIznajmljivanje() {
+	public void upisiIznajmljivanje() {
 		
 		String iznajmljivanjeLinija = "";
 		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
@@ -370,7 +461,16 @@ public class Biblioteka {
 				
 				
 				Administrator administrator = new Administrator(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
-				this.admini.add(administrator);
+				boolean check = true;
+				for (Administrator admin : this.admini) {
+					if(admin.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {
+					this.admini.add(administrator);					
+				}
 				
 				
 			}
@@ -455,7 +555,16 @@ public class Biblioteka {
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[9]);
 				
 				Bibliotekar bibliotekar = new Bibliotekar(ime, prezime, JMBG, adresa, id, plataDouble, korisničkoIme, lozinka, pol, jeObrisan);
-				this.bibliotekari.add(bibliotekar);
+				boolean check = true;
+				for (Bibliotekar bibl : this.bibliotekari) {
+					if(bibl.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {
+					this.bibliotekari.add(bibliotekar);									
+				}
 				
 			}
 			reader.close();
@@ -534,7 +643,16 @@ public class Biblioteka {
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
 				
 				Žanr žanr = new Žanr(oznaka, opis, id, jeObrisan);
-				this.žanrKnjige.add(žanr);
+				boolean check = true;
+				for (Žanr ž : this.žanrKnjige) {
+					if(ž.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {
+					this.žanrKnjige.add(žanr);									
+				}
 				
 			}
 			reader.close();
@@ -579,8 +697,8 @@ public class Biblioteka {
 		this.učitajŽanrove();
 		for (Žanr žanr : this.žanrKnjige) {
 			if (žanr.getId().equals(id)) {
-				žanr.setOpis(izmene[1]);
-				žanr.setOznaka(izmene[2]);
+				žanr.setOpis(izmene[0]);
+				žanr.setOznaka(izmene[1]);
 			}
 		}
 		this.upišiŽanrove();
@@ -600,7 +718,17 @@ public class Biblioteka {
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[3]);
 				
 				TipČlanarine tipČlanarine = new TipČlanarine(id, naziv, cena, jeObrisan);
-				this.tipČlanarine.add(tipČlanarine);
+				
+				boolean check = true;
+				for (TipČlanarine tc : this.tipČlanarine) {
+					if(tc.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {								
+					this.tipČlanarine.add(tipČlanarine);
+				}
 			}
 			reader.close();
 		} 
@@ -680,7 +808,16 @@ public class Biblioteka {
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[8]);
 				
 				Knjiga knjiga = new Knjiga(id, naslov, originalniNaslov, godinaObjavljivanja, opis, jezikOriginala, autor, žanr, jeObrisan);
-				this.knjige.add(knjiga);
+				boolean check = true;
+				for (Knjiga k : this.knjige) {
+					if(k.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {								
+					this.knjige.add(knjiga);					
+				}
 			}
 			
 			reader.close();
@@ -775,11 +912,21 @@ public class Biblioteka {
 				}
 				
 				PrimerakKnjige primerakKnjige = new PrimerakKnjige(brojStrana, godinaObjavljivanja, jeIznajmljen, naslov, id, jeObrisan, jezik, knjiga, tipPoveza);
-				this.primerakKnjige.add(primerakKnjige);
-			}
+				
+				boolean check = true;
+				for (PrimerakKnjige pk : this.primerakKnjige) {
+					if(pk.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {								
+					this.primerakKnjige.add(primerakKnjige);
+				}
 			
 			reader.close();
 			} 
+		}
 		catch (IOException e) {
 			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
 		}
@@ -866,8 +1013,17 @@ public class Biblioteka {
 				
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[11]);
 				
-				Član član = new Član(ime, prezime, JMBG, adresa, id, brojČlanskeKarte, datumPoslednjeUplate, važenjeUplate, aktivan, pol, tipČlanarine, jeObrisan);
-				this.članovi.add(član);
+				Član član = new Član(ime, prezime, JMBG, adresa, id, brojČlanskeKarte, datumPoslednjeUplate, važenjeUplate, aktivan, pol, tipČlanarine, jeObrisan);		
+				boolean check = true;
+				for (Član č : this.članovi) {
+					if(č.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {								
+					this.članovi.add(član);
+				}
 		
 			}
 			reader.close();
@@ -920,7 +1076,7 @@ public class Biblioteka {
 		}
 	}
 //---------------------------------------------------
-	public void ažurirajČlana(String id, String [] izmene, Integer [] intIzmene, TipČlanarine [] članarinaIzmene, LocalDate [] datumIzmene, Pol [] polIzmene) {
+	public void ažurirajČlana(String id, String [] izmene, Integer [] intIzmene, TipČlanarine članarinaIzmene, LocalDate [] datumIzmene, Pol [] polIzmene) {
 		this.učitajČlanove();
 		for (Član član : this.članovi) {
 			if (član.getId().equals(id)) {
@@ -931,7 +1087,7 @@ public class Biblioteka {
 				član.setDatumPoslednjeUplate(datumIzmene[6]);
 				član.setBrojMeseciVaženjaUplate(intIzmene[7]);
 				član.setPol(polIzmene[9]);
-				član.setTipČlanarine(članarinaIzmene[10]);
+				član.setTipČlanarine(članarinaIzmene);
 			}
 		}
 		this.upišiČlanove();
@@ -988,7 +1144,16 @@ public class Biblioteka {
 				
 						
 				Iznajmljivanje iznajmljivanje = new Iznajmljivanje(id, datumIznajmljivanja, datumVraćanja, zaposleni, članovi, primerak, jeObrisan);
-				this.iznajmljivanje.add(iznajmljivanje);
+				boolean check = true;
+				for (Iznajmljivanje i : this.iznajmljivanje) {
+					if(i.getId().equals(id)) {
+						check = false;
+						break;
+					}
+				}
+				if(check) {								
+					this.iznajmljivanje.add(iznajmljivanje);					
+				}
 			}
 			
 			reader.close();
@@ -1045,25 +1210,5 @@ public class Biblioteka {
 		}
 		this.upisiIznajmljivanje();
 	}
-
-//--------------FUNKCIJA ZA PRIJAVU--------------
-	public Bibliotekar loginBibliotekar(String korisnickoIme, String lozinka) {
-		for(Bibliotekar bibliotekar : bibliotekari) {
-			if(bibliotekar.getKorisničkoIme().equalsIgnoreCase(korisnickoIme) &&
-					bibliotekar.getLozinka().equals(lozinka) && !bibliotekar.isJeObrisan()) {
-				return bibliotekar;
-			}
-		}
-		return null;
-	}
-	
-	public Administrator loginAdmin(String korisnickoIme, String lozinka) {
-		for(Administrator admin : admini) {
-			if(admin.getKorisničkoIme().equalsIgnoreCase(korisnickoIme) &&
-					admin.getLozinka().equals(lozinka) && !admin.isJeObrisan()) {
-				return admin;
-			}
-		}
-		return null;
-	}
 }
+

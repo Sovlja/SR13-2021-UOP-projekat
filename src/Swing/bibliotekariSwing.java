@@ -27,8 +27,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import javax.swing.JComboBox;
 import java.awt.Toolkit;
@@ -261,34 +263,38 @@ public class bibliotekariSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String ime = splitovanRed[0];
-				row[4] = ime;
+				if(splitovanRed[9].equals("false")) {
+					
+					String ime = splitovanRed[0];
+					row[4] = ime;
+					
+					String prezime = splitovanRed[1];
+					row[1] = prezime;
+					
+					String JMBG = splitovanRed[2];
+					row[2] = JMBG;
+					
+					String adresa = splitovanRed[3];
+					row[3] = adresa;
+					
+					String ID = splitovanRed[4];
+					row[0] = ID;
+					
+					double plataDouble = Double.parseDouble(splitovanRed[5]);
+					row[5] = plataDouble;
+					
+					String korisničkoIme = splitovanRed[6];
+					row[6] = korisničkoIme;
+					
+					String lozinka = splitovanRed[7];
+					row[7] = lozinka;
+					
+					Pol pol = Pol.valueOf(splitovanRed[8]);
+					row[8] = pol;
+					
+					model.addRow(row);
+				}
 				
-				String prezime = splitovanRed[1];
-				row[1] = prezime;
-				
-				String JMBG = splitovanRed[2];
-				row[2] = JMBG;
-				
-				String adresa = splitovanRed[3];
-				row[3] = adresa;
-				
-				String ID = splitovanRed[4];
-				row[0] = ID;
-				
-				double plataDouble = Double.parseDouble(splitovanRed[5]);
-				row[5] = plataDouble;
-				
-				String korisničkoIme = splitovanRed[6];
-				row[6] = korisničkoIme;
-				
-				String lozinka = splitovanRed[7];
-				row[7] = lozinka;
-				
-				Pol pol = Pol.valueOf(splitovanRed[8]);
-				row[8] = pol;
-		
-				model.addRow(row);
 				
 			}
 			reader.close();
@@ -353,6 +359,20 @@ public class bibliotekariSwing extends JFrame {
 					row[8] = polovi.getSelectedItem();
 					model.addRow(row);
 				
+					String bibliotekarLinija = "";
+					
+					bibliotekarLinija += row[4] + "|" + row[1] + "|" + row[2] + "|" + row[3] + "|" + 
+							row[0] + "|" + row[5] + "|" + row[6] + "|" + row[7] + "|" + row[8] + "|" + "false" + "\n" ;
+					
+					try {
+						File bibliotekarFile = new File("src/txt/bibliotekari.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(bibliotekarFile, true));
+						writer.write(bibliotekarLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
 					
 					JOptionPane.showMessageDialog(null, "Bibliotekar uspešno dodat u listu!");
 					
@@ -384,20 +404,30 @@ public class bibliotekariSwing extends JFrame {
 		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				biblioteka.ucitajBibliotekare();
 				int i = table.getSelectedRow();
+				
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(surnameField.getText(), i, 1);
-						model.setValueAt(jmbgField.getText(), i, 2);
-						model.setValueAt(addressField.getText(), i, 3);
-						model.setValueAt(nameField.getText(), i, 4);
-						model.setValueAt(wageField.getText(), i, 5);
-						model.setValueAt(usernameField.getText(), i, 6);
-						model.setValueAt(passwordField.getText(), i, 7);
-						model.setValueAt(polovi.getSelectedItem(), i, 8);
+						
+						String bibliotekarID = biblioteka.dobaviNeobrisaneBibliotekare().get(i).getId();
+						String[] izmene = new String[8];
+						izmene[0] = nameField.getText();
+						izmene[1] = surnameField.getText();
+						izmene[3] = addressField.getText();
+						izmene[6] = usernameField.getText();
+						izmene[7] = passwordField.getText();
+						
+						Double[] doubleIzmene = new Double[6];
+						doubleIzmene[5] = Double.parseDouble(wageField.getText());
+						
+						Pol[] polIzmene = new Pol[9];
+						polIzmene[8] = Pol.valueOf(polovi.getSelectedItem().toString());
+						
+						biblioteka.ažurirajBibliotekara(bibliotekarID, izmene, doubleIzmene, polIzmene);
 						JOptionPane.showMessageDialog(null, "Bibliotekar je uspešno ažuriran!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
@@ -432,11 +462,13 @@ public class bibliotekariSwing extends JFrame {
 		btnUkloniBibliotekara.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
+				biblioteka.ucitajBibliotekare();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati bibliotekara?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisaneBibliotekare().get(i).setJeObrisan(true);
 						model.removeRow(i);
 						nameField.setText("");
 						surnameField.setText("");
@@ -447,7 +479,8 @@ public class bibliotekariSwing extends JFrame {
 						usernameField.setText("");
 						passwordField.setText("");
 						polovi.setSelectedItem(null);
-						JOptionPane.showMessageDialog(null, "Bibliotekar je uspešno obrisan!");												
+						JOptionPane.showMessageDialog(null, "Bibliotekar je uspešno obrisan!");		
+						biblioteka.upisiBibliotekare();
 					}
 					
 					JOptionPane.getRootFrame().dispose();

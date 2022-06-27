@@ -6,12 +6,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import projekat.Administrator;
 import projekat.Biblioteka;
+import projekat.Bibliotekar;
 import projekat.Iznajmljivanje;
 import projekat.Član;
 import projekat.PrimerakKnjige;
 import projekat.Zaposleni;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -29,20 +30,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.awt.Toolkit;
-import javax.swing.ImageIcon;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JList;
+import javax.swing.JComboBox;
+
 
 @SuppressWarnings("serial")
 public class iznajmljivanjeSwing extends JFrame {
 
 	private JPanel contentPane;
+	private Biblioteka biblioteka;
 	private JTextField rentDateField;
 	private JTextField returnDateField;
-	private JTextField employerField;
 	private JTextField idField;
 	private JTable table;
 	private JScrollPane scrollPane;
@@ -53,8 +61,13 @@ public class iznajmljivanjeSwing extends JFrame {
 	private JButton clearButton;
 	private JLabel headingČlanovi;
 	private DefaultTableModel model;
-	private JTextField personField;
-	private JTextField exampleField;
+	
+	@SuppressWarnings("rawtypes")
+	public JList listaPrimeraka;
+	public ArrayList<String> imenaPrimeraka;
+	public int selInd = -1;
+	public iznajmljivanjeSwing prozor;
+	
 
 	/**
 	 * Launch the application.
@@ -76,7 +89,11 @@ public class iznajmljivanjeSwing extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public iznajmljivanjeSwing() {
+		this.prozor = this;
+		this.imenaPrimeraka = new ArrayList<String>();
+		this.biblioteka = new Biblioteka();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(iznajmljivanjeSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Iznajmljivanje - Biblioteka");
 		setResizable(false);
@@ -91,11 +108,18 @@ public class iznajmljivanjeSwing extends JFrame {
 		menuBar.setBackground(new Color(204, 204, 255));
 		setJMenuBar(menuBar);
 		
-		JMenu admin = new JMenu("Admin");
+		JMenu admin = new JMenu("Profil");
 		admin.setForeground(new Color(0, 0, 0));
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -204,6 +228,7 @@ public class iznajmljivanjeSwing extends JFrame {
 		
 		JMenuItem oNama = new JMenuItem("O nama");
 		info.add(oNama);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(51, 51, 153));
 		panel.setBounds(0, 0, 1185, 814);
@@ -213,69 +238,95 @@ public class iznajmljivanjeSwing extends JFrame {
 		JLabel rentDate = new JLabel("DATUM IZNAJMLJIVANJA:");
 		rentDate.setForeground(new Color(255, 255, 255));
 		rentDate.setHorizontalAlignment(SwingConstants.LEFT);
-		rentDate.setBounds(150, 116, 163, 30);
+		rentDate.setBounds(91, 119, 163, 30);
 		panel.add(rentDate);
 		
 		JLabel returnDate = new JLabel("DATUM VRAĆANJA:");
 		returnDate.setForeground(new Color(255, 255, 255));
 		returnDate.setHorizontalAlignment(SwingConstants.LEFT);
-		returnDate.setBounds(150, 167, 144, 30);
+		returnDate.setBounds(91, 170, 144, 30);
 		panel.add(returnDate);
 		
 		JLabel employer = new JLabel("ZAPOSLENI:");
 		employer.setForeground(new Color(255, 255, 255));
 		employer.setHorizontalAlignment(SwingConstants.LEFT);
-		employer.setBounds(150, 221, 112, 30);
+		employer.setBounds(328, 170, 112, 30);
 		panel.add(employer);
 		
 		JLabel id = new JLabel("ID:");
 		id.setForeground(new Color(255, 255, 255));
 		id.setHorizontalAlignment(SwingConstants.LEFT);
-		id.setBounds(387, 116, 112, 30);
+		id.setBounds(328, 119, 112, 30);
 		panel.add(id);
-		
-		
-		JLabel example = new JLabel("PRIMERAK:");
-		example.setForeground(new Color(255, 255, 255));
-		example.setHorizontalAlignment(SwingConstants.LEFT);
-		example.setBounds(387, 167, 136, 30);
-		panel.add(example);
 		
 		rentDateField = new JTextField();
 		rentDateField.setHorizontalAlignment(SwingConstants.LEFT);
-		rentDateField.setBounds(150, 138, 163, 30);
+		rentDateField.setBounds(91, 141, 163, 30);
 		panel.add(rentDateField);
 		rentDateField.setColumns(10);
 		
 		returnDateField = new JTextField();
 		returnDateField.setHorizontalAlignment(SwingConstants.LEFT);
 		returnDateField.setColumns(10);
-		returnDateField.setBounds(150, 192, 163, 30);
+		returnDateField.setBounds(91, 195, 163, 30);
 		panel.add(returnDateField);
-		
-		employerField = new JTextField();
-		employerField.setHorizontalAlignment(SwingConstants.LEFT);
-		employerField.setColumns(10);
-		employerField.setBounds(150, 246, 163, 30);
-		panel.add(employerField);
 		
 		idField = new JTextField();
 		idField.setHorizontalAlignment(SwingConstants.LEFT);
 		idField.setColumns(10);
-		idField.setBounds(387, 138, 188, 30);
+		idField.setBounds(328, 141, 163, 30);
 		panel.add(idField);
 		
-		personField = new JTextField();
-		personField.setHorizontalAlignment(SwingConstants.LEFT);
-		personField.setColumns(10);
-		personField.setBounds(150, 299, 163, 30);
-		panel.add(personField);
+		DefaultComboBoxModel zaposlen = new DefaultComboBoxModel();
+		for(Administrator a : biblioteka.dobaviNeobrisaneAdmine()) {
+			zaposlen.addElement(a.getIme() + " " + a.getPrezime());
+		}
+		for(Bibliotekar b : biblioteka.dobaviNeobrisaneBibliotekare()) {
+			zaposlen.addElement(b.getIme() + " " + b.getPrezime());
+		}
 		
-		exampleField = new JTextField();
-		exampleField.setBounds(387, 192, 188, 30);
-		panel.add(exampleField);
-		exampleField.setColumns(10);
+		JComboBox employerBox = new JComboBox(zaposlen);
+		employerBox.setBounds(328, 193, 163, 30);
+		employerBox.setSelectedItem(null);
+		panel.add(employerBox);
 		
+		DefaultComboBoxModel clan = new DefaultComboBoxModel();
+		for (Član č : biblioteka.dobaviNeobrisaneČlanove()) {
+			clan.addElement(č.getIme() + " " + č.getPrezime());
+		}
+		
+		JComboBox clanBox = new JComboBox(clan);
+		clanBox.setBounds(560, 141, 163, 30);
+		clanBox.setSelectedItem(null);
+		panel.add(clanBox);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(91, 288, 632, 108);
+		panel.add(scrollPane_1);
+		
+		this.listaPrimeraka = new JList();
+		scrollPane_1.setViewportView(listaPrimeraka);
+		
+		JButton removeFromListBttn = new JButton("Ukloni primerak");
+		removeFromListBttn.setBounds(737, 350, 144, 23);
+		panel.add(removeFromListBttn);
+		
+		JButton addToListBttn = new JButton("Dodaj primerak");
+		addToListBttn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(selInd == -1) {
+					dodavanjePrimerkaSwing.main(new String[0], prozor);
+				}
+				else {
+					String linija = model.getValueAt(selInd, 5).toString();
+					String[] vrednosti = linija.split(",");
+					dodavanjePrimerkaSwing.main(vrednosti, prozor);					
+				}
+			}
+		});
+		addToListBttn.setBounds(737, 312, 144, 23);
+		panel.add(addToListBttn);
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(23, 422, 1137, 311);
@@ -287,24 +338,42 @@ public class iznajmljivanjeSwing extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int i = table.getSelectedRow();
+				selInd = i;
+				DefaultComboBoxModel prim = new DefaultComboBoxModel();
+				String[] vrednosti = model.getValueAt(i, 5).toString().split(",");
+				if(vrednosti.length > 0) {
+					for (String p : vrednosti) {
+						prim.addElement(p);
+					}					
+				}
+				
 				idField.setText(model.getValueAt(i, 0).toString());
 				idField.disable();
 				rentDateField.setText(model.getValueAt(i, 1).toString());
+				rentDateField.disable();
 				returnDateField.setText(model.getValueAt(i, 2).toString());
-				employerField.setText(model.getValueAt(i, 3).toString());
-				personField.setText(model.getValueAt(i, 4).toString());
-				exampleField.setText(model.getValueAt(i, 5).toString());
+				employerBox.setSelectedItem(model.getValueAt(i, 3).toString());
+				employerBox.disable();
+				clanBox.setSelectedItem(model.getValueAt(i, 4).toString());
+				clanBox.disable();
+				listaPrimeraka.setModel(prim);
+				
+//				listaPrimeraka.setSelectedIndex(i);
+				
 			}
 		});
 		table.setBackground(new Color(153, 255, 255));
 		model = new DefaultTableModel();
 		Object[] column = {"ID", "DATUM IZNAJMLJIVANJA", "DATUM VRAĆANJA", "ZAPOSLENI", "ČLAN", "PRIMERCI"};
-		final Object[] row = new Object[11];
+		final Object[] row = new Object[6];
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
 		scrollPane.setViewportView(table);
+		
+		
+		
+		
 //---------------------------------------------------------------------------------
-		Biblioteka biblioteka = new Biblioteka();
 		
 		try {
 			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
@@ -313,57 +382,64 @@ public class iznajmljivanjeSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String ID = splitovanRed[0];
-				row[0] = ID;
-				
-				LocalDate datumIznajmljivanja = LocalDate.parse(splitovanRed[1]);
-				row[1] = datumIznajmljivanja;
-				
-				LocalDate datumVraćanja = LocalDate.parse(splitovanRed[2]);;
-				row[2] = datumVraćanja;
-				
-				biblioteka.ucitajAdministratore();
-				biblioteka.ucitajBibliotekare();
-				Zaposleni zap = null;
-				String imeZaposlenogID = splitovanRed[3];
+				if(splitovanRed[6].equals("false")) {
 					
-				for (Zaposleni z : biblioteka.bibliotekari) {
-					if(z.getId().equals(imeZaposlenogID)){
-						zap = z;
-						row[3] = zap.getIme() + " " + zap.getPrezime();
-					}	
-				}
-				if (zap == null) {
-					for(Zaposleni z : biblioteka.admini) {
-						if(z.getId().equals(imeZaposlenogID)) {
+					String ID = splitovanRed[0];
+					row[0] = ID;
+					
+					LocalDate datumIznajmljivanja = LocalDate.parse(splitovanRed[1]);
+					row[1] = datumIznajmljivanja;
+					
+					LocalDate datumVraćanja = LocalDate.parse(splitovanRed[2]);;
+					row[2] = datumVraćanja;
+					
+					biblioteka.ucitajAdministratore();
+					biblioteka.ucitajBibliotekare();
+					Zaposleni zap = null;
+					String imeZaposlenogID = splitovanRed[3];
+					
+					for (Zaposleni z : biblioteka.bibliotekari) {
+						if(z.getId().equals(imeZaposlenogID)){
 							zap = z;
 							row[3] = zap.getIme() + " " + zap.getPrezime();
+						}	
+					}
+					if (zap == null) {
+						for(Zaposleni z : biblioteka.admini) {
+							if(z.getId().equals(imeZaposlenogID)) {
+								zap = z;
+								row[3] = zap.getIme() + " " + zap.getPrezime();
+							}
 						}
 					}
-				}
-				
-				biblioteka.učitajČlanove();
-				Član član = null;
-				String strČlanovi = splitovanRed[4];
-				
-				for(Član a : biblioteka.članovi) {
-					if(a.getId().equals(strČlanovi)) {
-						član = a;
-						row[4] = član.getIme() + " " + član.getPrezime();
+					
+					biblioteka.učitajČlanove();
+					Član član = null;
+					String strČlanovi = splitovanRed[4];
+					
+					for(Član a : biblioteka.članovi) {
+						if(a.getId().equals(strČlanovi)) {
+							član = a;
+							row[4] = član.getIme() + " " + član.getPrezime();
+						}
 					}
-				}
-				
-				biblioteka.učitajPrimerkeKnjiga();
-				PrimerakKnjige primerak = null;
-				String strKnjige = splitovanRed[5];
-				
-				for(PrimerakKnjige a : biblioteka.primerakKnjige) {
-					if(a.getId().equals(strKnjige)) {
-						primerak = a;
-						row[5] = primerak.getNazivKnjige();
+					
+					biblioteka.učitajPrimerkeKnjiga();
+					ArrayList<PrimerakKnjige> primerak = new ArrayList<PrimerakKnjige>();
+					String sviPrimerci = "";
+					String strKnjige = splitovanRed[5];
+					for (String idKnjige : strKnjige.split(";")) {
+						
+						for(PrimerakKnjige a : biblioteka.primerakKnjige) {
+							if(a.getId().equals(idKnjige)) {
+								sviPrimerci += a.getNazivKnjige() + ",";
+								primerak.add(a);
+								row[5] = sviPrimerci;
+							}
+						}
 					}
+					model.addRow(row);
 				}
-				model.addRow(row);
 			}
 			
 			reader.close();
@@ -382,13 +458,16 @@ public class iznajmljivanjeSwing extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
+				rentDateField.enable();
+				clanBox.enable();
+				employerBox.enable();
 			}
 		});
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(rentDateField.getText().equals("") || returnDateField.getText().equals("") || employerField.getText().equals("")
-					 || idField.getText().equals("") || exampleField.getText().equals("") || 
-					 personField.getText().equals("")) {
+				if(rentDateField.getText().equals("") || returnDateField.getText().equals("") || employerBox.getSelectedItem().equals(null)
+					 || idField.getText().equals("") || clanBox.getSelectedItem().equals(null) || 
+					 listaPrimeraka.getModel().getSize() == 0) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
 					
@@ -406,26 +485,80 @@ public class iznajmljivanjeSwing extends JFrame {
 					row[0] = idField.getText();
 					row[1] = rentDateField.getText();
 					row[2] = returnDateField.getText();
-					row[3] = employerField.getText();
-					row[4] = personField.getText();
-					row[5] = exampleField.getText();
+					row[3] = employerBox.getSelectedItem().toString();
+					row[4] = clanBox.getSelectedItem();
+					
+					String idČlana = "";
+					for (Član član : biblioteka.dobaviNeobrisaneČlanove()) {
+						if((član.getIme() + " " + član.getPrezime()).equals(clanBox.getSelectedItem().toString())) {
+							idČlana = član.getId();
+						}
+					}
+					
+					String idZaposlenog = "";
+					Zaposleni zaposleni = null;
+					String zaposleniID = (String) row[3];
+					for (Zaposleni z : biblioteka.dobaviNeobrisaneAdmine()) {
+						if(z.getId().equals(zaposleniID)) {
+							zaposleni = z;
+							idZaposlenog = zaposleni.toString();
+						}
+					}
+					
+					if (zaposleni == null) {
+						for(Zaposleni z :biblioteka.dobaviNeobrisaneBibliotekare()) {
+							if(z.getId().equals(zaposleniID)) {
+								zaposleni = z;
+								idZaposlenog = zaposleni.toString();
+								
+							}
+						}
+					}
+					System.out.println(idZaposlenog);
+					
+//					String s = "";
+//					for(String s2 : imenaPrimeraka) {
+//						s += s2 + ", ";
+//					}
+//					row[5] = s;
+					
+					String iznajmljeni = "";
+					for(PrimerakKnjige pk : biblioteka.dobaviNeiznajmljenePrimerke()) {
+						iznajmljeni += pk.getId().toString() + ";"; 
+						row[5] = pk.getNazivKnjige().toString() + ";";
+					}
 					
 					model.addRow(row);
+					
+					String iznajmljivanjeLinija = "";
+					
+					iznajmljivanjeLinija += row[0] + "|" + row[1] + "|" + row[2] + "|" + idZaposlenog + "|" + idČlana + "|" + iznajmljeni
+							+ "|" + "false" + "\n";
+					
+					try {
+						File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(iznajmljivanjeFile, true));
+						writer.write(iznajmljivanjeLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
 					
 					JOptionPane.showMessageDialog(null, "Napravljeno iznajmljivanje!");
 					
 					rentDateField.setText("");
 					returnDateField.setText("");
-					employerField.setText("");
+					employerBox.setSelectedItem(null);
 					idField.setText("");
-					exampleField.setText("");	
-					personField.setText("");
+					clanBox.setSelectedItem(null);
+					listaPrimeraka.removeAll();	
 					
 				}
 					
 			}
 		});
-		addButton.setBounds(387, 375, 188, 36);
+		addButton.setBounds(850, 194, 163, 33);
 		panel.add(addButton);
 		
 		updateButton = new JButton("Ažuriraj iznajmljivanje");
@@ -434,31 +567,41 @@ public class iznajmljivanjeSwing extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
+				rentDateField.enable();
+				clanBox.enable();
+				employerBox.enable();
 			}
 		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int i = table.getSelectedRow();
 				if(i >= 0) {
-					int dialogButton = JOptionPane.YES_NO_OPTION;
-					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
+					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", JOptionPane.YES_NO_OPTION);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(rentDateField.getText(), i, 1);
-						model.setValueAt(returnDateField.getText(), i, 2);
-						model.setValueAt(employerField.getText(), i, 3);
-						model.setValueAt(personField.getText(), i, 4);
-						model.setValueAt(exampleField.getText(), i, 5);
+						
+						String iznajmljivanjeID = model.getValueAt(i, 0).toString();
+						LocalDate datumIzmene = LocalDate.parse(model.getValueAt(i, 2).toString());
+						ArrayList <PrimerakKnjige> primerciKnjige = new ArrayList<PrimerakKnjige>();
+						for (String s : imenaPrimeraka) {
+							System.out.println(s);
+							for(PrimerakKnjige p : biblioteka.primerakKnjige) {
+								if(p.getNazivKnjige().equals(s)) {
+									primerciKnjige.add(p);
+								}
+							}
+						}
+						biblioteka.ažurirajIznajmljivanje(iznajmljivanjeID, datumIzmene, primerciKnjige);
 
 						JOptionPane.showMessageDialog(null, "Iznajmljivanje je uspešno ažurirano!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
 					rentDateField.setText("");
 					returnDateField.setText("");
-					employerField.setText("");
+					employerBox.setSelectedItem(null);
 					idField.setText("");
-					exampleField.setText("");
-					personField.setText("");
+					clanBox.setSelectedItem(null);
+					listaPrimeraka.removeAll();	
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Izaberite člana za ažuriranje!");
@@ -475,6 +618,9 @@ public class iznajmljivanjeSwing extends JFrame {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
+				rentDateField.enable();
+				clanBox.enable();
+				employerBox.enable();
 			}
 		});
 		removeButton.addActionListener(new ActionListener() {
@@ -485,14 +631,15 @@ public class iznajmljivanjeSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati člana?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisanaIznajmljivanja().get(i).setJeObrisan(true);
 						model.removeRow(i);
 						rentDateField.setText("");
 						returnDateField.setText("");
-						employerField.setText("");
+						employerBox.setSelectedItem(null);
 						idField.setText("");
-						exampleField.setText("");
-						personField.setText("");
-						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");												
+						clanBox.setSelectedItem(null);
+						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");	
+						biblioteka.upisiIznajmljivanje();
 					}
 					
 					JOptionPane.getRootFrame().dispose();
@@ -529,16 +676,20 @@ public class iznajmljivanjeSwing extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				idField.enable();
+				rentDateField.enable();
+				clanBox.enable();
+				employerBox.enable();
+				table.clearSelection();
 			}
 		});
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				rentDateField.setText("");
 				returnDateField.setText("");
-				employerField.setText("");
+				employerBox.setSelectedItem(null);
 				idField.setText("");
-				exampleField.setText("");
-				personField.setText("");
+				clanBox.setSelectedItem(null);
+				listaPrimeraka.clearSelection();
 			}
 		});
 		clearButton.setBounds(513, 758, 200, 42);
@@ -553,16 +704,24 @@ public class iznajmljivanjeSwing extends JFrame {
 		
 		
 		
-		JLabel person = new JLabel("ČLAN");
+		JLabel person = new JLabel("ČLAN:");
 		person.setHorizontalAlignment(SwingConstants.LEFT);
 		person.setForeground(Color.WHITE);
-		person.setBounds(150, 274, 112, 30);
+		person.setBounds(560, 116, 112, 30);
 		panel.add(person);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(iznajmljivanjeSwing.class.getResource("/images/rentBook.PNG")));
-		lblNewLabel.setBounds(691, 116, 356, 277);
-		panel.add(lblNewLabel);
+		
+		
+		JLabel lblPrimerci = new JLabel("PRIMERCI:");
+		lblPrimerci.setHorizontalAlignment(SwingConstants.LEFT);
+		lblPrimerci.setForeground(Color.WHITE);
+		lblPrimerci.setBounds(91, 263, 112, 30);
+		panel.add(lblPrimerci);
+		
+		
+		
+		
+		
 		
 		
 		

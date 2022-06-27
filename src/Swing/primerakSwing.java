@@ -29,10 +29,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Toolkit;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
@@ -52,9 +56,9 @@ public class primerakSwing extends JFrame {
 	private DefaultTableModel model;
 	private JTextField headingCopyField;
 	private JTextField printingYearField;
-	private JTextField yearField;
+	private JTextField pagesField;
 	private JTextField idField;
-	private JTextField bookField;
+	private Biblioteka biblioteka;
 
 	/**
 	 * Launch the application.
@@ -79,6 +83,7 @@ public class primerakSwing extends JFrame {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public primerakSwing() {
+		this.biblioteka = new Biblioteka();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(primerakSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Primerci - Biblioteka");
 		setResizable(false);
@@ -98,6 +103,13 @@ public class primerakSwing extends JFrame {
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaAdminSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -242,6 +254,15 @@ public class primerakSwing extends JFrame {
 		headingCopy.setBounds(83, 112, 263, 30);
 		panel.add(headingCopy);
 		
+		DefaultComboBoxModel sveKnjige = new DefaultComboBoxModel();
+		for(Knjiga k : biblioteka.dobaviNeobrisaneKnjige()) {
+			sveKnjige.addElement(k.getOriginalniNaslov());
+		}
+		JComboBox bookBox = new JComboBox(sveKnjige);
+		bookBox.setBounds(746, 137, 297, 30);
+		bookBox.setSelectedItem(null);
+		panel.add(bookBox);
+		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(22, 438, 1089, 267);
 		panel.add(scrollPane);
@@ -256,20 +277,16 @@ public class primerakSwing extends JFrame {
 				idField.disable();
 				headingCopyField.setText(model.getValueAt(i, 1).toString());
 				printingYearField.setText(model.getValueAt(i, 2).toString());
-				yearField.setText(model.getValueAt(i, 3).toString());
-				jezikŠtampe.setSelectedItem(model.getValueAt(i, 4));
-				bookField.setText(model.getValueAt(i, 5).toString());
-				povezi.setSelectedItem(model.getValueAt(i, 6));
+				printingYearField.disable();
+				pagesField.setText(model.getValueAt(i, 3).toString());
+				pagesField.disable();
 				
-				Biblioteka b = new Biblioteka();
-				b.učitajPrimerkeKnjiga();
-				PrimerakKnjige pk = new PrimerakKnjige();
-				if(pk.isIznajmljenost()) {
-					rentCheck.setSelected(rootPaneCheckingEnabled);							
-				}
-				else {
-					rentCheck.setSelected(false);	
-				}
+				jezikŠtampe.setSelectedItem(model.getValueAt(i, 4));
+				jezikŠtampe.disable();
+				bookBox.setSelectedItem(model.getValueAt(i, 5).toString());
+				bookBox.disable();
+				povezi.setSelectedItem(model.getValueAt(i, 6));
+				rentCheck.setSelected(model.getValueAt(i, 7).toString().equals("iznajmljen"));
 			}
 		});
 		table.setBackground(new Color(153, 255, 255));
@@ -281,7 +298,6 @@ public class primerakSwing extends JFrame {
 		scrollPane.setViewportView(table);
 //---------------------------------------------------------------------------------
 		
-		Biblioteka b = new Biblioteka();
 		try {
 			File primerakFile = new File("src/txt/primerciKnjige.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(primerakFile));
@@ -289,50 +305,51 @@ public class primerakSwing extends JFrame {
 			while ((red = reader.readLine()) != null) {
 				String[] splitovanRed = red.split("\\|");
 				
-				String brojStrana = splitovanRed[0];
-				row[3] = brojStrana;
-				
-				String godinaŠtampe = splitovanRed[1];
-				row[2] = godinaŠtampe;
-				
-				boolean iznajmljenost = Boolean.parseBoolean(splitovanRed[2]);
-				
-				if(iznajmljenost == true) {
-					row[7] = "iznajmljen";	
-				}
-				else {
-					row[7] = "nije iznajmljen";
-				}
-				
-				String naziv = splitovanRed[3];
-				row[1] = naziv;
-				
-				String ID = splitovanRed[4];
-				row[0] = ID;
-				
-				Jezik jezik = Jezik.valueOf(splitovanRed[6]); 
-				row[4] = jezik;
-				
-				b.učitajKnjige();
-				Knjiga knjiga = null;
-				String knjigaID = splitovanRed[7];
-				
-				for (Knjiga k : b.knjige) {
-					if (k.getId().equals(knjigaID)) {
-						knjiga = k;
-						row[5] = knjiga.getOriginalniNaslov();
+				if(splitovanRed[5].equals("false")) {
+					String brojStrana = splitovanRed[0];
+					row[3] = brojStrana;
+					
+					String godinaŠtampe = splitovanRed[1];
+					row[2] = godinaŠtampe;
+					
+					boolean iznajmljenost = Boolean.parseBoolean(splitovanRed[2]);
+					
+					if(iznajmljenost == true) {
+						row[7] = "iznajmljen";	
 					}
+					else {
+						row[7] = "nije iznajmljen";
+					}
+					
+					String naziv = splitovanRed[3];
+					row[1] = naziv;
+					
+					String ID = splitovanRed[4];
+					row[0] = ID;
+					
+					Jezik jezik = Jezik.valueOf(splitovanRed[6]); 
+					row[4] = jezik;
+					
+					Knjiga knjiga = new Knjiga();
+					String knjigaID = splitovanRed[7];
+					biblioteka.učitajKnjige();
+					
+					for (Knjiga k : biblioteka.knjige) {
+						if (k.getId().equals(knjigaID)) {
+							knjiga = k;
+							row[5] = knjiga.getOriginalniNaslov();
+						}
+					}
+					
+					TipPoveza povez = TipPoveza.valueOf(splitovanRed[8]);
+					row[6] = povez;
+					model.addRow(row);		
 				}
-				
-				TipPoveza povez = TipPoveza.valueOf(splitovanRed[8]);
-				row[6] = povez;
-				model.addRow(row);
-				
 			}
 			reader.close();
 			} 
 		catch (IOException e) {
-			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+			System.out.println("Greška prilikom učitavanja datoteke hehe: " + e.getMessage());
 		}
 		
 		
@@ -340,19 +357,25 @@ public class primerakSwing extends JFrame {
 		
 //---------------------------------------------------------------------------------
 		addButton = new JButton("Dodaj primerak");
+		
 		addButton.addMouseListener(new MouseAdapter() {
+			
 			@SuppressWarnings("deprecation")
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				printingYearField.enable();
+				bookBox.enable();
+				pagesField.enable();
+				jezikŠtampe.enable();
 			}
 		});
 		addButton.addActionListener(new ActionListener() {
-			Biblioteka biblioteka = new Biblioteka();
+			
+			
 			public void actionPerformed(ActionEvent e) {
 				if(headingCopyField.getText().equals("") || printingYearField.getText().equals("") || 
-					yearField.getText().equals("") || idField.getText().equals("") || bookField.getText().equals("")) {
+					pagesField.getText().equals("") || idField.getText().equals("") || bookBox.getSelectedItem().equals(null)) {
 					
 					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
 					return;
@@ -371,35 +394,50 @@ public class primerakSwing extends JFrame {
 					row[0] = idField.getText();
 					row[1] = headingCopyField.getText();
 					row[2] = printingYearField.getText();
-					row[3] = yearField.getText();
+					row[3] = pagesField.getText();
 					row[4] = jezikŠtampe.getSelectedItem();
-					row[5] = bookField.getText();
+					
+					int selectedBook = bookBox.getSelectedIndex();
+					row[5] = bookBox.getSelectedItem();
+					String selectedBookID = biblioteka.dobaviNeobrisaneKnjige().get(selectedBook).getId();
+					
 					row[6] = povezi.getSelectedItem();
 					
-					Biblioteka b = new Biblioteka();
-					b.getPrimerakKnjige();
+					String iznajmljen = String.valueOf(rentCheck.isSelected());
 					
-					for(PrimerakKnjige pk : b.primerakKnjige) {
-						if(pk.isIznajmljenost()) {
-							rentCheck.setSelected(true);
-							row[8] = "iznajmljen";
-						}
-						else {
-							rentCheck.setSelected(false);
-							row[8] = "nije iznajmljen";
-						}
+					if(iznajmljen == "true") {
+						row[7] = "iznajmljen";
 					}
+					else {
+						row[7] = "nije iznajmljen";
+					}
+					
 					model.addRow(row);
+					
+					String primerakLinija = "";
+					
+					primerakLinija += row[3] + "|" + row[2] + "|" + iznajmljen + "|" + row[1] + "|" + row[0] + "|" + "false" + "|" + row[4] + "|" + selectedBookID + "|" + row[6] + "\n";
+					
+					try {
+						File primerakFile = new File("src/txt/primerciKnjige.txt");
+						BufferedWriter writer = new BufferedWriter(new FileWriter(primerakFile, true));
+						writer.write(primerakLinija);
+						writer.close();
+						
+					}catch(IOException e1){
+						System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
+					}
 				
 					
 					JOptionPane.showMessageDialog(null, "Primerak uspešno dodat u listu!");
 					
 					headingCopyField.setText("");
 					printingYearField.setText("");
-					yearField.setText("");
+					pagesField.setText("");
 					idField.setText("");
-					bookField.setText("");
+					bookBox.setSelectedItem(null);
 					jezikŠtampe.setSelectedItem(null);
+					rentCheck.setSelected(false);
 					povezi.setSelectedItem(null);
 				}
 					
@@ -415,31 +453,42 @@ public class primerakSwing extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				printingYearField.enable();
+				bookBox.enable();
+				pagesField.enable();
+				jezikŠtampe.enable();
+				
 			}
 		});
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				int i = table.getSelectedRow();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Sačuvati izmene?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
-						model.setValueAt(headingCopyField.getText(), i, 1);
-						model.setValueAt(printingYearField.getText(), i, 2);
-						model.setValueAt(yearField.getText(), i, 3);
-						model.setValueAt(jezikŠtampe.getSelectedItem(), i, 4);
-						model.setValueAt(bookField.getText(), i, 5);
-						model.setValueAt(povezi.getSelectedItem(), i, 6);
+						
+						String primerakID = biblioteka.dobaviNeobrisanePrimerke().get(i).getId();
+						String[] izmene = new String[4];
+						TipPoveza[] povezIzmene = new TipPoveza[9];
+						
+						izmene[3] = headingCopyField.getText();
+						boolean iznajmljenost = rentCheck.isSelected();
+						povezIzmene[8] = TipPoveza.valueOf(povezi.getSelectedItem().toString());
+						
+						biblioteka.ažurirajPrimerak(primerakID, izmene, iznajmljenost, povezIzmene);
+						
 						JOptionPane.showMessageDialog(null, "Primerak je uspešno ažuriran!");																	
 					}
 					JOptionPane.getRootFrame().dispose();
 					headingCopyField.setText("");
 					printingYearField.setText("");
-					yearField.setText("");
+					pagesField.setText("");
 					idField.setText("");
-					bookField.setText("");
+					bookBox.setSelectedItem(null);
 					jezikŠtampe.setSelectedItem(null);
+					rentCheck.setSelected(false);
 					povezi.setSelectedItem(null);
 				}
 				else {
@@ -458,6 +507,9 @@ public class primerakSwing extends JFrame {
 			public void mouseReleased(MouseEvent e) {
 				idField.enable();
 				printingYearField.enable();
+				bookBox.enable();
+				pagesField.enable();
+				jezikŠtampe.enable();
 			}
 		});
 		removeButton.addActionListener(new ActionListener() {
@@ -468,15 +520,18 @@ public class primerakSwing extends JFrame {
 					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati primerak?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
+						biblioteka.dobaviNeobrisanePrimerke().get(i).setJeObrisan(true);
 						model.removeRow(i);
 						headingCopyField.setText("");
 						printingYearField.setText("");
-						yearField.setText("");
+						pagesField.setText("");
 						idField.setText("");
-						bookField.setText("");
+						bookBox.setSelectedItem(null);
 						jezikŠtampe.setSelectedItem(null);
 						povezi.setSelectedItem(null);
+						rentCheck.setSelected(false);
 						JOptionPane.showMessageDialog(null, "Primerak je uspešno obrisan!");												
+						biblioteka.upišiPrimerakKnjige();
 					}
 					
 					JOptionPane.getRootFrame().dispose();
@@ -514,15 +569,18 @@ public class primerakSwing extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				idField.enable();
 				printingYearField.enable();
+				bookBox.enable();
+				pagesField.enable();
+				jezikŠtampe.enable();
 			}
 		});
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				headingCopyField.setText("");
 				printingYearField.setText("");
-				yearField.setText("");
+				pagesField.setText("");
 				idField.setText("");
-				bookField.setText("");
+				bookBox.setSelectedItem(null);
 				jezikŠtampe.setSelectedItem(null);
 				povezi.setSelectedItem(null);
 			}
@@ -566,10 +624,10 @@ public class primerakSwing extends JFrame {
 		pages.setBounds(746, 217, 112, 30);
 		panel.add(pages);
 		
-		yearField = new JTextField();
-		yearField.setColumns(10);
-		yearField.setBounds(746, 241, 297, 30);
-		panel.add(yearField);
+		pagesField = new JTextField();
+		pagesField.setColumns(10);
+		pagesField.setBounds(746, 241, 297, 30);
+		panel.add(pagesField);
 		
 		JLabel id = new JLabel("ID:");
 		id.setHorizontalAlignment(SwingConstants.LEFT);
@@ -588,11 +646,6 @@ public class primerakSwing extends JFrame {
 		book.setForeground(Color.WHITE);
 		book.setBounds(746, 112, 112, 30);
 		panel.add(book);
-		
-		bookField = new JTextField();
-		bookField.setColumns(10);
-		bookField.setBounds(746, 137, 297, 30);
-		panel.add(bookField);
 		
 		JLabel bindingType = new JLabel("TIP POVEZA:");
 		bindingType.setHorizontalAlignment(SwingConstants.LEFT);
@@ -622,8 +675,6 @@ public class primerakSwing extends JFrame {
 		});
 		returnButton.setBounds(353, 379, 177, 30);
 		panel.add(returnButton);
-		
-		
 			
 		
 	}

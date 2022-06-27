@@ -105,6 +105,13 @@ public class clanoviAdminSwing extends JFrame {
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaAdminSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -363,18 +370,6 @@ public class clanoviAdminSwing extends JFrame {
 				polovi.setSelectedItem(model.getValueAt(i, 9));	
 				passTypeCombo.setSelectedItem(model.getValueAt(i, 10).toString());
 				
-				
-				biblioteka.getČlanovi();
-				
-				for(Član č : biblioteka.članovi) {
-					if(č.isAktivan()) {
-						activityCheck.setSelected(true);	
-					}
-					else {
-						activityCheck.setSelected(false);
-					}
-				}
-				
 				polovi.setSelectedItem(model.getValueAt(i, 9).toString());								
 			}
 		});
@@ -434,6 +429,7 @@ public class clanoviAdminSwing extends JFrame {
 					TipČlanarine tipČlanarine = new TipČlanarine();
 					String tipČlanarineID = splitovanRed[10];
 					biblioteka.učitajTipČlanarine();
+					
 					for (TipČlanarine t : biblioteka.tipČlanarine) {
 						if (t.getId().equals(tipČlanarineID)) {
 							tipČlanarine = t;
@@ -592,6 +588,15 @@ public class clanoviAdminSwing extends JFrame {
 						datumIzmene[6] = LocalDate.parse(lastPaymentField.getText());
 						intIzmene[7] = Integer.parseInt(monthsValidField.getText());
 						
+						String aktivan = String.valueOf(activityCheck.isSelected());
+						
+						if(aktivan == "true") {
+							row[8] = "aktivan";
+						}
+						else {
+							row[8] = "neaktivan";
+						}
+						boolean aktivnostIzmena = activityCheck.isSelected();
 						polIzmene[9] = Pol.valueOf(polovi.getSelectedItem().toString());
 						int selected = passTypeCombo.getSelectedIndex();
 						TipČlanarine članarinaIzmene;
@@ -603,7 +608,7 @@ public class clanoviAdminSwing extends JFrame {
 						}
 						row[10] = passTypeCombo.getSelectedItem();
 						
-						biblioteka.ažurirajČlana(članID, izmene, intIzmene, članarinaIzmene, datumIzmene, polIzmene);
+						biblioteka.ažurirajČlana(članID, izmene, intIzmene, članarinaIzmene, datumIzmene, aktivnostIzmena, polIzmene);
 						
 						JOptionPane.showMessageDialog(null, "Član je uspešno ažuriran!");																	
 					}
@@ -710,6 +715,7 @@ public class clanoviAdminSwing extends JFrame {
 				cardField.setText("");
 				lastPaymentField.setText("");
 				monthsValidField.setText("");
+				passTypeCombo.setSelectedItem(null);
 				activityCheck.setSelected(false);
 				polovi.setSelectedItem(null);
 			}

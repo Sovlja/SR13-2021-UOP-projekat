@@ -103,7 +103,7 @@ public class prijavaSwing extends JFrame {
 							naslovnaAdminSwing.main(null);
 							return;
 						}
-						else {
+						if(!a.getKorisničkoIme().equals(username) | !a.getLozinka().equals(password)){
 							for(Bibliotekar bib : b.bibliotekari) {
 								if(bib.getKorisničkoIme().equals(username) && bib.getLozinka().equals(password)) {
 									JOptionPane.showMessageDialog(null, "Uspešna prijava!");
@@ -111,7 +111,8 @@ public class prijavaSwing extends JFrame {
 									naslovnaSwing.main(null);
 									return;
 								}
-								else {
+								
+								if(!bib.getKorisničkoIme().equals(username) | !bib.getLozinka().equals(password)){
 									JOptionPane.showMessageDialog(null, "Unesite validne podatke za prijavu!");
 									return;
 								}

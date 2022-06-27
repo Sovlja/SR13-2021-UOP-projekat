@@ -1,5 +1,6 @@
 package projekat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * 
@@ -10,12 +11,12 @@ public class Iznajmljivanje {
 	protected LocalDate datumVraćanja;
 	protected Zaposleni zaposleni;
 	protected Član član;
-	protected PrimerakKnjige primerak;
+	protected ArrayList<PrimerakKnjige> primerci;
 	protected boolean jeObrisan;
 
 
 	public Iznajmljivanje() {
-		this.primerak = null;
+		this.primerci = new ArrayList<PrimerakKnjige>();
 		this.id = "";
 		this.datumIznajmljivanja = null;
 		this.datumVraćanja = null;
@@ -26,18 +27,16 @@ public class Iznajmljivanje {
 
 
 	public Iznajmljivanje(String id, LocalDate datumIznajmljivanja, LocalDate datumVraćanja, Zaposleni zaposleni,
-			Član član, PrimerakKnjige primerak, boolean jeObrisan) {
+			Član član, ArrayList <PrimerakKnjige> primerci, boolean jeObrisan) {
 		super();
 		this.id = id;
 		this.datumIznajmljivanja = datumIznajmljivanja;
 		this.datumVraćanja = datumVraćanja;
 		this.zaposleni = zaposleni;
 		this.član = član;
-		this.primerak = primerak;
+		this.primerci = primerci;
 		this.jeObrisan = jeObrisan;
 	}
-
-
 
 
 	public String getId() {
@@ -65,8 +64,8 @@ public class Iznajmljivanje {
 	}
 
 
-	public PrimerakKnjige getPrimerak() {
-		return primerak;
+	public ArrayList<PrimerakKnjige> getPrimerci() {
+		return primerci;
 	}
 
 
@@ -100,8 +99,8 @@ public class Iznajmljivanje {
 	}
 
 
-	public void setPrimerak(PrimerakKnjige primerak) {
-		this.primerak = primerak;
+	public void setPrimerci(ArrayList<PrimerakKnjige> primerci) {
+		this.primerci = primerci;
 	}
 
 
@@ -113,10 +112,14 @@ public class Iznajmljivanje {
 	@Override
 	public String toString() {
 		return "Iznajmljivanje [id=" + id + ", datumIznajmljivanja=" + datumIznajmljivanja + ", datumVraćanja="
-				+ datumVraćanja + ", zaposleni=" + zaposleni + ", član=" + član + ", primerak=" + primerak
+				+ datumVraćanja + ", zaposleni=" + zaposleni + ", član=" + član + ", primerci=" + primerci
 				+ ", jeObrisan=" + jeObrisan + "]";
 	}
 
+
+
+
+	
 
 	
 

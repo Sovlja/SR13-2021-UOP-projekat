@@ -1,1 +1,8 @@
-394|1997|false|Hari Poter i kamen mudrosti|11223344|false|SRPSKI|123456789|MEKI
+215|1999|false|Analiza sa algebrom|00001|false|MAĐARSKI|23487289|TVRDI
+240|2002|false|Analiza sa algebrom 2|00002|false|ENGLESKI|23487289|MEKI
+570|2005|false|Hari Poter i Kamen Mudrosti|00003|false|SRPSKI|123456789|TVRDI
+394|2007|true|Hari Poter i Dvorana Tajni|00004|false|NEMAČKI|123456789|TVRDI
+450|2008|false|Hari Poter i zatvorenik iz Azkabana|00005|false|ENGLESKI|123456789|TVRDI
+640|2010|false|Hari Poter i Vatreni Pehar|00006|false|ENGLESKI|123456789|TVRDI
+880|2011|false|Hari Poter i Red Feniksa|00007|false|ENGLESKI|123456789|MEKI
+670|2012|true|Hari Poter i Polukrvni Princ|00008|false|ENGLESKI|123456789|TVRDI

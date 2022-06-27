@@ -100,11 +100,18 @@ public class clanoviSwing extends JFrame {
 		menuBar.setBackground(new Color(204, 204, 255));
 		setJMenuBar(menuBar);
 		
-		JMenu admin = new JMenu("Admin");
+		JMenu admin = new JMenu("Profil");
 		admin.setForeground(new Color(0, 0, 0));
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -421,7 +428,7 @@ public class clanoviSwing extends JFrame {
 					row[7] = važenjeUplate;
 					
 					
-					biblioteka.učitajČlanove();
+//					biblioteka.učitajČlanove();
 					
 					if(splitovanRed[8].equals("true")) {
 						row[8] = "aktivan";
@@ -593,7 +600,7 @@ public class clanoviSwing extends JFrame {
 						izmene[5] = cardField.getText();
 						datumIzmene[6] = LocalDate.parse(lastPaymentField.getText());
 						intIzmene[7] = Integer.parseInt(monthsValidField.getText());
-						
+						boolean aktivnostIzmena = activityCheck.isSelected();
 						polIzmene[9] = Pol.valueOf(polovi.getSelectedItem().toString());
 						int selected = passTypeCombo.getSelectedIndex();
 						TipČlanarine članarinaIzmene;
@@ -605,7 +612,7 @@ public class clanoviSwing extends JFrame {
 						}
 						row[10] = passTypeCombo.getSelectedItem();
 						
-						biblioteka.ažurirajČlana(članID, izmene, intIzmene, članarinaIzmene, datumIzmene, polIzmene);
+						biblioteka.ažurirajČlana(članID, izmene, intIzmene, članarinaIzmene, datumIzmene, aktivnostIzmena, polIzmene);
 						
 						JOptionPane.showMessageDialog(null, "Član je uspešno ažuriran!");																	
 					}
@@ -618,7 +625,7 @@ public class clanoviSwing extends JFrame {
 					cardField.setText("");
 					lastPaymentField.setText("");
 					monthsValidField.setText("");
-					
+					activityCheck.setSelected(false);
 					polovi.setSelectedItem(null);
 					passTypeCombo.setSelectedItem(null);
 				}
@@ -714,6 +721,7 @@ public class clanoviSwing extends JFrame {
 				monthsValidField.setText("");
 				activityCheck.setSelected(false);
 				polovi.setSelectedItem(null);
+				passTypeCombo.setSelectedItem(null);
 			}
 		});
 		clearButton.setBounds(513, 758, 200, 42);

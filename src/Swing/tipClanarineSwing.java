@@ -91,6 +91,13 @@ public class tipClanarineSwing extends JFrame {
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaAdminSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");

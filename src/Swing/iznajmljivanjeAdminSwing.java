@@ -96,6 +96,13 @@ public class iznajmljivanjeAdminSwing extends JFrame {
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaAdminSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -202,6 +209,7 @@ public class iznajmljivanjeAdminSwing extends JFrame {
 		
 		JMenuItem oNama = new JMenuItem("O nama");
 		info.add(oNama);
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(51, 51, 153));
 		panel.setBounds(0, 0, 1185, 814);

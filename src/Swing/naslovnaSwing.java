@@ -12,6 +12,10 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
@@ -65,6 +69,13 @@ public class naslovnaSwing extends JFrame {
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -198,32 +209,32 @@ public class naslovnaSwing extends JFrame {
 		lblNewLabel.setBounds(124, 28, 729, 87);
 		naziv.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Gradska biblioteka u Novom Sadu");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 26));
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setBounds(536, 136, 417, 66);
-		naziv.add(lblNewLabel_1);
+		JLabel nazivBibliotekeLabela = new JLabel();
+		nazivBibliotekeLabela.setHorizontalAlignment(SwingConstants.CENTER);
+		nazivBibliotekeLabela.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 26));
+		nazivBibliotekeLabela.setForeground(Color.WHITE);
+		nazivBibliotekeLabela.setBounds(536, 136, 417, 66);
+		naziv.add(nazivBibliotekeLabela);
 		
-		JLabel adresa = new JLabel("Dunavska 1, Novi Sad 21101");
-		adresa.setHorizontalAlignment(SwingConstants.CENTER);
-		adresa.setForeground(Color.WHITE);
-		adresa.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
-		adresa.setBounds(536, 179, 417, 55);
-		naziv.add(adresa);
+		JLabel adresaLabela = new JLabel();
+		adresaLabela.setHorizontalAlignment(SwingConstants.CENTER);
+		adresaLabela.setForeground(Color.WHITE);
+		adresaLabela.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
+		adresaLabela.setBounds(536, 179, 417, 55);
+		naziv.add(adresaLabela);
 		
-		JLabel radnoVreme1 = new JLabel("PONEDELJAK/PETAK: 07:30 - 20:00");
+		JLabel radnoVreme1 = new JLabel("PONEDELJAK/PETAK:");
 		radnoVreme1.setHorizontalAlignment(SwingConstants.CENTER);
 		radnoVreme1.setForeground(Color.WHITE);
 		radnoVreme1.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 20));
-		radnoVreme1.setBounds(537, 293, 405, 66);
+		radnoVreme1.setBounds(536, 293, 229, 66);
 		naziv.add(radnoVreme1);
 		
-		JLabel radnoVreme2 = new JLabel("SUBOTA: 08:00 - 14:00");
+		JLabel radnoVreme2 = new JLabel("SUBOTA:");
 		radnoVreme2.setHorizontalAlignment(SwingConstants.CENTER);
 		radnoVreme2.setForeground(Color.WHITE);
 		radnoVreme2.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 20));
-		radnoVreme2.setBounds(537, 345, 405, 66);
+		radnoVreme2.setBounds(536, 346, 229, 66);
 		naziv.add(radnoVreme2);
 		
 		JLabel radnoVreme3 = new JLabel("NEDELJA: NERADNA");
@@ -233,12 +244,60 @@ public class naslovnaSwing extends JFrame {
 		radnoVreme3.setBounds(537, 394, 405, 66);
 		naziv.add(radnoVreme3);
 		
-		JLabel adresa_1 = new JLabel("021/ 451 - 233");
-		adresa_1.setHorizontalAlignment(SwingConstants.CENTER);
-		adresa_1.setForeground(Color.WHITE);
-		adresa_1.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
-		adresa_1.setBounds(536, 227, 417, 55);
-		naziv.add(adresa_1);
+		JLabel radnoVremeLabela = new JLabel();
+		radnoVremeLabela.setHorizontalAlignment(SwingConstants.LEFT);
+		radnoVremeLabela.setForeground(Color.WHITE);
+		radnoVremeLabela.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
+		radnoVremeLabela.setBounds(794, 298, 180, 55);
+		naziv.add(radnoVremeLabela);
+		
+		JLabel subotaLabela = new JLabel();
+		subotaLabela.setHorizontalAlignment(SwingConstants.LEFT);
+		subotaLabela.setForeground(Color.WHITE);
+		subotaLabela.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
+		subotaLabela.setBounds(732, 351, 212, 55);
+		naziv.add(subotaLabela);
+		
+		JLabel brTelefonaLabela = new JLabel();
+		brTelefonaLabela.setHorizontalAlignment(SwingConstants.CENTER);
+		brTelefonaLabela.setForeground(Color.WHITE);
+		brTelefonaLabela.setFont(new Font("Constantia", Font.BOLD | Font.ITALIC, 22));
+		brTelefonaLabela.setBounds(536, 227, 417, 55);
+		naziv.add(brTelefonaLabela);
+		
+		try {
+			File bibliotekaFile = new File("src/txt/biblioteka.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(bibliotekaFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+				
+				String strNaziv = naziv.toString();
+				strNaziv = splitovanRed[0];
+				
+				String strAdresa = adresaLabela.toString();
+				strAdresa = splitovanRed[1];
+				
+				String strBrTelefona = brTelefonaLabela.toString();
+				strBrTelefona = splitovanRed[2];
+				
+				String strRadnoVreme = radnoVremeLabela.toString();
+				strRadnoVreme = splitovanRed[3] + " - " + splitovanRed[5];
+				
+				String strSubota = subotaLabela.toString();
+				strSubota = splitovanRed[4] + " - " + splitovanRed[6];
+							
+				nazivBibliotekeLabela.setText(strNaziv);
+				adresaLabela.setText(strAdresa);
+				brTelefonaLabela.setText(strBrTelefona);
+				radnoVremeLabela.setText(strRadnoVreme);
+				subotaLabela.setText(strSubota);
+			}
+			reader.close();
+			} catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
 		
 		JButton cancelButton = new JButton("Izađi");
 		cancelButton.addMouseListener(new MouseAdapter() {
@@ -261,5 +320,7 @@ public class naslovnaSwing extends JFrame {
 		});
 		cancelButton.setBounds(627, 471, 238, 46);
 		naziv.add(cancelButton);
+		
+		
 	}
 }

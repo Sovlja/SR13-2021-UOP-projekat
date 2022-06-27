@@ -5,11 +5,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-
 import projekat.Administrator;
 import projekat.Biblioteka;
 import projekat.Pol;
-
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -101,6 +99,13 @@ public class adminiSwing extends JFrame {
 		menuBar.add(admin);
 		
 		JMenuItem mojProfil = new JMenuItem("Moj profil");
+		mojProfil.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				naslovnaAdminSwing.main(null);
+				dispose();
+			}
+		});
 		admin.add(mojProfil);
 		
 		JMenu zaposleni = new JMenu("Zaposleni");
@@ -425,6 +430,7 @@ public class adminiSwing extends JFrame {
 							jmbgField.setText("");
 							return;
 						}
+						
 						
 						if(admin.getId().equals(idField.getText().toString())){
 							JOptionPane.showMessageDialog(null, "Administrator sa prosleđenim ID-ijem već postoji!");

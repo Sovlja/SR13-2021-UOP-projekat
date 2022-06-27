@@ -16,14 +16,18 @@ import java.awt.Font;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.awt.Toolkit;
 
 import projekat.Bibliotekar;
+import projekat.Pol;
 import projekat.Administrator;
 import projekat.Biblioteka;
 import javax.swing.JComboBox;
-
+import java.util.regex.*;
 
 @SuppressWarnings("serial")
 public class registracijaSwing extends JFrame {
@@ -39,7 +43,10 @@ public class registracijaSwing extends JFrame {
 	private JTextField jmbgField;
 	private JTextField addressField;
 	private JTextField wageField;
-
+	private Biblioteka b;
+	private JTextField idField;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -62,6 +69,7 @@ public class registracijaSwing extends JFrame {
 
 	
 	public registracijaSwing() {
+		this.b = new Biblioteka();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(registracijaSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Registracija - Biblioteka");
 		setBackground(Color.WHITE);
@@ -73,44 +81,64 @@ public class registracijaSwing extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		
+		
+		JComboBox<Pol> poloviBox = new JComboBox<Pol>();
+		poloviBox.setBounds(366, 307, 283, 36);
+		poloviBox.addItem(Pol.OSTALO);
+		poloviBox.addItem(Pol.MUŠKI);
+		poloviBox.addItem(Pol.ŽENSKI);
+		contentPane.add(poloviBox);
+		
+		
 		Button button = new Button("Registracija");
 		button.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
 			@Override
 			public void mousePressed(MouseEvent e) {
+				String ID = idField.getText().toString();
+				String name = nameField.getText().toString();
+				String surname = surnameField.getText().toString();
+				String JMBG =  jmbgField.getText().toString();
+				String address = addressField.getText().toString();
 				String username = usernameField.getText().toString();
 				String password = passwordField.getText().toString();
+				String wage = wageField.getText().toString();
+				String pol = poloviBox.getSelectedItem().toString();
 				
-				Biblioteka b = new Biblioteka();
 				
-				b.ucitajAdministratore();
-				b.ucitajBibliotekare();
-				
-				if(username.equals("") || password.equals("")) {
-					JOptionPane.showMessageDialog(null, "Molimo Vas da se prijavite!");
+				if(name.equals("") || surname.equals("") || JMBG.equals("") || address.equals("") || username.equals("") || password.equals("") || wage.equals("") || poloviBox.getSelectedItem().equals(null)) {
+					JOptionPane.showMessageDialog(null, "Molimo Vas da popunite formu za registraciju!");
 				}
 				else{
-					for(Administrator a : b.admini) {
-						if(a.getKorisničkoIme().equals(username) && a.getLozinka().equals(password)) {
-							JOptionPane.showMessageDialog(null, "Uspešna prijava!");
-							dispose();
-							naslovnaAdminSwing.main(null);
-							return;
+					if(JMBG.length() != 13) {
+						JOptionPane.showMessageDialog(null, "JMBG mora imati 13 cifara!");
+						jmbgField.setText("");
+						return;
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Uspešna registracija!");
+						dispose();
+						
+						String adminLinija = "";
+						
+						adminLinija += name + "|" + surname + "|" + JMBG + "|" + address + "|" + ID + "|" +
+								wage + "|" + username + "|" + password + "|" + pol + "|" + "false" + "\n" ;
+						
+						try {
+							File adminFile = new File("src/txt/administratori.txt");
+							BufferedWriter writer = new BufferedWriter(new FileWriter(adminFile, true));
+							writer.write(adminLinija);
+							writer.close();
+							
+						}catch(IOException e1){
+							System.out.println("Greska prilikom upisa u datoteku: " + e1.getMessage());
 						}
-						else {
-							for(Bibliotekar bib : b.bibliotekari) {
-								if(bib.getKorisničkoIme().equals(username) && bib.getLozinka().equals(password)) {
-									JOptionPane.showMessageDialog(null, "Uspešna prijava!");
-									dispose();
-									naslovnaSwing.main(null);
-									return;
-								}
-								else {
-									JOptionPane.showMessageDialog(null, "Unesite validne podatke za prijavu!");
-									return;
-								}
-							}
-						}
+						
+						
+						
+						
+						naslovnaAdminSwing.main(null);
 					}
 					
 					
@@ -119,7 +147,7 @@ public class registracijaSwing extends JFrame {
 		});
 		button.setForeground(Color.WHITE);
 		button.setBackground(new Color(241, 57, 83));
-		button.setBounds(219, 388, 243, 36);
+		button.setBounds(390, 388, 243, 36);
 		contentPane.add(button);
 		
 		usernameField = new JTextField(20);
@@ -197,9 +225,16 @@ public class registracijaSwing extends JFrame {
 		wage.setBounds(366, 212, 121, 14);
 		contentPane.add(wage);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(366, 307, 283, 36);
-		contentPane.add(comboBox);
+		idField = new JTextField(10);
+		idField.setBounds(34, 388, 283, 36);
+		contentPane.add(idField);
+		
+		JLabel id = new JLabel("ID:");
+		id.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		id.setBounds(34, 363, 68, 14);
+		contentPane.add(id);
+		
+		
 	}
 }
 

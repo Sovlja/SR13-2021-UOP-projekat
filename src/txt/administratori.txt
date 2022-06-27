@@ -1,5 +1,1 @@
-Petar|Šovljanac|1111002800020|Natoševićeva 15|0001|100.25|shovlja123|shovlja321|MUŠKI|true
-Vasilije|Marković|2212002800019|Kosovska 20|0002|450.23|vaske02|vaske20|MUŠKI|true
-Petar|Ajvarusa|123456789012|Natoševićeva 15|0003|100.25|kvrga123|kvrga321|MUŠKI|false
-Burek|Sirac|1130231831213|Milovana 5|0004|435.24|burek123|burek321|ŽENSKI|true
-Peđa|Banjac|0508004800069|Jovana Subotića 12|0005|500.0|coficar123|coficar321|MUŠKI|false
+Petar|Petrovic|1111002800020|Natoseviceva 151|111111|200.0|shovlja123|shovlja321|MUŠKI|false

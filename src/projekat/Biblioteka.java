@@ -12,10 +12,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Biblioteka {
-    protected String naziv;
+    public String naziv;
     public String adresa;
     public String brTelefona;
-    public LocalTime radnoVreme;
+    public LocalTime radniDanOd;
+    public LocalTime radniDanDo;
+    public LocalTime subotaOd;
+    public LocalTime subotaDo;
     public ArrayList<Administrator> admini; 
     public ArrayList<Bibliotekar> bibliotekari;
     public ArrayList<Knjiga> knjige;
@@ -24,140 +27,20 @@ public class Biblioteka {
     public ArrayList<TipČlanarine> tipČlanarine; 
     public ArrayList<PrimerakKnjige> primerakKnjige;
     public ArrayList<Žanr> žanrKnjige;
-
-  //--------------TO STRING METODA--------------
-	
-    @Override
-    public String toString() {
-    	return "Biblioteka [naziv=" + naziv + ", adresa=" + adresa + ", brTelefona=" + brTelefona + ", radnoVreme="
-    			+ radnoVreme + ", admini=" + admini + ", bibliotekari=" + bibliotekari + ", knjige=" + knjige
-    			+ ", iznajmljivanje=" + iznajmljivanje + ", članovi=" + članovi + ", tipČlanarine=" + tipČlanarine
-    			+ ", primerakKnjige=" + primerakKnjige + ", žanrKnjige=" + žanrKnjige + "]";
-    }
-
-//--------------GETERI I SETERI--------------
-	public String getNaziv() {
-		return naziv;
-	}
-
-
-
-
-	public void setNaziv(String naziv) {
-		this.naziv = naziv;
-	}
-
-
-	public String getAdresa() {
-		return adresa;
-	}
-
-
-	public void setAdresa(String adresa) {
-		this.adresa = adresa;
-	}
-
-
-	public String getBrTelefona() {
-		return brTelefona;
-	}
-
-
-	public void setBrTelefona(String brTelefona) {
-		this.brTelefona = brTelefona;
-	}
-
-
-	public LocalTime getRadnoVreme() {
-		return radnoVreme;
-	}
-
-
-	public void setRadnoVreme(LocalTime radnoVreme) {
-		this.radnoVreme = radnoVreme;
-	}
-
-
-	public ArrayList<Administrator> getAdmini() {
-		return admini;
-	}
-
-
-	public void setAdmini(ArrayList<Administrator> admini) {
-		this.admini = admini;
-	}
-
-
-	public ArrayList<Bibliotekar> getBibliotekari() {
-		return bibliotekari;
-	}
-
-
-	public void setBibliotekari(ArrayList<Bibliotekar> bibliotekari) {
-		this.bibliotekari = bibliotekari;
-	}
-
-
-	public ArrayList<Knjiga> getKnjige() {
-		return knjige;
-	}
-
-
-	public void setKnjige(ArrayList<Knjiga> knjige) {
-		this.knjige = knjige;
-	}
-
-
-	public ArrayList<Iznajmljivanje> getIznajmljivanje() {
-		return iznajmljivanje;
-	}
-
-
-	public void setIznajmljivanje(ArrayList<Iznajmljivanje> iznajmljivanje) {
-		this.iznajmljivanje = iznajmljivanje;
-	}
-
-
-	public ArrayList<Član> getČlanovi() {
-		return članovi;
-	}
-
-
-	public void setČlanovi(ArrayList<Član> članovi) {
-		this.članovi = članovi;
-	}
-
-
-	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {
-		return primerakKnjige;
-	}
-	
-	public ArrayList<TipČlanarine> getTipČlanarine() {
-		return tipČlanarine;
-	}
-
-
-	public void setPrimerakKnjige(ArrayList<PrimerakKnjige> primerakKnjige) {
-		this.primerakKnjige = primerakKnjige;
-	}
-	
-	public ArrayList<Žanr> getŽanrKnjige() {
-		return žanrKnjige;
-	}
-
-
-	public void setŽanrKnjige(ArrayList<Žanr> žanrKnjige) {
-		this.žanrKnjige = žanrKnjige;
-	}
+    public ArrayList<Biblioteka> biblioteka;
+  
 //--------------PUN KONSTRUKTOR ZA BIBLIOTEKU--------------
-	public Biblioteka(String naziv, String adresa, String brTelefona, LocalTime radnoVreme,
+	public Biblioteka(String naziv, String adresa, String brTelefona, LocalTime radniDanOd, LocalTime radniDanDo, LocalTime subotaOd, LocalTime subotaDo,
 			ArrayList<Administrator> admini, ArrayList<Bibliotekar> bibliotekari, ArrayList<Knjiga> knjige,
 			ArrayList<Iznajmljivanje> iznajmljivanje, ArrayList<Član> članovi, ArrayList<TipČlanarine> tipČlanarine, ArrayList<PrimerakKnjige> primerakKnjige,
 			ArrayList<Žanr> žanrKnjige) {
 		this.naziv = naziv;
 		this.adresa = adresa;
 		this.brTelefona = brTelefona;
-		this.radnoVreme = radnoVreme;
+		this.radniDanOd = radniDanOd;
+		this.radniDanDo = radniDanDo;
+		this.subotaOd = subotaOd;
+		this.subotaDo = subotaDo;
 		this.admini = admini;
 		this.bibliotekari = bibliotekari;
 		this.knjige = knjige;
@@ -172,7 +55,10 @@ public class Biblioteka {
 		this.naziv = "";
 		this.adresa = "";
 		this.brTelefona = "";
-		this.radnoVreme = null;
+		this.radniDanOd = null;
+		this.radniDanDo = null;
+		this.subotaOd = null;
+		this.subotaDo = null;
 		this.admini = new ArrayList<Administrator>();
 		this.bibliotekari = new ArrayList<Bibliotekar>();
 		this.knjige = new ArrayList<Knjiga>();
@@ -183,7 +69,116 @@ public class Biblioteka {
 		this.tipČlanarine = new ArrayList<TipČlanarine>();
 	}
 	
-//--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ADMINISTRATORA IZ FAJLA administratori.txt --------------
+	
+	
+	
+	
+	public String getNaziv() {
+		return naziv;
+	}
+	public String getAdresa() {
+		return adresa;
+	}
+	public String getBrTelefona() {
+		return brTelefona;
+	}
+	public LocalTime getRadniDanOd() {
+		return radniDanOd;
+	}
+	public LocalTime getRadniDanDo() {
+		return radniDanDo;
+	}
+	public LocalTime getSubotaOd() {
+		return subotaOd;
+	}
+	public LocalTime getSubotaDo() {
+		return subotaDo;
+	}
+	public ArrayList<Administrator> getAdmini() {
+		return admini;
+	}
+	public ArrayList<Bibliotekar> getBibliotekari() {
+		return bibliotekari;
+	}
+	public ArrayList<Knjiga> getKnjige() {
+		return knjige;
+	}
+	public ArrayList<Iznajmljivanje> getIznajmljivanje() {
+		return iznajmljivanje;
+	}
+	public ArrayList<Član> getČlanovi() {
+		return članovi;
+	}
+	public ArrayList<TipČlanarine> getTipČlanarine() {
+		return tipČlanarine;
+	}
+	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {
+		return primerakKnjige;
+	}
+	public ArrayList<Žanr> getŽanrKnjige() {
+		return žanrKnjige;
+	}
+	public ArrayList<Biblioteka> getBiblioteka() {
+		return biblioteka;
+	}
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+	public void setAdresa(String adresa) {
+		this.adresa = adresa;
+	}
+	public void setBrTelefona(String brTelefona) {
+		this.brTelefona = brTelefona;
+	}
+	public void setRadniDanOd(LocalTime radniDanOd) {
+		this.radniDanOd = radniDanOd;
+	}
+	public void setRadniDanDo(LocalTime radniDanDo) {
+		this.radniDanDo = radniDanDo;
+	}
+	public void setSubotaOd(LocalTime subotaOd) {
+		this.subotaOd = subotaOd;
+	}
+	public void setSubotaDo(LocalTime subotaDo) {
+		this.subotaDo = subotaDo;
+	}
+	public void setAdmini(ArrayList<Administrator> admini) {
+		this.admini = admini;
+	}
+	public void setBibliotekari(ArrayList<Bibliotekar> bibliotekari) {
+		this.bibliotekari = bibliotekari;
+	}
+	public void setKnjige(ArrayList<Knjiga> knjige) {
+		this.knjige = knjige;
+	}
+	public void setIznajmljivanje(ArrayList<Iznajmljivanje> iznajmljivanje) {
+		this.iznajmljivanje = iznajmljivanje;
+	}
+	public void setČlanovi(ArrayList<Član> članovi) {
+		this.članovi = članovi;
+	}
+	public void setTipČlanarine(ArrayList<TipČlanarine> tipČlanarine) {
+		this.tipČlanarine = tipČlanarine;
+	}
+	public void setPrimerakKnjige(ArrayList<PrimerakKnjige> primerakKnjige) {
+		this.primerakKnjige = primerakKnjige;
+	}
+	public void setŽanrKnjige(ArrayList<Žanr> žanrKnjige) {
+		this.žanrKnjige = žanrKnjige;
+	}
+	public void setBiblioteka(ArrayList<Biblioteka> biblioteka) {
+		this.biblioteka = biblioteka;
+	}
+	
+	@Override
+	public String toString() {
+		return "Biblioteka [naziv=" + naziv + ", adresa=" + adresa + ", brTelefona=" + brTelefona + ", radniDanOd="
+				+ radniDanOd + ", radniDanDo=" + radniDanDo + ", subotaOd=" + subotaOd + ", subotaDo=" + subotaDo
+				+ ", admini=" + admini + ", bibliotekari=" + bibliotekari + ", knjige=" + knjige + ", iznajmljivanje="
+				+ iznajmljivanje + ", članovi=" + članovi + ", tipČlanarine=" + tipČlanarine + ", primerakKnjige="
+				+ primerakKnjige + ", žanrKnjige=" + žanrKnjige + "]";
+	}
+	//--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ADMINISTRATORA IZ FAJLA administratori.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE BIBLIOTEKARA IZ FAJLA bibliotekari.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ČLANOVA IZ FAJLA članovi.txt --------------
 //--------------SLEDEĆA METODA SLUŽI ZA UČITAVANJE ŽANRA IZ FAJLA žanrovi.txt --------------
@@ -267,6 +262,16 @@ public class Biblioteka {
 			}
 		}
 		return neobrisaniPrimerci;
+	}
+	
+	public ArrayList<PrimerakKnjige> dobaviNeiznajmljenePrimerke(){
+		ArrayList<PrimerakKnjige> neiznajmljeniPrimerci = new ArrayList<PrimerakKnjige>();
+		for(PrimerakKnjige primerak : this.dobaviNeobrisanePrimerke()) {
+			if(!primerak.isIznajmljenost()) {
+				neiznajmljeniPrimerci.add(primerak);
+			}
+		}
+		return neiznajmljeniPrimerci;
 	}
 	
 	public ArrayList<Žanr> dobaviNeobrisaneŽanrove(){
@@ -423,8 +428,14 @@ public class Biblioteka {
 		
 		String iznajmljivanjeLinija = "";
 		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
+			String sveKnjige = "";
+			for(PrimerakKnjige pk : iznajmljivanje.getPrimerci()) {
+				sveKnjige += pk.getId() + ";";
+			}
+			
+			
 			iznajmljivanjeLinija += iznajmljivanje.getId() + "|" + iznajmljivanje.getDatumIznajmljivanja() + "|" + iznajmljivanje.getDatumVraćanja() + "|" + iznajmljivanje.getZaposleni().getId() + "|" + 
-					iznajmljivanje.getČlan().getId() + "|" + iznajmljivanje.getPrimerak().getId() + "|" + iznajmljivanje.isJeObrisan() + "\n";
+					iznajmljivanje.getČlan().getId() + "|" + sveKnjige + "|" + iznajmljivanje.isJeObrisan() + "\n";
 		}
 		try {
 			File iznajmljivanjeFile = new File("src/txt/iznajmljivanje.txt");
@@ -437,6 +448,33 @@ public class Biblioteka {
 	}
 		
 
+	}
+//--------------CRUD-abilnost BIBLIOTEKA--------------
+	public void ucitajBiblioteku() {
+		try {
+			File bibliotekaFile = new File("src/txt/biblioteka.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(bibliotekaFile));
+			String red;
+			while ((red = reader.readLine()) != null) {
+				String[] splitovanRed = red.split("\\|");
+
+				naziv = splitovanRed[0];
+				adresa = splitovanRed[1];
+				brTelefona = splitovanRed[2];
+				radniDanOd = LocalTime.parse(splitovanRed[3]);
+				subotaOd = LocalTime.parse(splitovanRed[4]);
+				radniDanDo = LocalTime.parse(splitovanRed[5]);
+				subotaDo = LocalTime.parse(splitovanRed[6]);
+							
+				Biblioteka biblioteka = new Biblioteka(naziv, adresa, brTelefona, radniDanOd, radniDanDo, subotaOd, subotaDo, admini, bibliotekari, knjige, iznajmljivanje, članovi, tipČlanarine, primerakKnjige, žanrKnjige);
+				this.biblioteka.add(biblioteka);
+				
+			}
+			reader.close();
+			} catch (IOException e) {
+			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
+		}
+		
 	}
 //--------------CRUD-abilnost ADMIN--------------
 	public void ucitajAdministratore() {
@@ -923,9 +961,9 @@ public class Biblioteka {
 				if(check) {								
 					this.primerakKnjige.add(primerakKnjige);
 				}
-			
-			reader.close();
-			} 
+				
+			}
+			reader.close(); 
 		}
 		catch (IOException e) {
 			System.out.println("Greška prilikom učitavanja datoteke: " + e.getMessage());
@@ -968,12 +1006,12 @@ public class Biblioteka {
 		}
 	}
 //---------------------------------------------------
-	public void ažurirajPrimerak(String id, String [] izmene, TipPoveza [] povezIzmene) {
+	public void ažurirajPrimerak(String id, String [] izmene, boolean iznajmljenostIzmene, TipPoveza [] povezIzmene) {
 		this.učitajPrimerkeKnjiga();
 		for (PrimerakKnjige primerak : this.primerakKnjige) {
 			if (primerak.getId().equals(id)) {
-				primerak.setIznajmljenost(false);
-				primerak.setNazivKnjige(izmene[2]);
+				primerak.setIznajmljenost(iznajmljenostIzmene);
+				primerak.setNazivKnjige(izmene[3]);
 				primerak.setTipPoveza(povezIzmene[8]);
 			}
 		}
@@ -1076,7 +1114,7 @@ public class Biblioteka {
 		}
 	}
 //---------------------------------------------------
-	public void ažurirajČlana(String id, String [] izmene, Integer [] intIzmene, TipČlanarine članarinaIzmene, LocalDate [] datumIzmene, Pol [] polIzmene) {
+	public void ažurirajČlana(String id, String [] izmene, Integer [] intIzmene, TipČlanarine članarinaIzmene, LocalDate [] datumIzmene, boolean aktivnost, Pol [] polIzmene) {
 		this.učitajČlanove();
 		for (Član član : this.članovi) {
 			if (član.getId().equals(id)) {
@@ -1086,6 +1124,7 @@ public class Biblioteka {
 				član.setBrojČlanskeKarte(izmene[5]);
 				član.setDatumPoslednjeUplate(datumIzmene[6]);
 				član.setBrojMeseciVaženjaUplate(intIzmene[7]);
+				član.setAktivan(aktivnost);
 				član.setPol(polIzmene[9]);
 				član.setTipČlanarine(članarinaIzmene);
 			}
@@ -1131,14 +1170,20 @@ public class Biblioteka {
 					}
 				}
 				
-				PrimerakKnjige primerak = null;
+				ArrayList<PrimerakKnjige> primerak = new ArrayList<PrimerakKnjige>();
 				String strKnjige = splitovanRed[5];
 				
-				for(PrimerakKnjige a : this.primerakKnjige) {
-					if(a.getId().equals(strKnjige)) {
-						primerak = a;
+				for (String idKnjige : strKnjige.split(";")) {
+					
+					for(PrimerakKnjige a : this.primerakKnjige) {
+						if(a.getId().equals(idKnjige)) {
+							primerak.add(a);
+						}
+						
 					}
+					
 				}
+				
 				
 				boolean jeObrisan = Boolean.parseBoolean(splitovanRed[6]);
 				
@@ -1164,7 +1209,7 @@ public class Biblioteka {
 		
 	}
 //---------------------------------------------------
-	public void novoIznajmljivanje(String [] izmene, Zaposleni [] zaposleniIzmene, PrimerakKnjige [] primerakIzmene, LocalDate [] datumIzmene, Član [] članIzmene, TipČlanarine [] članarinaIzmene) {
+	public void novoIznajmljivanje(String [] izmene, Zaposleni [] zaposleniIzmene, ArrayList<PrimerakKnjige> primerakIzmene, LocalDate [] datumIzmene, Član [] članIzmene, boolean iznajmljenost, TipČlanarine [] članarinaIzmene) {
 		this.učitajIznajmljivanje();
 		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
 			if(iznajmljivanje.getId().equals(izmene[0])) {
@@ -1182,7 +1227,7 @@ public class Biblioteka {
 		iznajmljivanje.setDatumVraćanja(datumIzmene[2]);
 		iznajmljivanje.setZaposleni(zaposleniIzmene[3]);
 		iznajmljivanje.setČlan(članIzmene[1]);
-		iznajmljivanje.setPrimerak(primerakIzmene[0]);
+		iznajmljivanje.setPrimerci(primerakIzmene);
 		iznajmljivanje.setJeObrisan(false);
 		
 		this.iznajmljivanje.add(iznajmljivanje);
@@ -1195,17 +1240,26 @@ public class Biblioteka {
 			if (iznajmljivanje.getId().equals(id)) {
 				
 				iznajmljivanje.setJeObrisan(true);
+				for (PrimerakKnjige pk : iznajmljivanje.getPrimerci()) {
+					pk.setIznajmljenost(false);
+				}
 				this.upisiIznajmljivanje();
 			}
 		}
 	}
 //---------------------------------------------------
-	public void ažurirajIznajmljivanje(String id, LocalDate [] datumIzmene) {
+	public void ažurirajIznajmljivanje(String id, LocalDate datumIzmene, ArrayList<PrimerakKnjige> primerakIzmene) {
 		this.učitajIznajmljivanje();
 		for (Iznajmljivanje iznajmljivanje : this.iznajmljivanje) {
 			if (iznajmljivanje.getId().equals(id)) {
-				iznajmljivanje.setDatumVraćanja(datumIzmene[0]);
-//				!ŠTO SE TIČE AŽURIRANJA IZNAJMLJIVANJA, JEDINO IMA SMISLA PRODUŽITI ROK ZA VRAĆANJE KNJIGE!
+				for (PrimerakKnjige primerak : iznajmljivanje.getPrimerci()) {
+					primerak.setIznajmljenost(false);
+				}
+				iznajmljivanje.setDatumVraćanja(datumIzmene);
+				iznajmljivanje.setPrimerci(primerakIzmene);
+				for (PrimerakKnjige primerak : iznajmljivanje.getPrimerci()) {
+					primerak.setIznajmljenost(true);
+				}
 			}
 		}
 		this.upisiIznajmljivanje();

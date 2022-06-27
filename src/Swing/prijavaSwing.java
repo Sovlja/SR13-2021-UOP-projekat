@@ -32,6 +32,8 @@ public class prijavaSwing extends JFrame {
 	private JTextField usernameUnos;
 	private JPasswordField lozinkaUnos;
 	private Biblioteka b;
+	private Administrator a;
+	private Bibliotekar bib;
 	
 	
 	int xx,xy;
@@ -59,6 +61,8 @@ public class prijavaSwing extends JFrame {
 	
 	public prijavaSwing() {
 		this.b = new Biblioteka();
+		this.a = new Administrator();
+		this.bib = new Bibliotekar();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(prijavaSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Prijava - Biblioteka");
 		setBackground(Color.WHITE);
@@ -83,11 +87,10 @@ public class prijavaSwing extends JFrame {
 		
 		Button button = new Button("Prijava");
 		button.addMouseListener(new MouseAdapter() {
-			@SuppressWarnings("deprecation")
 			@Override
 			public void mousePressed(MouseEvent e) {
 				String username = usernameUnos.getText().toString();
-				String password = lozinkaUnos.getText().toString();
+				String password = new String(lozinkaUnos.getPassword());
 				
 				b.ucitajAdministratore();
 				b.ucitajBibliotekare();
@@ -96,30 +99,34 @@ public class prijavaSwing extends JFrame {
 					JOptionPane.showMessageDialog(null, "Molimo Vas da se prijavite!");
 					return;
 				}
-			
-				for(Administrator a : b.dobaviNeobrisaneAdmine()) {
-					if(a.getKorisničkoIme().equals(username) && a.getLozinka().equals(password)) {
-						JOptionPane.showMessageDialog(null, "Uspešna prijava!");
-						dispose();
-						naslovnaAdminSwing.main(null);
-						return;
-					}
-				}
-				
-				for(Bibliotekar bib : b.dobaviNeobrisaneBibliotekare()) {
-					if(bib.getKorisničkoIme().equals(username) && bib.getLozinka().equals(password)) {
-						JOptionPane.showMessageDialog(null, "Uspešna prijava!");
-						dispose();
-						naslovnaSwing.main(null);
-						return;
+				else {
+					
+					for(Administrator a : b.dobaviNeobrisaneAdmine()) {
+						if(a.getKorisničkoIme().equals(username) || a.getLozinka().equals(password)) {
+							JOptionPane.showMessageDialog(null, "Uspešna prijava!");
+							dispose();
+							naslovnaAdminSwing.main(null);
+							return;
+						}
 					}
 					
+					
+					for(Bibliotekar bib : b.dobaviNeobrisaneBibliotekare()) {
+						if(bib.getKorisničkoIme().equals(username) && bib.getLozinka().equals(password)) {
+							JOptionPane.showMessageDialog(null, "Uspešna prijava!");
+							dispose();
+							naslovnaSwing.main(null);
+							return;
+						}
+						
+						
+					}
 					if(!bib.getKorisničkoIme().equals(username) | !bib.getLozinka().equals(password)){
 						JOptionPane.showMessageDialog(null, "Unesite validne podatke za prijavu!");
 						return;
 					}
-					
-				}	
+				}
+	
 			}
 		});
 		button.setForeground(Color.WHITE);

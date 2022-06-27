@@ -528,7 +528,7 @@ public class iznajmljivanjeSwing extends JFrame {
 //					row[5] = s;
 					
 					String iznajmljeni = "";
-					for(Object pk : listaPrimeraka.getSelectedValues()) {
+					for(PrimerakKnjige pk : biblioteka.dobaviNeiznajmljenePrimerke()) {
 						iznajmljeni += pk.getId().toString() + ";"; 
 						row[5] = pk.getNazivKnjige().toString() + ";";
 					}

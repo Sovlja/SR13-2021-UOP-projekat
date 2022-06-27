@@ -451,7 +451,7 @@ public class Biblioteka {
 	}
 //--------------CRUD-abilnost BIBLIOTEKA--------------
 	public void ucitajBiblioteku() {
-		try {
+		try  {
 			File bibliotekaFile = new File("src/txt/biblioteka.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(bibliotekaFile));
 			String red;

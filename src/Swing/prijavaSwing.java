@@ -32,7 +32,6 @@ public class prijavaSwing extends JFrame {
 	private JTextField usernameUnos;
 	private JPasswordField lozinkaUnos;
 	private Biblioteka b;
-	private Administrator a;
 	private Bibliotekar bib;
 	
 	
@@ -61,7 +60,6 @@ public class prijavaSwing extends JFrame {
 	
 	public prijavaSwing() {
 		this.b = new Biblioteka();
-		this.a = new Administrator();
 		this.bib = new Bibliotekar();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(prijavaSwing.class.getResource("/images/library-logo.png")));
 		setTitle("Prijava - Biblioteka");

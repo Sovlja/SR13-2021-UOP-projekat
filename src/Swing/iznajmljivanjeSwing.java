@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.awt.Toolkit;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JComboBox;
 
@@ -304,12 +305,10 @@ public class iznajmljivanjeSwing extends JFrame {
 		scrollPane_1.setBounds(91, 288, 632, 108);
 		panel.add(scrollPane_1);
 		
-		this.listaPrimeraka = new JList();
-		scrollPane_1.setViewportView(listaPrimeraka);
+		DefaultListModel listaModel = new DefaultListModel();
 		
-		JButton removeFromListBttn = new JButton("Ukloni primerak");
-		removeFromListBttn.setBounds(737, 350, 144, 23);
-		panel.add(removeFromListBttn);
+		this.listaPrimeraka = new JList(listaModel);
+		scrollPane_1.setViewportView(listaPrimeraka);
 		
 		JButton addToListBttn = new JButton("Dodaj primerak");
 		addToListBttn.addMouseListener(new MouseAdapter() {
@@ -325,7 +324,7 @@ public class iznajmljivanjeSwing extends JFrame {
 				}
 			}
 		});
-		addToListBttn.setBounds(737, 312, 144, 23);
+		addToListBttn.setBounds(733, 338, 144, 23);
 		panel.add(addToListBttn);
 		
 		scrollPane = new JScrollPane();
@@ -464,7 +463,6 @@ public class iznajmljivanjeSwing extends JFrame {
 			}
 		});
 		addButton.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if(rentDateField.getText().equals("") || returnDateField.getText().equals("") || employerBox.getSelectedItem().equals(null)
 					 || idField.getText().equals("") || clanBox.getSelectedItem().equals(null) || 

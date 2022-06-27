@@ -379,6 +379,8 @@ public class clanoviAdminSwing extends JFrame {
 				activityCheck.setSelected(model.getValueAt(i, 8).toString().equals("aktivan"));
 				polovi.setSelectedItem(model.getValueAt(i, 9));	
 				passTypeCombo.setSelectedItem(model.getValueAt(i, 10).toString());
+				cenaValue.setVisible(true);
+				zaUplatuValue.setVisible(true);
 				
 				biblioteka.učitajTipČlanarine();
 				int uplata = Integer.valueOf(monthsValidField.getText());
@@ -722,6 +724,8 @@ public class clanoviAdminSwing extends JFrame {
 						passTypeCombo.setSelectedItem(null);
 						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");
 						biblioteka.upišiČlanove();
+//						cenaValue.setVisible(false);
+//						zaUplatuValue.setVisible(false);
 					}
 					
 					JOptionPane.getRootFrame().dispose();
@@ -774,6 +778,8 @@ public class clanoviAdminSwing extends JFrame {
 				passTypeCombo.setSelectedItem(null);
 				activityCheck.setSelected(false);
 				polovi.setSelectedItem(null);
+				cenaValue.setVisible(false);
+				zaUplatuValue.setVisible(false);
 			}
 		});
 		clearButton.setBounds(513, 758, 200, 42);

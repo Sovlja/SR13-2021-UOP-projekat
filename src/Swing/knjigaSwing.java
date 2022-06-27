@@ -260,6 +260,7 @@ public class knjigaSwing extends JFrame {
 				languageField.setText(model.getValueAt(i, 5).toString());
 				languageField.disable();
 				writterField.setText(model.getValueAt(i, 6).toString());
+				writterField.disable();
 				genreBox.setSelectedItem(model.getValueAt(i, 7).toString());
 				genreBox.disable();
 			}

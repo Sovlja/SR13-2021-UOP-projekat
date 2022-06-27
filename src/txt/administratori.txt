@@ -1,1 +1,1 @@
-Petar|Petrovic|1111002800020|Natoseviceva 151|111111|200.0|shovlja123|shovlja321|MUŠKI|false
+Nikola|Davogić|1102005800010|Natoševićeva 25|11111|1000.34|davoga123|davoga321|MUŠKI|false

@@ -287,6 +287,16 @@ public class clanoviAdminSwing extends JFrame {
 		gender.setBounds(243, 329, 42, 30);
 		panel.add(gender);
 		
+		JLabel cenaValue = new JLabel("");
+		cenaValue.setForeground(Color.WHITE);
+		cenaValue.setBounds(1031, 217, 104, 30);
+		panel.add(cenaValue);
+		
+		JLabel zaUplatuValue = new JLabel("");
+		zaUplatuValue.setForeground(Color.WHITE);
+		zaUplatuValue.setBounds(1031, 242, 104, 30);
+		panel.add(zaUplatuValue);
+		
 		nameField = new JTextField();
 		nameField.setHorizontalAlignment(SwingConstants.LEFT);
 		nameField.setBounds(243, 134, 144, 30);
@@ -370,6 +380,28 @@ public class clanoviAdminSwing extends JFrame {
 				polovi.setSelectedItem(model.getValueAt(i, 9));	
 				passTypeCombo.setSelectedItem(model.getValueAt(i, 10).toString());
 				
+				biblioteka.učitajTipČlanarine();
+				int uplata = Integer.valueOf(monthsValidField.getText());
+				for(TipČlanarine tc : biblioteka.getTipČlanarine()) {
+					if(tc.getNaziv().equals(passTypeCombo.getSelectedItem())) {
+						String strCena = String.valueOf(tc.getCena() * uplata);
+						cenaValue.setText(strCena + ".0 dinara");
+						if(uplata >= 12) {
+							String strPopust = String.valueOf(tc.getCena() * uplata * 0.8);
+							zaUplatuValue.setText(strPopust + " dinara");
+						}
+						
+						else if(uplata >= 6 && uplata < 12) {
+							String strPopust = String.valueOf(tc.getCena() * uplata * 0.9);
+							zaUplatuValue.setText(strPopust + " dinara");
+						}
+						else {
+							zaUplatuValue.setText(strCena + ".0 dinara");
+						}
+						
+					}
+				}
+			
 				polovi.setSelectedItem(model.getValueAt(i, 9).toString());								
 			}
 		});
@@ -414,29 +446,30 @@ public class clanoviAdminSwing extends JFrame {
 					row[7] = važenjeUplate;
 					
 					
-					biblioteka.učitajČlanove();
-					
 					if(splitovanRed[8].equals("true")) {
 						row[8] = "aktivan";
 					}
-					else {
+					
+					if(datumPoslednjeUplate.plusMonths(važenjeUplate).isBefore(LocalDate.now()) || splitovanRed[8].equals("false")) {
 						row[8] = "neaktivan";
 					}
+					
+					
 					
 					Pol pol = Pol.valueOf(splitovanRed[9]);
 					row[9] = pol;
 					
 					TipČlanarine tipČlanarine = new TipČlanarine();
 					String tipČlanarineID = splitovanRed[10];
-					biblioteka.učitajTipČlanarine();
 					
+					biblioteka.učitajTipČlanarine();
 					for (TipČlanarine t : biblioteka.tipČlanarine) {
 						if (t.getId().equals(tipČlanarineID)) {
 							tipČlanarine = t;
 							row[10] = tipČlanarine.getNaziv();
 						}
 					}
-					
+	
 					model.addRow(row);
 				}
 
@@ -501,17 +534,33 @@ public class clanoviAdminSwing extends JFrame {
 					row[6] = lastPaymentField.getText();
 					row[7] = monthsValidField.getText();
 					
+					int brMeseci = Integer.parseInt(monthsValidField.getText());
+					
+					if(brMeseci >= 12) {
+						JOptionPane.showMessageDialog(null, "Ostvaren popust od 20%!");
+					}
+					
+					else if(brMeseci >= 6 && brMeseci < 12) {
+						JOptionPane.showMessageDialog(null, "Ostvaren popust od 10%!");
+					}
+					
+					
+					
+					
+					
 					String aktivan = String.valueOf(activityCheck.isSelected());
+					LocalDate lastPayment = LocalDate.parse(lastPaymentField.getText());
+					int monthsValid = Integer.parseInt(monthsValidField.getText());
 					
 					if(aktivan == "true") {
 						row[8] = "aktivan";
 					}
-					else {
+					
+					if(lastPayment.plusMonths(monthsValid).isBefore(LocalDate.now()) || aktivan == "false") {
 						row[8] = "neaktivan";
+						activityCheck.setSelected(false);
 					}
-					
 						
-					
 					
 					row[9] = polovi.getSelectedItem();
 					int selected = passTypeCombo.getSelectedIndex();
@@ -590,12 +639,19 @@ public class clanoviAdminSwing extends JFrame {
 						
 						String aktivan = String.valueOf(activityCheck.isSelected());
 						
+						LocalDate lastPayment = LocalDate.parse(lastPaymentField.getText());
+						int monthsValid = Integer.parseInt(monthsValidField.getText());
+						
 						if(aktivan == "true") {
 							row[8] = "aktivan";
 						}
-						else {
+						
+						if(lastPayment.plusMonths(monthsValid).isBefore(LocalDate.now()) || aktivan == "false") {
 							row[8] = "neaktivan";
+							activityCheck.setSelected(false);
 						}
+						
+
 						boolean aktivnostIzmena = activityCheck.isSelected();
 						polIzmene[9] = Pol.valueOf(polovi.getSelectedItem().toString());
 						int selected = passTypeCombo.getSelectedIndex();
@@ -746,7 +802,17 @@ public class clanoviAdminSwing extends JFrame {
 		lblNewLabel.setBounds(467, 134, 200, 200);
 		panel.add(lblNewLabel);
 		
+		JLabel cenaClanarine = new JLabel("CENA ČLANARINE:");
+		cenaClanarine.setHorizontalAlignment(SwingConstants.RIGHT);
+		cenaClanarine.setForeground(Color.WHITE);
+		cenaClanarine.setBounds(909, 217, 117, 30);
+		panel.add(cenaClanarine);
 		
+		JLabel zaUplatu = new JLabel("ZA UPLATU:");
+		zaUplatu.setHorizontalAlignment(SwingConstants.RIGHT);
+		zaUplatu.setForeground(Color.WHITE);
+		zaUplatu.setBounds(909, 242, 117, 30);
+		panel.add(zaUplatu);
 		
 	}
 }

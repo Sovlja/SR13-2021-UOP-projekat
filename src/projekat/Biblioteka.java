@@ -879,14 +879,7 @@ public class Biblioteka {
 		
 		Knjiga knjiga = new Knjiga();
 		
-//		intIzmene[0] = Integer.parseInt(izmene[0]);
-//		intIzmene[1] = Integer.parseInt(izmene[1]);
-//		intIzmene[2] = Integer.parseInt(izmene[2]);
-//		intIzmene[4] = Integer.parseInt(izmene[4]);
-//		intIzmene[5] = Integer.parseInt(izmene[5]);
-//		intIzmene[6] = Integer.parseInt(izmene[6]);
-//		zanrIzmene[4] = Žanr.
-				
+
 		knjiga.setId(izmene[0]);
 		knjiga.setNaslov(izmene[1]);
 		knjiga.setOriginalniNaslov(izmene[2]);

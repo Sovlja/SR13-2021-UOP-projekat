@@ -464,6 +464,7 @@ public class iznajmljivanjeSwing extends JFrame {
 			}
 		});
 		addButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if(rentDateField.getText().equals("") || returnDateField.getText().equals("") || employerBox.getSelectedItem().equals(null)
 					 || idField.getText().equals("") || clanBox.getSelectedItem().equals(null) || 
@@ -497,24 +498,28 @@ public class iznajmljivanjeSwing extends JFrame {
 					
 					String idZaposlenog = "";
 					Zaposleni zaposleni = null;
-					String zaposleniID = (String) row[3];
+//					String zaposleniIme = String.valueOf(row[3].toString().split(" ")[0]);
+//					String zaposleniPrezime = String.valueOf(row[3].toString().split(" ")[1]);
+					
 					for (Zaposleni z : biblioteka.dobaviNeobrisaneAdmine()) {
-						if(z.getId().equals(zaposleniID)) {
+						String zapInf = z.getIme().toString() + " " + z.getPrezime().toString();
+						if(zapInf.equals(row[3])) {
 							zaposleni = z;
-							idZaposlenog = zaposleni.toString();
+							idZaposlenog = zaposleni.getId();
 						}
 					}
 					
 					if (zaposleni == null) {
 						for(Zaposleni z :biblioteka.dobaviNeobrisaneBibliotekare()) {
-							if(z.getId().equals(zaposleniID)) {
+							String zapInf = z.getIme().toString() + " " + z.getPrezime().toString();
+							if(zapInf.equals(row[3])) {
 								zaposleni = z;
-								idZaposlenog = zaposleni.toString();
+								idZaposlenog = zaposleni.getId();
 								
 							}
 						}
 					}
-					System.out.println(idZaposlenog);
+					
 					
 //					String s = "";
 //					for(String s2 : imenaPrimeraka) {
@@ -523,7 +528,7 @@ public class iznajmljivanjeSwing extends JFrame {
 //					row[5] = s;
 					
 					String iznajmljeni = "";
-					for(PrimerakKnjige pk : biblioteka.dobaviNeiznajmljenePrimerke()) {
+					for(Object pk : listaPrimeraka.getSelectedValues()) {
 						iznajmljeni += pk.getId().toString() + ";"; 
 						row[5] = pk.getNazivKnjige().toString() + ";";
 					}
@@ -604,7 +609,7 @@ public class iznajmljivanjeSwing extends JFrame {
 					listaPrimeraka.removeAll();	
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Izaberite člana za ažuriranje!");
+					JOptionPane.showMessageDialog(null, "Izaberite iznajmljivanje za ažuriranje!");
 				}
 			}
 		
@@ -628,7 +633,7 @@ public class iznajmljivanjeSwing extends JFrame {
 				int i = table.getSelectedRow();
 				if(i >= 0) {
 					int dialogButton = JOptionPane.YES_NO_OPTION;
-					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati člana?","Upozorenje", dialogButton);
+					int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite obrisati iznajmljivanje?","Upozorenje", dialogButton);
 					
 					if(dialogResult == 0) {
 						biblioteka.dobaviNeobrisanaIznajmljivanja().get(i).setJeObrisan(true);
@@ -638,14 +643,14 @@ public class iznajmljivanjeSwing extends JFrame {
 						employerBox.setSelectedItem(null);
 						idField.setText("");
 						clanBox.setSelectedItem(null);
-						JOptionPane.showMessageDialog(null, "Član je uspešno obrisan!");	
+						JOptionPane.showMessageDialog(null, "Iznajmljivanje je uspešno obrisan!");	
 						biblioteka.upisiIznajmljivanje();
 					}
 					
 					JOptionPane.getRootFrame().dispose();
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Molimo Vas da obeležite člana za brisanje!");
+					JOptionPane.showMessageDialog(null, "Molimo Vas da obeležite iznajmljivanje za brisanje!");
 				}
 			}
 		});

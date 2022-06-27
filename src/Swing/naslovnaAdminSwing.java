@@ -213,6 +213,56 @@ public class naslovnaAdminSwing extends JFrame {
 		contentPane.add(naziv);
 		naziv.setLayout(null);
 		
+
+		subotaDoField = new JTextField();
+		subotaDoField.setColumns(10);
+		subotaDoField.setBounds(216, 472, 126, 25);
+		naziv.add(subotaDoField);
+		
+		JLabel subotaDo = new JLabel("SUBOTOM DO:");
+		subotaDo.setForeground(Color.WHITE);
+		subotaDo.setBounds(216, 458, 111, 14);
+		naziv.add(subotaDo);
+		
+		brTelefonaField = new JTextField();
+		brTelefonaField.setColumns(10);
+		brTelefonaField.setBounds(114, 423, 127, 25);
+		naziv.add(brTelefonaField);
+		
+		JLabel brTelefona = new JLabel("BROJ TELEFONA:");
+		brTelefona.setForeground(Color.WHITE);
+		brTelefona.setBounds(115, 408, 110, 14);
+		naziv.add(brTelefona);
+		
+		adresaBibliotekeField = new JTextField();
+		adresaBibliotekeField.setColumns(10);
+		adresaBibliotekeField.setBounds(114, 373, 127, 25);
+		naziv.add(adresaBibliotekeField);
+		
+		JLabel adresaBiblioteke = new JLabel("ADRESA:");
+		adresaBiblioteke.setForeground(Color.WHITE);
+		adresaBiblioteke.setBounds(114, 360, 111, 14);
+		naziv.add(adresaBiblioteke);
+		
+		
+		JLabel nazivBiblioteke = new JLabel("NAZIV:");
+		nazivBiblioteke.setForeground(Color.WHITE);
+		nazivBiblioteke.setBounds(115, 316, 110, 14);
+		naziv.add(nazivBiblioteke);
+		
+		
+		
+		JLabel picLabel = new JLabel("");
+		picLabel.setIcon(new ImageIcon(naslovnaAdminSwing.class.getResource("/images/librarija mala.png")));
+		picLabel.setBounds(114, 108, 329, 176);
+		naziv.add(picLabel);
+		
+		
+		nazivBibliotekeField = new JTextField();
+		nazivBibliotekeField.setColumns(10);
+		nazivBibliotekeField.setBounds(114, 329, 127, 25);
+		naziv.add(nazivBibliotekeField);
+		
 		JLabel welcome = new JLabel("~DOBRODOŠLI U NAŠU BIBLIOTEKU~");
 		welcome.setHorizontalAlignment(SwingConstants.CENTER);
 		welcome.setForeground(Color.WHITE);
@@ -315,19 +365,26 @@ public class naslovnaAdminSwing extends JFrame {
 				
 				String strNaziv = naziv.toString();
 				strNaziv = splitovanRed[0];
+				nazivBibliotekeField.setText(strNaziv);
 				
 				String strAdresa = adresaLabela.toString();
 				strAdresa = splitovanRed[1];
+				adresaBibliotekeField.setText(strAdresa);
 				
 				String strBrTelefona = brTelefonaLabela.toString();
 				strBrTelefona = splitovanRed[2];
+				brTelefonaField.setText(strBrTelefona);
 				
 				String strRadnoVreme = radnoVremeLabela.toString();
 				strRadnoVreme = splitovanRed[3] + " - " + splitovanRed[5];
+				radniOdField.setText(splitovanRed[3]);
+				radniDoField.setText(splitovanRed[5]);		
 				
 				String strSubota = subotaLabela.toString();
 				strSubota = splitovanRed[4] + " - " + splitovanRed[6];
-							
+				subotaOdField.setText(splitovanRed[4]);
+				subotaDoField.setText(splitovanRed[6]);
+				
 				nazivBibliotekeLabela.setText(strNaziv);
 				adresaLabela.setText(strAdresa);
 				brTelefonaLabela.setText(strBrTelefona);
@@ -340,13 +397,14 @@ public class naslovnaAdminSwing extends JFrame {
 		}
 		
 		
+		
 		JButton radnoVremeIzmena = new JButton("Izmeni radno vreme");
 		radnoVremeIzmena.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int dialogButton = JOptionPane.YES_NO_OPTION;
 				int dialogResult = JOptionPane.showConfirmDialog(null, "Da li ste sigurni da želite promeniti informacije o biblioteci?","Upozorenje", dialogButton);
-
+				
 				if(dialogResult == 0) {
 					if(nazivBibliotekeField.getText().equals("") || adresaBibliotekeField.getText().equals("") || brTelefonaField.getText().equals(null) || radniOdField.getText().equals(null) || radniDoField.getText().equals(null) || subotaOdField.getText().equals(null) || subotaDoField.getText().equals(null)) {
 						JOptionPane.showMessageDialog(null, "Molimo Vas da popunite celu formu!");
@@ -407,56 +465,6 @@ public class naslovnaAdminSwing extends JFrame {
 		});
 		cancelButton.setBounds(606, 521, 234, 36);
 		naziv.add(cancelButton);
-		
-		subotaDoField = new JTextField();
-		subotaDoField.setColumns(10);
-		subotaDoField.setBounds(216, 472, 126, 25);
-		naziv.add(subotaDoField);
-		
-		JLabel subotaDo = new JLabel("SUBOTOM DO:");
-		subotaDo.setForeground(Color.WHITE);
-		subotaDo.setBounds(216, 458, 111, 14);
-		naziv.add(subotaDo);
-		
-		brTelefonaField = new JTextField();
-		brTelefonaField.setColumns(10);
-		brTelefonaField.setBounds(114, 423, 127, 25);
-		naziv.add(brTelefonaField);
-		
-		JLabel brTelefona = new JLabel("BROJ TELEFONA:");
-		brTelefona.setForeground(Color.WHITE);
-		brTelefona.setBounds(115, 408, 110, 14);
-		naziv.add(brTelefona);
-		
-		adresaBibliotekeField = new JTextField();
-		adresaBibliotekeField.setColumns(10);
-		adresaBibliotekeField.setBounds(114, 373, 127, 25);
-		naziv.add(adresaBibliotekeField);
-		
-		JLabel adresaBiblioteke = new JLabel("ADRESA:");
-		adresaBiblioteke.setForeground(Color.WHITE);
-		adresaBiblioteke.setBounds(114, 360, 111, 14);
-		naziv.add(adresaBiblioteke);
-		
-		nazivBibliotekeField = new JTextField();
-		nazivBibliotekeField.setColumns(10);
-		nazivBibliotekeField.setBounds(114, 329, 127, 25);
-		naziv.add(nazivBibliotekeField);
-		
-		JLabel nazivBiblioteke = new JLabel("NAZIV:");
-		nazivBiblioteke.setForeground(Color.WHITE);
-		nazivBiblioteke.setBounds(115, 316, 110, 14);
-		naziv.add(nazivBiblioteke);
-		
-		
-		
-		JLabel picLabel = new JLabel("");
-		picLabel.setIcon(new ImageIcon(naslovnaAdminSwing.class.getResource("/images/librarija mala.png")));
-		picLabel.setBounds(114, 108, 329, 176);
-		naziv.add(picLabel);
-		
-		
-		
-		
+	
 	}
 }

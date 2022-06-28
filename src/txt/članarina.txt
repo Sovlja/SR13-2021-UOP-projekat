@@ -2,3 +2,4 @@
 112233|dečji|150|true
 112244|odrasli|250|true
 777889|odrasli|250|false
+777888|stranci|500|false

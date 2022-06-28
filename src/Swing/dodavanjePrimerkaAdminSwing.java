@@ -111,9 +111,11 @@ public class dodavanjePrimerkaAdminSwing extends JDialog {
 					for (Object item : selectedItems) {
 						listModel.addElement(item.toString());
 						iznajmljivanjeAdminSwing.imenaPrimeraka.add(item.toString());
+						
 					}
 					iznajmljivanjeAdminSwing.listaPrimeraka = new JList(listModel);
-						
+					
+					
 					JOptionPane.showMessageDialog(null, "Primerci su uspešno dodati!");	
 						
 //					}

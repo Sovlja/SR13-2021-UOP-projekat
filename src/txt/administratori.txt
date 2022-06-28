@@ -1,1 +1,2 @@
-Petar|Šovljanski|1111002800020|Natoševićeva 4, Novi Sad|11111|1000.23|shovlja123|shovlja321|MUŠKI|false
+Petar|Šovljanski|1111002800020|Natoševićeva 4, Novi Sad|11111|1000.23|shovlja123|shovlja321|MUŠKI|true
+Petar|Sovljanski|1111002800020|Natoseviceva 4|11111|1000.0|shovlja123|shovlja321|MUŠKI|false

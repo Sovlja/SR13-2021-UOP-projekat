@@ -527,8 +527,12 @@ public class iznajmljivanjeSwing extends JFrame {
 					
 					String iznajmljeni = "";
 					for(PrimerakKnjige pk : biblioteka.dobaviNeiznajmljenePrimerke()) {
-						iznajmljeni += pk.getId().toString() + ";"; 
-						row[5] = pk.getNazivKnjige().toString() + ";";
+						for(String ime : imenaPrimeraka) {
+							if(pk.getNazivKnjige().equals(ime)) {
+								iznajmljeni += pk.getId().toString() + ";"; 
+								row[5] += pk.getNazivKnjige().toString() + ";";								
+							}
+						}
 					}
 					
 					model.addRow(row);

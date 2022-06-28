@@ -449,6 +449,7 @@ public class iznajmljivanjeAdminSwing extends JFrame {
 		
 		
 //---------------------------------------------------------------------------------
+		
 		addButton = new JButton("Dodaj iznajmljivanje");
 		addButton.addMouseListener(new MouseAdapter() {
 			@SuppressWarnings("deprecation")
@@ -525,12 +526,17 @@ public class iznajmljivanjeAdminSwing extends JFrame {
 					
 					String iznajmljeni = "";
 					for(PrimerakKnjige pk : biblioteka.dobaviNeiznajmljenePrimerke()) {
-						iznajmljeni += pk.getId().toString() + ";"; 
-						row[5] = pk.getNazivKnjige().toString() + ";";
+						for(String ime : imenaPrimeraka) {
+							if(pk.getNazivKnjige().equals(ime)) {
+								iznajmljeni += pk.getId().toString() + ";"; 
+								row[5] += pk.getNazivKnjige().toString() + ";";								
+							}
+						}
 					}
 					
-					model.addRow(row);
 					
+					
+					model.addRow(row);
 					String iznajmljivanjeLinija = "";
 					
 					iznajmljivanjeLinija += row[0] + "|" + row[1] + "|" + row[2] + "|" + idZaposlenog + "|" + idČlana + "|" + iznajmljeni

@@ -100,7 +100,7 @@ public class prijavaSwing extends JFrame {
 				else {
 					
 					for(Administrator a : b.dobaviNeobrisaneAdmine()) {
-						if(a.getKorisničkoIme().equals(username) || a.getLozinka().equals(password)) {
+						if(a.getKorisničkoIme().equals(username) && a.getLozinka().equals(password)) {
 							JOptionPane.showMessageDialog(null, "Uspešna prijava!");
 							dispose();
 							naslovnaAdminSwing.main(null);
@@ -119,7 +119,7 @@ public class prijavaSwing extends JFrame {
 						
 						
 					}
-					if(!bib.getKorisničkoIme().equals(username) | !bib.getLozinka().equals(password)){
+					if(!bib.getKorisničkoIme().equals(username) || !bib.getLozinka().equals(password)){
 						JOptionPane.showMessageDialog(null, "Unesite validne podatke za prijavu!");
 						return;
 					}
